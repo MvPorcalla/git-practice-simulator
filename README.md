@@ -121,8 +121,8 @@ Here’s your **Markdown section** fully written and ready to paste into your `R
 | **Quick Utility Classes**      | ❌                                          | ✅ Primary purpose of this file               | ❌                                     |
 | **Inline Styles**              | ❌ Avoid                                    | ❌ Avoid                                      | ❌ Avoid                               |
 
-
-
+### Note:
+> *"Heads up! Some parts of the project don’t perfectly follow these CSS rules yet — I’m still working on cleaning things up and getting everything consistent. I’ll get there in future updates. 😉"*
 ---
 
 ## ✅ How to Use
@@ -153,6 +153,13 @@ Here’s a casual and welcoming **"Open for Contributors"** section you can add 
 This project is open for collaboration! 🎉
 If you have ideas to improve the simulator, find bugs, or just want to practice contributing to open source, feel free to jump in. Whether you're fixing small issues or adding new features, all contributions are welcome.
 
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/your-feature`).
+3. Commit your changes (`git commit -m 'Add your feature'`).
+4. Push to your branch (`git push origin feature/your-feature`).
+5. Open a Pull Request.
+
+If you have suggestions, feel free to open an issue as well!
 Let’s build and improve this project together!
 
 ---
