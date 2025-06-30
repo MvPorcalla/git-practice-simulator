@@ -77,15 +77,6 @@ Here’s your improved **Layout Guidelines** with the addition of your custom `u
 
 ---
 
-If you’d like, I can help you write a **sample structure** on how to organize when to use Bootstrap, `utilities.css`, and `main.css` for maximum consistency. Want that? 😊
-
-
----
-
-Here’s your **Markdown section** fully written and ready to paste into your `README.md`:
-
----
-
 ## 🎯 CSS Usage Guide
 
 ### 📐 Layout Guidelines
