@@ -17,41 +17,54 @@ background: var(--text-base);
 }
 
 /* ======================================================================================================================== */
-/* Reset */
+/* Reset and Layout */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Sticky Footer Layout & Smooth Scrolling */
 html, body {
-    height: 100%;
-    scroll-padding-top: 80px; /* Adjust based on navbar height */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     scroll-behavior: smooth;
     font-family: var(--gps-ff-primary), 'Open Sans', Arial, sans-serif;
     font-size: var(--fs-base);
     font-weight: var(--fw-normal);
     color: var(--gps-color-text);
-    margin: 0;
     background-color: var(--gps-color-bg);
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+main {
+    flex: 1 0 auto;
     display: flex;
     flex-direction: column;
 }
 
-main {
-    flex: 1 0 auto; /* Take up remaining space */
-}
-
-/* Navbar & Footer Shared Styles */
-nav,
-footer {
-    height: 5vh;
+nav, footer {
     flex-shrink: 0;
+    padding: 1rem 0; /* Consistent height via padding */
     background-color: var(--gps-color-nav-bg);
     color: var(--gps-color-nav-text);
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+footer p {
+    margin: 0;
+}
+
+.nav-text {
+    color: var(--gps-color-primary) !important;
+    font-weight: var(--gps-fw-semibold);
+    font-size: var(--gps-fs-lg);
+    transition: color 0.3s ease;
+    text-decoration: none;
+}
+
+.nav-text:hover {
+    color: var(--gps-color-text-inverse);
 }
 
 
@@ -131,17 +144,6 @@ footer {
 
 /* ==================================================== Main Styles ======================================================= */
 
-/* Navbar Text Styling */
-.nav-text {
-    color: var(--gps-color-primary);
-    transition: color 0.3s ease;
-    text-decoration: none;
-}
-
-.nav-text:hover {
-    color: var(--gps-color-text-inverse);
-}
-
 /* Content Wrapper */
 .content {
     flex: 1 0 auto;
@@ -151,7 +153,8 @@ footer {
 
 /* Hero Section */
 .hero-home {
-    height: 45vh;
+    min-height: 45vh;
+    padding: 4rem 1rem; /* Optional: to balance visual space */
     background: url('../images/git-hero.png') no-repeat center center;
     background-size: cover;
     display: flex;
@@ -160,7 +163,6 @@ footer {
     text-align: center;
     position: relative;
     z-index: 1;
-    transition: background-color 0.3s ease; /* This is correct */
 }
 
 .hero-home::before {
@@ -177,32 +179,37 @@ footer {
 
 /* Text Section */
 .text-section {
-    height: 15vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    padding: 1rem 1rem;
     text-align: center;
 }
 
 /* Card Section */
 .card-section {
-    height: 30vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 2rem 1rem;
 }
 
-.card-section .row {
-    width: 100%;
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    justify-items: center;
 }
 
 .card-section .card {
-    height: 100%;
+    max-width: 380px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     background-color: var(--gps-color-bg-light);
     color: var(--gps-color-text);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: 5px 5px rgba(249, 115, 22, 1);
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
 }
+
+.card-section .card:hover {
+    transform: scale(1.05);
+    box-shadow: 6px 6px rgba(249, 115, 22, 0.6);
+}
+
