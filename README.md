@@ -57,13 +57,38 @@ This project is created to:
 
 ---
 
+Here’s your improved **Layout Guidelines** with the addition of your custom `utilities.css` usage:
+
+---
+
 ## 📐 Layout Guidelines
+
+- 🔹 **Use Bootstrap for Structure**
+    - Utilize Bootstrap for all layout and spacing tasks, including padding, margins, containers, rows, and columns.
+
+- 🔹 **Use Custom CSS for Styling**
+    - Manage typography, colors, font sizes, font families, font weights, text colors, and background colors using your own CSS files.
+
+- 🔹 **Use `utilities.css` for Reusable Classes**
+    - You can use the provided `utilities.css` for quick access to custom helper classes for fonts, text sizes, colors, spacing, and more. This file is your go-to for consistent styling outside of Bootstrap.
+
+- 🔹 **Avoid Inline Styles**
+    - Keep the codebase clean and maintainable by avoiding inline styles. Always use Bootstrap classes, your custom `utilities.css`, or the main stylesheet for all styling.
+
+---
+
+If you’d like, I can help you write a **sample structure** on how to organize when to use Bootstrap, `utilities.css`, and `main.css` for maximum consistency. Want that? 😊
+
+
+---
+
+<!-- ## 📐 Layout Guidelines
 
 - 🔹 **Bootstrap** handles all structural layout (padding, margins, containers, rows, columns).
 - 🔹 **Your CSS** handles typography and colors (font size, font family, font weight, text color, background color, etc.)
 - 🔹 **Avoid** inline style.
 
----
+--- -->
 
 ## ✅ How to Use
 
