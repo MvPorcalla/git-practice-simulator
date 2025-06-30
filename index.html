@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Practice Git commands in a safe, interactive environment.">
+
+    <title>Git Practice Simulator</title>
+    <link rel="icon" href="./assets/icons/git-icon.png" type="image/png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Boxicons CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./assets/css/utilities.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
+
+    <!-- Prevent Flicker -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+</head>
+
+<body class="gps-font-primary gps-weight-normal">
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg shadow-sm nav-theme">
+        <div class="container d-flex justify-content-between">
+            <a class="navbar-brand gps-font-secondary gps-weight-bold nav-text" href="#">Git Practice Simulator</a>
+            <button id="themeToggle" class="btn btn-sm btn-outline-light" aria-label="Toggle theme" aria-pressed="false">
+                <i class='bx bx-moon'></i>
+            </button>
+
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <main class="content">
+
+        <!-- Hero Section -->
+        <section class="hero-home">
+            <div class="container">
+                <h1 class="gps-text-5xl gps-weight-extrabold gps-text-primary mb-2">Git Practice Simulator</h1>
+                <p class="gps-text-lg mb-5">A safe, immersive space to practice Git commands using the terminal.</p>
+                <a href="./playground.html" class="mt-5 gps-btn gps-btn-primary gps-btn-md">Get Started</a>
+            </div>
+        </section>
+
+        <!-- Sample Text Section -->
+        <section class="text-section container">
+            <h2 class="gps-text-4xl gps-font-secondary gps-weight-bold mb-2">Text Sample</h2>
+            <p class="gps-text-lg">This is a sample text section to introduce your Git simulator features or additional information.</p>
+        </section>
+
+        <!-- Card Section -->
+        <section class="container card-section">
+            <div class="row g-4">
+                <div class="col-4">
+                    <div class="card p-3 text-center shadow-sm h-100">
+                        <i class='bx bx-terminal display-6 mb-2 gps-text-primary'></i>
+                        <h5>Command Line Basics</h5>
+                        <p>Practice using <code>git init</code>, <code>git add</code>, <code>git commit</code>, and more.</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card p-3 text-center shadow-sm h-100">
+                        <i class='bx bx-git-branch display-6 mb-2 gps-text-primary'></i>
+                        <h5>Branching</h5>
+                        <p>Simulate creating and switching between branches in a safe environment.</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card p-3 text-center shadow-sm h-100">
+                        <i class='bx bx-cloud-upload display-6 mb-2 gps-text-primary'></i>
+                        <h5>Push & Pull</h5>
+                        <p>Practice pushing to and pulling from remote repositories without fear of breaking anything.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-3">
+        <div class="container">
+            <p class="m-0">&copy; 2025 Git Practice Simulator. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Dark Mode Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const toggleButton = document.getElementById('themeToggle');
+
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            toggleButton.innerHTML = "<i class='bx bx-sun'></i>";
+            toggleButton.setAttribute('aria-pressed', 'true');
+        } else {
+            toggleButton.innerHTML = "<i class='bx bx-moon'></i>";
+            toggleButton.setAttribute('aria-pressed', 'false');
+        }
+
+        toggleButton.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+            if (isDark) {
+                document.documentElement.removeAttribute('data-theme');
+                toggleButton.innerHTML = "<i class='bx bx-moon'></i>";
+                localStorage.setItem('theme', 'light');
+                toggleButton.setAttribute('aria-pressed', 'false');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                toggleButton.innerHTML = "<i class='bx bx-sun'></i>";
+                localStorage.setItem('theme', 'dark');
+                toggleButton.setAttribute('aria-pressed', 'true');
+            }
+        });
+    });
+
+    </script>
+</body>
+
+</html>

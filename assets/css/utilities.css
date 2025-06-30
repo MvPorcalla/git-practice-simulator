@@ -1,0 +1,119 @@
+/* utilities.css */
+
+/* ================= Fonts ================= */
+:root {
+    /* Font Families */
+
+    --gps-ff-primary: 'Montserrat', sans-serif;                                            /* Use as the main website font for readability */
+    --gps-ff-secondary: 'Merriweather', serif;                                             /* Use for special headings, accents, or playful elements */
+
+    /* Font Sizes */
+    --gps-fs-xs: 0.75rem;                                                                  /* 12px - Small labels, captions */
+    --gps-fs-sm: 0.875rem;                                                                 /* 14px - Secondary text, small buttons */
+    --gps-fs-base: 1rem;                                                                   /* 16px - Regular body text */
+    --gps-fs-lg: 1.125rem;                                                                 /* 18px - Slightly larger text, buttons, subtitles */
+    --gps-fs-xl: 1.25rem;                                                                  /* 20px - Headings, section titles */
+    --gps-fs-2xl: 1.5rem;                                                                  /* 24px - Large headings */
+    --gps-fs-3xl: 1.875rem;                                                                /* 30px - Hero text, large headings */
+    --gps-fs-4xl: 2.25rem;                                                                 /* 36px - Prominent display text */
+    --gps-fs-5xl: 3rem;                                                                    /* 48px - Main banner text */
+    --gps-fs-6xl: 3.75rem;                                                                 /* 60px - Hero section titles, landing pages */
+
+    /* Font Weights */
+    --gps-fw-normal: 400;                                                                  /* Default weight for paragraphs and body text */
+    --gps-fw-medium: 500;                                                                  /* Slightly thicker text for emphasis */
+    --gps-fw-semibold: 600;                                                                /* Section titles or buttons */
+    --gps-fw-bold: 700;                                                                    /* Strong emphasis: titles, buttons */
+    --gps-fw-extrabold: 800;                                                               /* Very strong emphasis: hero sections, banners */
+
+    /* Brand Colors */
+    --gps-color-primary: #f97316;                                                        /* Primary color: main buttons, links, highlights */    
+    --gps-color-secondary: #ea580c;                                                      /* Secondary color: secondary buttons, less emphasized elements */
+    --gps-color-accent: #c2410c;                                                         /* Accent color: borders, hover effects, icons */
+    
+    /* Text Colors */
+    --gps-color-text: #222222;                                                           /* Main text color for readability */
+    --gps-color-text-muted: #6c757d;                                                     /* Less important text like subtitles, placeholders, captions */
+    --gps-color-text-inverse: #ffffff;                                                   /* Text on dark backgrounds: buttons, footers, banners */
+
+    /* Background Colors */
+    --gps-color-bg: #ffffff;                                                             /* Default page background */
+    --gps-color-bg-light: #eeeaee;                                                       /* Section backgrounds, cards, or content boxes */
+    --gps-color-bg-dark: #343a40;                                                        /* Dark sections, footers, or navbars */
+    
+    --gps-color-nav-bg: var(--gps-color-bg-dark);           /* Navigation bar background */
+    --gps-color-nav-text: var(--gps-color-primary);    /* Footers, dark sections, headers */
+ 
+
+    /* Special */
+--gps-color-gradient: linear-gradient(to right, #ffffff, #fefefe, #fcfcfc);
+}
+
+/* ================= Dark Mode Variables ================= */
+
+[data-theme="dark"] {
+    /* Text Colors */
+    --gps-color-text: #f1f1f1; /* Light text */
+    --gps-color-text-muted: #a1a1a1;
+    --gps-color-text-inverse: #222222; /* Black text for light backgrounds in dark mode */
+
+    /* Background Colors */
+    --gps-color-bg: #121212;  /* Dark background */
+    --gps-color-bg-light: #1e1e1e;
+    --gps-color-bg-dark: #343a40; /* Can remain the same */
+
+    --gps-color-nav-bg: #1e1e1e; /* You can customize this */
+    --gps-color-nav-text: var(--gps-color-primary); /* Light text */
+
+--gps-color-gradient: linear-gradient(to right, #0f0f0f, #1a1a1a, #262626);
+
+}
+
+
+
+/* ================= Utility Classes ================= */
+
+/* Font Families */
+/* Use for changing fonts quickly in specific elements. Example: <h1 class="gps-font-secondary"> */
+.gps-font-primary { font-family: var(--gps-ff-primary); }
+.gps-font-secondary { font-family: var(--gps-ff-secondary); }
+
+/* Font Sizes */
+/* Use to control text size directly. Example: <p class="gps-text-sm"> */
+.gps-text-xs { font-size: var(--gps-fs-xs); }                                                /* For very small text like footnotes */
+.gps-text-sm { font-size: var(--gps-fs-sm); }                                                /* For labels or form hints */
+.gps-text-base { font-size: var(--gps-fs-base); }                                            /* Default body text */
+.gps-text-lg { font-size: var(--gps-fs-lg); }                                                /* For buttons or subtitles */
+.gps-text-xl { font-size: var(--gps-fs-xl); }                                                /* For headings */
+.gps-text-2xl { font-size: var(--gps-fs-2xl); }                                              /* Section titles */
+.gps-text-3xl { font-size: var(--gps-fs-3xl); }                                              /* Banner headings */
+.gps-text-4xl { font-size: var(--gps-fs-4xl); }                                              /* Hero text */
+.gps-text-5xl { font-size: var(--gps-fs-5xl); }                                              /* Page title or prominent text */
+.gps-text-6xl { font-size: var(--gps-fs-6xl); }                                              /* Huge titles, landing pages */
+
+/* Font Weights */
+/* Apply to text that needs emphasis. Example: <h2 class="gps-weight-bold"> */
+.gps-weight-normal { font-weight: var(--gps-fw-normal); }                                    /* Default text */
+.gps-weight-medium { font-weight: var(--gps-fw-medium); }                                    /* Slight emphasis */
+.gps-weight-semibold { font-weight: var(--gps-fw-semibold); }                                /* For headings and buttons */
+.gps-weight-bold { font-weight: var(--gps-fw-bold); }                                        /* Strong emphasis */
+.gps-weight-extrabold { font-weight: var(--gps-fw-extrabold); }                              /* Very strong emphasis, hero text */
+
+/* Text Colors */
+/* Use to quickly apply text colors. Example: <span class="gps-text-primary"> */
+.gps-text-primary { color: var(--gps-color-primary); }                                       /* For primary buttons, links, or important text */
+.gps-text-secondary { color: var(--gps-color-secondary); }                                   /* For secondary buttons or less emphasized text */
+.gps-text-accent { color: var(--gps-color-accent); }                                         /* For hover states, icons, or special highlights */
+.gps-text-muted { color: var(--gps-color-text-muted); }                                      /* For muted captions, placeholders, form hints */
+.gps-text-base { color: var(--gps-color-text); }                                             /* Default text color for body content */
+.gps-text-inverse { color: var(--gps-color-text-inverse); }                                  /* For text on dark backgrounds or buttons */
+
+/* Background Colors */
+/* Apply to sections, cards, buttons, or containers. Example: <div class="gps-bg-primary"> */
+.gps-bg-primary { background-color: var(--gps-color-primary); }                              /* For primary buttons, headers, highlighted sections */
+.gps-bg-secondary { background-color: var(--gps-color-secondary); }                          /* For secondary buttons or sections */
+.gps-bg-accent { background-color: var(--gps-color-accent); }                                /* For hover states, badges, or special elements */
+.gps-bg-light { background-color: var(--gps-color-bg-light); }                               /* For cards, content boxes, section backgrounds */
+.gps-bg-dark { background-color: var(--gps-color-bg-dark); }                                 /* For footers, dark sections, or navbars */
+.gps-bg-base { background-color: var(--gps-color-bg); }                                      /* Main background of the entire page */
+.gps-bg-gradient { background: var(--gps-color-gradient); }                                  /* For hero sections, banners, and call-to-actions */

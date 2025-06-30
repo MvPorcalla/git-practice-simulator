@@ -49,6 +49,14 @@ This project is created to:
 
 ---
 
+## 📐 Layout Guidelines
+
+- 🔹 **Bootstrap** handles all structural layout (padding, margins, containers, rows, columns).
+- 🔹 **Your CSS** handles typography and colors (font size, font family, font weight, text color, background color, etc.)
+- 🔹 **Avoid** inline style.
+
+---
+
 ## ✅ How to Use
 
 1. **Clone the Repository**
