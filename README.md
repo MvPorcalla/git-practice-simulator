@@ -82,13 +82,48 @@ If you’d like, I can help you write a **sample structure** on how to organize 
 
 ---
 
-<!-- ## 📐 Layout Guidelines
+Here’s your **Markdown section** fully written and ready to paste into your `README.md`:
 
-- 🔹 **Bootstrap** handles all structural layout (padding, margins, containers, rows, columns).
-- 🔹 **Your CSS** handles typography and colors (font size, font family, font weight, text color, background color, etc.)
-- 🔹 **Avoid** inline style.
+---
 
---- -->
+## 🎯 CSS Usage Guide
+
+### 📐 Layout Guidelines
+
+* **Bootstrap** handles all layout and structure:
+
+  * Containers, rows, columns, padding, margins, and grid systems.
+* **`utilities.css`** handles reusable custom utilities:
+
+  * Typography (font sizes, font weights, font families)
+  * Text and background colors
+  * Custom spacing helpers
+* **`main.css`** is for:
+
+  * Page-specific styles
+  * Custom components
+  * Hover effects and animations
+* ❌ **Avoid inline styles** for sizing, colors, or positioning.
+
+---
+
+### 📦 CSS Decision Table
+
+| Purpose                        | Use Bootstrap                              | Use `utilities.css`                          | Use `main.css`                        |
+| ------------------------------ | ------------------------------------------ | -------------------------------------------- | ------------------------------------- |
+| **Layout / Structure**         | ✅ Containers, rows, columns, grids         | ✅ Custom spacing if needed                   | ❌ Not recommended for layout          |
+| **Spacing (Padding/Margins)**  | ✅ Bootstrap spacing classes (`p-3`, `m-4`) | ✅ Custom sizes if not available in Bootstrap | ❌ Avoid                               |
+| **Typography (Fonts, Sizes)**  | ❌                                          | ✅ Reusable text styles                       | ✅ Page/component-specific text styles |
+| **Colors (Text, Background)**  | ❌                                          | ✅ Custom color utilities                     | ✅ Unique colors per page/section      |
+| **Buttons / Components**       | ✅ Base buttons                             | ✅ Extra utility classes                      | ✅ Fully customized buttons            |
+| **Hover Effects / Animations** | ❌                                          | ❌                                            | ✅ Best placed in `main.css`           |
+| **Global Adjustments**         | ❌                                          | ✅ Reusable adjustments                       | ✅ One-off adjustments                 |
+| **Quick Utility Classes**      | ❌                                          | ✅ Primary purpose of this file               | ❌                                     |
+| **Inline Styles**              | ❌ Avoid                                    | ❌ Avoid                                      | ❌ Avoid                               |
+
+
+
+---
 
 ## ✅ How to Use
 
