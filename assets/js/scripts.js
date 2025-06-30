@@ -1,3 +1,4 @@
+// script.js
 
 // toggle dark mode
 document.addEventListener("DOMContentLoaded", () => {
@@ -28,4 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
         document.documentElement.getAttribute("data-theme") === "dark";
     setDarkMode(!currentlyDark);
     });
+});
+
+
+// This script hides the preloader once the page has fully loaded
+window.addEventListener('load', () => {
+    const loader = document.getElementById('preloader');
+    if (loader) loader.classList.add('hidden');
 });
