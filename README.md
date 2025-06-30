@@ -37,13 +37,15 @@ This project is created to:
 /git-practice-simulator
 │
 ├── /assets
-│   ├── styles.css
-│   └── script.js
+│   ├── css
+│   ├── images
+│   │   └── favicon_io
+│   └── js
 │ 
+├── aboutme.html
 ├── index.html
+├── LICENSE
 ├── playground.html
-├── about.html
-├── contact.html
 └── README.md
 ```
 
