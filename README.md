@@ -66,8 +66,8 @@ Here’s your improved **Layout Guidelines** with the addition of your custom `u
 - 🔹 **Use Bootstrap for Structure**
     - Utilize Bootstrap for all layout and spacing tasks, including padding, margins, containers, rows, and columns.
 
-- 🔹 **Use Custom CSS for Styling**
-    - Manage typography, colors, font sizes, font families, font weights, text colors, and background colors using your own CSS files.
+- 🔹 **Use `main.css` for Styling**
+    - Manage typography, colors, font sizes, font families, font weights, text colors, and background colors using `main.css` file.
 
 - 🔹 **Use `utilities.css` for Reusable Classes**
     - You can use the provided `utilities.css` for quick access to custom helper classes for fonts, text sizes, colors, spacing, and more. This file is your go-to for consistent styling outside of Bootstrap.
