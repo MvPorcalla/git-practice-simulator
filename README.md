@@ -57,10 +57,6 @@ This project is created to:
 
 ---
 
-Here’s your improved **Layout Guidelines** with the addition of your custom `utilities.css` usage:
-
----
-
 ## 📐 Layout Guidelines
 
 - 🔹 **Use Bootstrap for Structure**
