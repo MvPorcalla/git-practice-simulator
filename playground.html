@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Playground</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/utilities.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <style>
+        .terminal {
+            height: 500px;
+            overflow-y: auto;
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .terminal-line {
+            display: flex;
+            align-items: center;
+        }
+        .terminal-prompt {
+            margin-right: 0.5rem;
+            white-space: nowrap;
+        }
+        .terminal-input {
+            background: transparent;
+            border: none;
+            color: #0f0;
+            outline: none;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body class="gps-font-primary gps-weight-normal">
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg shadow-sm nav-theme">
+        <div class="container d-flex justify-content-between">
+            <a class="d-flex align-items-center gps-font-secondary gps-weight-bold nav-text gap-2" href="./index.html">
+                <img src="./assets/images/favicon_io/favicon.ico" alt="Git Icon" width="30" height="30">
+                Git Playground
+            </a>
+            <button id="themeToggle" class="btn btn-sm btn-outline-light" aria-label="Toggle theme" aria-pressed="false">
+                <i class='bx bx-moon'></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+
+            <!-- Sidebar -->
+            <aside class="col-md-3 mb-4">
+                <div class="p-3 border rounded bg-light">
+                    <h5 class="mb-3">Git Commands</h5>
+                    <ul class="list-unstyled">
+                        <li><code>git init</code> - Initialize repository</li>
+                        <li><code>git add</code> - Stage files</li>
+                        <li><code>git commit</code> - Commit changes</li>
+                        <li><code>git status</code> - Show status</li>
+                        <li><code>git log</code> - Show commit history</li>
+                        <li><code>git branch</code> - Manage branches</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Terminal Playground -->
+            <main class="col-md-9">
+                <div class="terminal" id="terminalOutput">
+                    <div>Welcome to Git Playground! Type your commands below.</div>
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">user@simulator:~$</span>
+                        <input type="text" class="terminal-input" id="gitInput" autocomplete="off" autofocus>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- Terminal Script -->
+    <script>
+        const terminal = document.getElementById('terminalOutput');
+        const input = document.getElementById('gitInput');
+
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                const command = input.value.trim();
+                if (command === '') return;
+
+                // Display the command
+                const userCommand = document.createElement('div');
+                userCommand.innerHTML = `<span class="terminal-prompt">user@simulator:~$</span> ${command}`;
+                terminal.insertBefore(userCommand, input.parentElement);
+
+                // Simulate the command response
+                const response = document.createElement('div');
+                response.textContent = simulateGitCommand(command);
+                terminal.insertBefore(response, input.parentElement);
+
+                // Clear input
+                input.value = '';
+
+                // Scroll to bottom
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+        });
+
+        function simulateGitCommand(command) {
+            switch (command) {
+                case 'git init':
+                    return 'Initialized empty Git repository.';
+                case 'git status':
+                    return 'On branch main\nNo commits yet\nnothing to commit, working tree clean';
+                case 'git add':
+                    return 'Files staged for commit.';
+                case 'git commit':
+                    return 'Committed successfully.';
+                case 'git log':
+                    return 'No commits yet.';
+                case 'git branch':
+                    return '* main';
+                default:
+                    return 'Command not recognized or not yet implemented.';
+            }
+        }
+    </script>
+
+</body>
+
+</html>
