@@ -25,3 +25,6 @@ remote: Resolving deltas: 100% (5/5), completed with 5 local objects.
 To https://github.com/MvPorcalla/git-practice-simulator.git
    db9f28b..7302a7f  main -> main
 PS C:\xampp\htdocs\MyProject\Websites\git-practice-simulator>
+
+
+do i have this function (use "git restore --staged ..." to unstage) ?

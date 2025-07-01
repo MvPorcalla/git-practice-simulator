@@ -56,6 +56,24 @@ export function addTerminalInput() {
     terminalInput.focus();
 }
 
+const workingDirList = document.getElementById('workingDir');
+
+export function updateWorkingDirectoryUI(workingDirectory) {
+    workingDirList.innerHTML = '';
+
+    if (workingDirectory.length === 0) {
+        workingDirList.innerHTML = '<li class="list-group-item p-2 text-muted">Empty</li>';
+    } else {
+        workingDirectory.forEach(file => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item p-2';
+            li.textContent = file.name;
+            workingDirList.appendChild(li);
+        });
+    }
+}
+
+
 export function updateStagingAreaUI(stagingArea) {
     stagingList.innerHTML = '';
     console.log('Updating staging area with:', stagingArea);

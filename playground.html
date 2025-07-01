@@ -27,9 +27,11 @@
         }
     </script>
     <style>
-        .git-color {
-            color: #f97316; /* Orange color or any you like */
-            font-weight: bold; /* Optional */
+        .aside-scroll-box {
+            max-height: 200px; /* or your preferred fixed height */
+            overflow-y: auto;
+            border: 1px solid #dee2e6; /* Optional: add a light border */
+            border-radius: 0.375rem; /* Optional: rounded corners like Bootstrap */
         }
 
     </style>
@@ -63,11 +65,12 @@
                         <!-- Working Directory -->
                         <div class="mb-4">
                             <h6 class="text-primary mb-2">📂 Working Directory</h6>
-                            <ul class="list-group" id="workingDir">
-                                <li class="list-group-item p-2">index.html</li>
-                                <li class="list-group-item p-2">style.css</li>
-                                <li class="list-group-item p-2">README.md</li>
-                            </ul>
+                            <div class="aside-scroll-box">
+                                <ul class="list-group" id="workingDir">
+                                    <li class="list-group-item p-2 text-muted">Empty</li>
+                                    <!-- Files will be rendered here -->
+                                </ul>
+                            </div>
                         </div>
 
                         <!-- Current Branch -->
@@ -79,9 +82,12 @@
                         <!-- Staging Area -->
                         <div class="mb-4">
                             <h6 class="text-success mb-2">📥 Staging Area</h6>
-                            <ul class="list-group" id="stagingArea">
-                                <li class="list-group-item p-2 text-muted">Empty</li>
-                            </ul>
+                            <div class="aside-scroll-box">
+                                <ul class="list-group" id="stagingArea">
+                                    <li class="list-group-item p-2 text-muted">Empty</li>
+                                    <!-- Staged files will be rendered here -->
+                                </ul>
+                            </div>
                         </div>
 
                         <!-- 🚀 Remote Repository (Add Here) -->

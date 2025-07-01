@@ -1,6 +1,7 @@
 // /terminal.js
+import * as state from './state.js';
 import { processGitCommand } from './gitSimulator.js';
-import { addTerminalInput, displayOutput } from './ui.js';
+import { addTerminalInput, displayOutput, updateWorkingDirectoryUI  } from './ui.js';
 
 export function submitCommand(commandElement, command) {
     if (command.trim() === '') return;
@@ -27,12 +28,14 @@ export function submitCommand(commandElement, command) {
         addTerminalInput();
     }
     // displayOutput(output);
-    
+
 }
 
 export function initTerminal() {
     let commandHistory = [];
     let historyIndex = -1;
+
+    updateWorkingDirectoryUI(state.workingDirectory);
 
     // ✅ Initialize terminal input on page load
     addTerminalInput();
