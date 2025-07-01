@@ -47,6 +47,10 @@ export function processGitCommand(command) {
         return handleGitPush();
     }
 
+    if (args[0] === 'git' && args[1] === 'restore' && args[2] === '--staged') {
+        return handleGitRestore(args.slice(3));
+    }
+
     logMessage(`Error: Command not recognized: ${command}`);
     return `Command not recognized: ${command}`;
 }
@@ -133,3 +137,28 @@ function handleGitPush() {
         return 'Nothing to push.';
     }
 }
+
+function handleGitRestore(files) {
+    let removedFiles = [];
+
+    files.forEach(file => {
+        if (state.isFileInStaging(file)) {
+            // Find index of the file to remove
+            const index = state.stagingArea.findIndex(f => f.name === file);
+            if (index !== -1) {
+                state.stagingArea.splice(index, 1); // ✅ Mutate the array directly
+                removedFiles.push(file);
+            }
+        }
+    });
+
+    if (removedFiles.length > 0) {
+        updateStagingAreaUI(state.stagingArea);
+        logMessage(`Unstaged files: ${removedFiles.join(', ')}`);
+        return `Unstaged files: ${removedFiles.join(', ')}`;
+    } else {
+        logMessage('No matching files found in staging area.');
+        return 'No matching files found in staging area.';
+    }
+}
+
