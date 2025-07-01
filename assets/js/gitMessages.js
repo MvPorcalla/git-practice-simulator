@@ -13,7 +13,7 @@ export function gitCommitMessage(commitMessage, files) {
     const deletions = Math.floor(Math.random() * 4); // 0-3 deletions
     const fileWord = filesChanged > 1 ? 'files' : 'file';
 
-    const fileList = files.map(file => `create mode 100644 ${file}`).join('\n');
+    const fileList = files.map(file => `  create mode 100644 ${file}`).join('\n');
 
     return `[main (root-commit) ${randomHash}] ${commitMessage}\n` +
         `${filesChanged} ${fileWord} changed, ${insertions} insertions(+), ${deletions} deletions(+)\n` +
@@ -27,16 +27,19 @@ export function gitPushMessage() {
     const delta = Math.floor(Math.random() * 3); // 0-2 delta
     const localHash = Math.random().toString(36).substring(2, 9);
     const remoteHash = Math.random().toString(36).substring(2, 9);
+    const bytes = Math.floor(Math.random() * 500) + 200;
+    const speed = (Math.random() * 500 + 100).toFixed(2); // KiB/s
 
     return `Enumerating objects: ${totalObjects}, done.\n` +
         `Counting objects: 100% (${totalObjects}/${totalObjects}), done.\n` +
         `Delta compression using up to 4 threads\n` +
         `Compressing objects: 100% (${compressedObjects}/${compressedObjects}), done.\n` +
-        `Writing objects: 100% (${totalObjects}/${totalObjects}), done.\n` +
+        `Writing objects: 100% (${totalObjects}/${totalObjects}), ${bytes} bytes | ${speed} KiB/s, done.\n` +
         `Total ${totalObjects} (delta ${delta}), reused 0 (delta 0), pack-reused 0\n` +
         `remote: Resolving deltas: 100% (${delta}/${delta}), completed with ${totalObjects} local objects.\n` +
         `To https://github.com/yourusername/GitSimulator.git\n` +
-        `${localHash}..${remoteHash}  main -> main`;
+        `   ${localHash}..${remoteHash}  main -> main`;
+
 }
 
 // git status when clean
