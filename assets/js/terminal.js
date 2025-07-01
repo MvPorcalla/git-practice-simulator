@@ -28,7 +28,6 @@ export function submitCommand(commandElement, command) {
     }
 }
 
-
 export function initTerminal() {
     let commandHistory = [];
     let historyIndex = -1;
