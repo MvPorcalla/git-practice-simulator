@@ -27,6 +27,7 @@ export function submitCommand(commandElement, command) {
         addTerminalInput();
     }
     // displayOutput(output);
+    
 }
 
 export function initTerminal() {
