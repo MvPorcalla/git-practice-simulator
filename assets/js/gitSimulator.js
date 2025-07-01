@@ -1,66 +1,60 @@
+// gitMessages.js
 import * as state from './state.js';
 import * as messages from './gitMessages.js';
-import { displayOutput, updateStagingAreaUI, updateRemoteUI, logMessage } from './ui.js';
+import { updateStagingAreaUI, updateRemoteUI, logMessage } from './ui.js';
 
 export function processGitCommand(command) {
     const args = command.split(' ');
 
-    // Always log the user's entered command
     logMessage(`Command executed: ${command}`);
 
     if (args[0] === 'git' && args[1] === 'init') {
         if (state.isGitInitialized()) {
-            displayOutput('Reinitialized existing Git repository.');
             logMessage('Repository reinitialized.');
+            return 'Reinitialized existing Git repository.';
         } else {
             state.setGitInitialized(true);
-            displayOutput(messages.gitInitMessage());
             logMessage('Repository initialized.');
+            return messages.gitInitMessage();
         }
-        return;
     }
 
     if (!state.isGitInitialized()) {
-        displayOutput('fatal: not a git repository (or any of the parent directories): .git');
         logMessage('Error: Tried to execute Git command outside of a repository.');
-        return;
+        return 'fatal: not a git repository (or any of the parent directories): .git';
     }
 
     if (args[0] === 'git' && args[1] === 'status') {
-        displayGitStatus();
         logMessage('Displayed status.');
-        return;
+        return getGitStatus();
     }
 
     if (args[0] === 'git' && args[1] === 'add') {
         if (args[2] === '.') {
-            handleGitAdd(state.workingDirectory);
+            return handleGitAdd(state.workingDirectory);
         } else {
-            handleGitAdd(args.slice(2));
+            return handleGitAdd(args.slice(2));
         }
-        return;
     }
 
     if (args[0] === 'git' && args[1] === 'commit') {
-        handleGitCommit(command);
-        return;
+        return handleGitCommit(command);
     }
 
     if (args[0] === 'git' && args[1] === 'push') {
-        handleGitPush();
-        return;
+        return handleGitPush();
     }
 
-    displayOutput(`Command not recognized: ${command}`);
     logMessage(`Error: Command not recognized: ${command}`);
+    return `Command not recognized: ${command}`;
 }
 
 // ✅ Git Status
-function displayGitStatus() {
+function getGitStatus() {
     if (state.stagingArea.length === 0) {
-        displayOutput(messages.gitStatusClean());
+        return messages.gitStatusClean();
     } else {
-        displayOutput(messages.gitStatusWithFiles(state.stagingArea));
+        return messages.gitStatusWithFiles(state.stagingArea);
     }
 }
 
@@ -78,9 +72,10 @@ function handleGitAdd(files) {
     if (addedFiles.length > 0) {
         updateStagingAreaUI(state.stagingArea);
         logMessage(`Added files to staging area: ${addedFiles.join(', ')}`);
+        return ''; // Git add usually doesn't show output
     } else {
-        displayOutput('Nothing added to staging area.');
         logMessage('Nothing added to staging area.');
+        return 'Nothing added to staging area.';
     }
 }
 
@@ -92,31 +87,33 @@ function handleGitCommit(command) {
         const commitMessage = messageMatch[1];
 
         if (state.stagingArea.length > 0) {
-            displayOutput(messages.gitCommitMessage(commitMessage, state.stagingArea));
+            const commitOutput = messages.gitCommitMessage(commitMessage, state.stagingArea);
             state.setLastCommitMessage(commitMessage);
             state.addLocalCommit(commitMessage);
             state.resetStagingArea();
             updateStagingAreaUI(state.stagingArea);
             logMessage(`Commit created: "${commitMessage}"`);
+            return commitOutput;
         } else {
-            displayOutput('Nothing to commit.');
             logMessage('Nothing to commit.');
+            return 'Nothing to commit.';
         }
     } else {
-        displayOutput('Please provide a commit message with -m "message".');
         logMessage('Error: Commit message missing.');
+        return 'Please provide a commit message with -m "message".';
     }
 }
 
 // ✅ Git Push
 function handleGitPush() {
     if (state.localCommits.length > 0) {
-        displayOutput(messages.gitPushMessage());
+        const pushOutput = messages.gitPushMessage();
         state.pushCommits();
         updateRemoteUI(state.remoteCommits);
         logMessage('Pushed local commits to remote.');
+        return pushOutput;
     } else {
-        displayOutput('Nothing to push.');
         logMessage('Nothing to push.');
+        return 'Nothing to push.';
     }
 }

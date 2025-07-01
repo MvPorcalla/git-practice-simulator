@@ -1,40 +1,54 @@
 // ui.js
+import { submitCommand } from './terminal.js';
+
 const terminalOutput = document.getElementById('terminalOutput');
 const stagingList = document.getElementById('stagingArea');
-
-export function displayCommand(command) {
-    const line = document.createElement('p');
-    line.innerHTML = `<span class="text-primary">PS C:\\xampp\\htdocs\\GitSimulator&gt;</span> ${command}`;
-    terminalOutput.appendChild(line);
-    terminalOutput.scrollTop = terminalOutput.scrollHeight;
-
-    // ✅ Log the command to the system log
-    logMessage(`> ${command}`, 'command');
-}
-
 
 export function displayOutput(message) {
     const lines = message.split('\n');
 
     lines.forEach(line => {
+        if (line.trim() === '') return;
         const output = document.createElement('p');
         output.textContent = line;
         terminalOutput.appendChild(output);
-
-        // ✅ Log each output line to the system log
         logMessage(line, 'output');
     });
 
-    // Always show prompt after output
-    const prompt = document.createElement('p');
-    prompt.innerHTML = `PS C:\\xampp\\htdocs\\GitSimulator&gt;`;
-    terminalOutput.appendChild(prompt);
-
-    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    addTerminalInput();
 }
 
+export function addTerminalInput() {
+    const existingInput = document.getElementById('terminalInput');
+    if (existingInput) return;
 
+    const terminalInputContainer = document.createElement('div');
+    terminalInputContainer.classList.add('d-flex', 'align-items-center');
 
+    const prompt = document.createElement('span');
+    prompt.innerHTML = `PS C:\\xampp\\htdocs\\GitSimulator&gt;&nbsp;`;
+
+    const terminalInput = document.createElement('input');
+    terminalInput.type = 'text';
+    terminalInput.id = 'terminalInput';
+    terminalInput.className = 'bg-dark text-white border-0 flex-grow-1';
+    terminalInput.style.outline = 'none';
+    terminalInput.style.fontFamily = 'monospace';
+
+    terminalInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            submitCommand(terminalInputContainer, terminalInput.value);
+        }
+    });
+
+    terminalInputContainer.appendChild(prompt);
+    terminalInputContainer.appendChild(terminalInput);
+    terminalOutput.appendChild(terminalInputContainer);
+    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+
+    terminalInput.focus();
+}
 
 export function updateStagingAreaUI(stagingArea) {
     stagingList.innerHTML = '';
@@ -73,7 +87,6 @@ export function logMessage(message, type = 'info') {
     const log = document.createElement('p');
     const timestamp = new Date().toLocaleTimeString();
 
-    // Style based on type
     if (type === 'command') {
         log.innerHTML = `<span class="text-primary">[${timestamp}]</span> <strong>${message}</strong>`;
     } else if (type === 'output') {
@@ -85,4 +98,3 @@ export function logMessage(message, type = 'info') {
     terminalLog.appendChild(log);
     terminalLog.scrollTop = terminalLog.scrollHeight;
 }
-

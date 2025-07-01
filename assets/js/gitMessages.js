@@ -36,7 +36,7 @@ export function gitPushMessage() {
         `Total ${totalObjects} (delta ${delta}), reused 0 (delta 0), pack-reused 0\n` +
         `remote: Resolving deltas: 100% (${delta}/${delta}), completed with ${totalObjects} local objects.\n` +
         `To https://github.com/yourusername/GitSimulator.git\n` +
-        `   ${localHash}..${remoteHash}  main -> main`;
+        `${localHash}..${remoteHash}  main -> main`;
 }
 
 // git status when clean

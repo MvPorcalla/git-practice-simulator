@@ -1,0 +1,27 @@
+PS C:\xampp\htdocs\MyProject\Websites\git-practice-simulator> git add sds
+PS C:\xampp\htdocs\MyProject\Websites\git-practice-simulator> git add .
+PS C:\xampp\htdocs\MyProject\Websites\git-practice-simulator> git commit -m
+error: switch `m' requires a value
+PS C:\xampp\htdocs\MyProject\Websites\git-practice-simulator> git comit -m "update in gitSimulator.js"
+
+The most similar command is
+        commit
+PS C:\xampp\htdocs\MyProject\Websites\git-practice-simulator> git commit -m "update in gitSimulator.js"
+[main 7302a7f] update in gitSimulator.js
+ 4 files changed, 97 insertions(+), 19 deletions(-)
+PS C:\xampp\htdocs\MyProject\Websites\git-practice-simulator> git pushh
+git: 'pushh' is not a git command. See 'git --help'.
+
+The most similar command is
+        push
+PS C:\xampp\htdocs\MyProject\Websites\git-practice-simulator> git push
+Enumerating objects: 15, done.
+Counting objects: 100% (15/15), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (8/8), 2.64 KiB | 2.64 MiB/s, done.
+Total 8 (delta 5), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (5/5), completed with 5 local objects.
+To https://github.com/MvPorcalla/git-practice-simulator.git
+   db9f28b..7302a7f  main -> main
+PS C:\xampp\htdocs\MyProject\Websites\git-practice-simulator>
