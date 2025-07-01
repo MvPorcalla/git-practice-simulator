@@ -1,5 +1,5 @@
 // ui.js
-import { submitCommand, handleArrowKeys } from './terminal.js';
+import { submitCommand, handleTerminalInput  } from './terminal.js';
 
 const terminalOutput = document.getElementById('terminalOutput');
 const stagingList = document.getElementById('stagingArea');
@@ -39,22 +39,17 @@ export function addTerminalInput() {
     const prompt = document.createElement('span');
     prompt.innerHTML = `PS C:\\xampp\\htdocs\\GitSimulator&gt;&nbsp;`;
 
-    const terminalInput = document.createElement('input');
-    terminalInput.type = 'text';
+    const terminalInput = document.createElement('div');
     terminalInput.id = 'terminalInput';
     terminalInput.className = 'bg-dark text-white border-0 flex-grow-1';
     terminalInput.style.outline = 'none';
     terminalInput.style.fontFamily = 'monospace';
+    terminalInput.style.cursor = 'default';
+    terminalInput.tabIndex = 0; // Makes div focusable
 
-    console.log('Adding arrow key handler to terminal input');
-    handleArrowKeys(terminalInput);
-
-    terminalInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            submitCommand(terminalInputContainer, terminalInput.value);
-        }
-    });
+    terminalInput.innerHTML = `<span id="inputContent"></span><span class="cursor">|</span>`;
+    console.log('Adding custom terminal input handler');
+    handleTerminalInput(terminalInput);
 
     terminalInputContainer.appendChild(prompt);
     terminalInputContainer.appendChild(terminalInput);

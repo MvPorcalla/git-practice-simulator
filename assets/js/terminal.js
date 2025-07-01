@@ -1,27 +1,83 @@
-// terminal.js
 import * as state from './state.js';
 import { processGitCommand } from './gitSimulator.js';
 import { addTerminalInput, displayOutput, updateWorkingDirectoryUI } from './ui.js';
 
+let inputString = '';
+let cursorPosition = 0;
+
+export function handleTerminalInput(terminalInput) {
+    terminalInput.addEventListener('keydown', (e) => {
+        e.preventDefault();
+
+        if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+            // Insert character at cursor
+            inputString = inputString.slice(0, cursorPosition) + e.key + inputString.slice(cursorPosition);
+            cursorPosition++;
+        } else if (e.key === 'Backspace') {
+            if (cursorPosition > 0) {
+                inputString = inputString.slice(0, cursorPosition - 1) + inputString.slice(cursorPosition);
+                cursorPosition--;
+            }
+        } else if (e.key === 'ArrowLeft') {
+            if (cursorPosition > 0) cursorPosition--;
+        } else if (e.key === 'ArrowRight') {
+            if (cursorPosition < inputString.length) cursorPosition++;
+        } else if (e.key === 'Enter') {
+            submitCommand(terminalInput.parentElement, inputString);
+            inputString = '';
+            cursorPosition = 0;
+            return;
+        } else if (e.key === 'ArrowUp') {
+            if (state.getHistoryIndex() > 0) {
+                state.setHistoryIndex(state.getHistoryIndex() - 1);
+                inputString = state.commandHistory[state.getHistoryIndex()];
+                cursorPosition = inputString.length;
+            }
+        } else if (e.key === 'ArrowDown') {
+            if (state.getHistoryIndex() < state.commandHistory.length - 1) {
+                state.setHistoryIndex(state.getHistoryIndex() + 1);
+                inputString = state.commandHistory[state.getHistoryIndex()];
+                cursorPosition = inputString.length;
+            } else {
+                state.setHistoryIndex(state.commandHistory.length);
+                inputString = '';
+                cursorPosition = 0;
+            }
+        }
+
+        updateTerminalInputDisplay(terminalInput);
+    });
+}
+
+function updateTerminalInputDisplay(terminalInput) {
+    const beforeCursor = inputString.slice(0, cursorPosition);
+    const afterCursor = inputString.slice(cursorPosition);
+
+    terminalInput.innerHTML = `<span id="inputContent">${beforeCursor}</span><span class="cursor">|</span><span>${afterCursor}</span>`;
+    placeCursor(terminalInput);
+}
+
+function placeCursor(terminalInput) {
+    const cursor = terminalInput.querySelector('.cursor');
+    if (cursor) cursor.scrollIntoView({ block: 'nearest' });
+}
+
 export function submitCommand(commandElement, command) {
     if (command.trim() === '') return;
 
-    // Save command to history
+    // Save to history
     state.commandHistory.push(command);
-    state.setHistoryIndex(state.commandHistory.length); // ✅ FIXED
+    state.setHistoryIndex(state.commandHistory.length);
 
-    // Handle terminal input
-    const input = commandElement.querySelector('input');
-    if (input) {
-        const commandParts = input.value.trim().split(' ');
-        const firstWord = commandParts.shift();
-        const remainingCommand = commandParts.join(' ');
+    // Convert terminal input to static text
+    const staticText = document.createElement('span');
+    const commandParts = command.trim().split(' ');
+    const firstWord = commandParts.shift();
+    const remainingCommand = commandParts.join(' ');
 
-        const staticText = document.createElement('span');
-        staticText.innerHTML = `<span style="color: #4ade80; font-weight: bold;">${firstWord}</span> ${remainingCommand}`;
+    staticText.innerHTML = `<span style="color: #4ade80; font-weight: bold;">${firstWord}</span> ${remainingCommand}`;
 
-        commandElement.replaceChild(staticText, input);
-    }
+    commandElement.replaceChild(staticText, commandElement.querySelector('#terminalInput'));
 
     const output = processGitCommand(command);
 
@@ -37,29 +93,5 @@ export function initTerminal() {
     addTerminalInput();
 }
 
-export function handleArrowKeys(inputElement) {
-    inputElement.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowUp') {
-            if (state.getHistoryIndex() > 0) {
-                state.setHistoryIndex(state.getHistoryIndex() - 1);
-                inputElement.value = state.commandHistory[state.getHistoryIndex()];
-            }
-            e.preventDefault();
-        } else if (e.key === 'ArrowDown') {
-            if (state.getHistoryIndex() < state.commandHistory.length - 1) {
-                state.setHistoryIndex(state.getHistoryIndex() + 1);
-                inputElement.value = state.commandHistory[state.getHistoryIndex()];
-            } else {
-                state.setHistoryIndex(state.commandHistory.length);
-                inputElement.value = '';
-            }
-            e.preventDefault();
-        }
-    });
-}
-
-export function syncInputs() {
-    const formInput = document.getElementById('gitCommand');
-    const terminalInput = document.getElementById('terminalInput');
-    if (terminalInput) terminalInput.value = formInput.value;
-}
+// No longer needed
+export function syncInputs() {}
