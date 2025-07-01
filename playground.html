@@ -27,30 +27,7 @@
         }
     </script>
     <style>
-        .terminal-input {
-            outline: none;
-            white-space: nowrap;
-        }
-        /* ✅ Terminal output lines and input container spacing */
-        #terminalOutput p,
-        #terminalOutput .d-flex {
-            margin: 0;
-            padding: 0;
-            line-height: 1.4; /* Optional: keeps it readable but compact like a terminal */
-        }
-
-        /* ✅ Remove any default gaps */
-        #terminalOutput {
-            display: flex;
-            flex-direction: column;
-            gap: 0; /* Forces zero spacing between children */
-            font-family: monospace; /* Already applied inline, this makes it consistent */
-        }
-
-        /* ✅ Optional: Add slight top/bottom padding for the terminal container itself if needed */
-        #terminalOutput {
-            padding: 0.5rem;
-        }
+        
 
     </style>
 
@@ -121,7 +98,7 @@
                     </div>
 
                     <section>
-                        <div class="border rounded p-2 mt-3 bg-warning" id="terminalLog" style="height: 120px; overflow-y: auto; font-size: 0.85rem; background-color: #f8f9fa;">
+                        <div class="border rounded p-2 mt-3" id="terminalLog" style="height: 120px; max-height: 200px; overflow-y: auto;">
                             <strong>System Log:</strong>
                         </div>
                     </section>

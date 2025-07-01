@@ -223,5 +223,39 @@ footer p {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+#terminalLog {
+    background-color: var(--gps-color-bg-light);
+    color: var(--gps-color-text);
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    overflow-y: auto;
+    max-height: 200px;
+    font-size: 0.85rem;
+    
+}
 
-/* No transform/zoom on hover */
+.terminal-input {
+    outline: none;
+    white-space: nowrap;
+}
+/* ✅ Terminal output lines and input container spacing */
+#terminalOutput p,
+#terminalOutput .d-flex {
+    margin: 0;
+    padding: 0;
+
+}
+
+/* ✅ Remove any default gaps */
+#terminalOutput {
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* Forces zero spacing between children */
+    font-family: monospace; /* Already applied inline, this makes it consistent */
+}
+
+/* ✅ Optional: Add slight top/bottom padding for the terminal container itself if needed */
+#terminalOutput {
+    padding: 0.5rem;
+}
+

@@ -4,6 +4,12 @@ import { submitCommand } from './terminal.js';
 const terminalOutput = document.getElementById('terminalOutput');
 const stagingList = document.getElementById('stagingArea');
 
+terminalOutput.addEventListener('click', () => {
+    const terminalInput = document.getElementById('terminalInput');
+    if (terminalInput) terminalInput.focus();
+});
+
+
 export function displayOutput(message) {
     const lines = message.split('\n');
 
@@ -90,9 +96,9 @@ export function logMessage(message, type = 'info') {
     if (type === 'command') {
         log.innerHTML = `<span class="text-primary">[${timestamp}]</span> <strong>${message}</strong>`;
     } else if (type === 'output') {
-        log.innerHTML = `<span class="text-secondary">[${timestamp}]</span> ${message}`;
+        log.innerHTML = `<span class="text-info">[${timestamp}]</span> ${message}`;
     } else {
-        log.innerHTML = `<span class="text-muted">[${timestamp}]</span> ${message}`;
+        log.innerHTML = `<span class="text-secondary">[${timestamp}]</span> ${message}`;
     }
 
     terminalLog.appendChild(log);
