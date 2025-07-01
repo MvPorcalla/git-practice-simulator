@@ -12,28 +12,43 @@ export function setGitInitialized(value) {
 }
 
 // Working directory and staging area
-export let workingDirectory = ['index.html', 'style.css', 'README.md'];
+export let workingDirectory = [
+    { name: 'index.html', status: 'new' },
+    { name: 'style.css', status: 'new' },
+    { name: 'README.md', status: 'new' }
+];
+
 export let stagingArea = [];
 
 // Command history (for terminal navigation)
 export let commandHistory = [];
 export let historyIndex = -1;
 
+export function updateFileStatus(fileName, status) {
+    const file = workingDirectory.find(f => f.name === fileName);
+    if (file) file.status = status;
+}
+
+export function getFileStatus(fileName) {
+    const file = workingDirectory.find(f => f.name === fileName);
+    return file ? file.status : null;
+}
+
 // Git file management
 export function resetStagingArea() {
     stagingArea = [];
 }
 
-export function addToStaging(file) {
-    stagingArea.push(file);
+export function addToStaging(fileObject) {
+    stagingArea.push(fileObject);
 }
 
 export function isFileInWorkingDir(file) {
     return workingDirectory.includes(file);
 }
 
-export function isFileInStaging(file) {
-    return stagingArea.includes(file);
+export function isFileInStaging(fileName) {
+    return stagingArea.some(f => f.name === fileName);
 }
 
 // ✅ Commit Tracking State

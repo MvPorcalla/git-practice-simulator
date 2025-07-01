@@ -58,6 +58,7 @@ export function addTerminalInput() {
 
 export function updateStagingAreaUI(stagingArea) {
     stagingList.innerHTML = '';
+    console.log('Updating staging area with:', stagingArea);
 
     if (stagingArea.length === 0) {
         stagingList.innerHTML = '<li class="list-group-item p-2 text-muted">Empty</li>';
@@ -65,7 +66,7 @@ export function updateStagingAreaUI(stagingArea) {
         stagingArea.forEach(file => {
             const li = document.createElement('li');
             li.className = 'list-group-item p-2';
-            li.textContent = file;
+            li.textContent = file.name; // 🔥 Show the file name, not the whole object
             stagingList.appendChild(li);
         });
     }

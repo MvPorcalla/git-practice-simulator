@@ -48,7 +48,16 @@ export function gitStatusClean() {
 }
 
 // git status when files are staged
-export function gitStatusWithFiles(stagedFiles) {
-    return `On branch main\n\nNo commits yet\n\nChanges to be committed:\n  (use "git rm --cached <file>..." to unstage)\n\t` +
-        stagedFiles.map(file => `new file:   ${file}`).join('\n\t');
+export function gitStatusWithFiles(stagedFiles, localCommitsCount) {
+    const branchStatus = localCommitsCount > 0 
+        ? `Your branch is ahead of 'origin/main' by ${localCommitsCount} commit${localCommitsCount > 1 ? 's' : ''}.\n  (use "git push" to publish your local commits)\n\n`
+        : '';
+
+    const fileList = stagedFiles.map(file => {
+        const status = file.status === 'modified' ? 'modified:' : 'new file:';
+        return `\t${status}   ${file.name}`;
+    }).join('\n');
+
+    return `On branch main\n${branchStatus}Changes to be committed:\n  (use "git restore --staged <file>..." to unstage)\n${fileList}`;
 }
+

@@ -31,7 +31,9 @@ export function processGitCommand(command) {
 
     if (args[0] === 'git' && args[1] === 'add') {
         if (args[2] === '.') {
-            return handleGitAdd(state.workingDirectory);
+            // Extract file names from working directory
+            const allFileNames = state.workingDirectory.map(file => file.name);
+            return handleGitAdd(allFileNames);
         } else {
             return handleGitAdd(args.slice(2));
         }
@@ -54,7 +56,7 @@ function getGitStatus() {
     if (state.stagingArea.length === 0) {
         return messages.gitStatusClean();
     } else {
-        return messages.gitStatusWithFiles(state.stagingArea);
+        return messages.gitStatusWithFiles(state.stagingArea, state.localCommits.length);
     }
 }
 
@@ -62,17 +64,31 @@ function getGitStatus() {
 function handleGitAdd(files) {
     let addedFiles = [];
 
-    files.forEach(file => {
-        if (state.isFileInWorkingDir(file) && !state.isFileInStaging(file)) {
-            state.addToStaging(file);
-            addedFiles.push(file);
-        }
-    });
+    if (files.length === 1 && files[0] === '.') {
+        // git add . => Add all unstaged files
+        state.workingDirectory.forEach(fileObject => {
+            if (!state.isFileInStaging(fileObject.name)) {
+                state.addToStaging(fileObject);
+                addedFiles.push(fileObject.name);
+            }
+        });
+    } else {
+        // git add filename(s)
+        files.forEach(file => {
+            const fileObject = state.workingDirectory.find(f => f.name === file);
+
+            if (fileObject && !state.isFileInStaging(fileObject.name)) {
+                state.addToStaging(fileObject);
+                addedFiles.push(fileObject.name);
+            }
+        });
+    }
 
     if (addedFiles.length > 0) {
         updateStagingAreaUI(state.stagingArea);
         logMessage(`Added files to staging area: ${addedFiles.join(', ')}`);
-        return ''; // Git add usually doesn't show output
+        // return `📥 Added to staging area: ${addedFiles.join(', ')}`;
+        return '';
     } else {
         logMessage('Nothing added to staging area.');
         return 'Nothing added to staging area.';
