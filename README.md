@@ -23,17 +23,17 @@ This project is created to:
 
 ## 🚀 Git Commands to Practice
 
-* `git init`
-* `git clone`
-* `git status`
-* `git add`
-* `git commit`
-* `git push`
+* `git init`        ✅
+* `git status`      ✅
+* `git add`         ✅
+* `git commit`      ✅
+* `git push`        ✅
 * `git pull`
 * `git fetch`
 * `git branch`
 * `git checkout`
 * `git merge`
+* `git clone`
 
 ---
 

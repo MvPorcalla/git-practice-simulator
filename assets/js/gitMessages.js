@@ -1,4 +1,5 @@
 // gitMessages.js
+import * as state from './state.js';
 
 // git init message
 export function gitInitMessage() {
@@ -58,19 +59,37 @@ export function gitStatusWithFiles(stagedFiles, localCommitsCount) {
         branchStatus = `Your branch is up to date with 'origin/main'.\n\n`;
     }
 
-    const fileList = stagedFiles.map(file => {
-        const status = file.status === 'modified' ? 
-            `<span style="color: #facc15;">modified:</span>` : // Yellow
-            `<span style="color: #22c55e;">new file:</span>`;   // Green
+    // ✅ Staged files (to be committed)
+    const stagedFileList = stagedFiles.map(file => {
+        const status = file.status === 'modified'
+            ? `<span style="color: #facc15;">modified:</span>` // Yellow
+            : `<span style="color: #22c55e;">new file:</span>`; // Green
 
-        const fileName = `<span style="color: #38bdf8;">${file.name}</span>`; // 🔵 Cyan file name
+        const fileName = `<span style="color: #38bdf8;">${file.name}</span>`; // Cyan
 
         return `\t${status}   ${fileName}`;
     }).join('\n');
 
+    // ✅ Unstaged files (changes not staged for commit)
+    const unstagedFiles = state.workingDirectory.filter(file => {
+        return !state.isFileInStaging(file.name);
+    });
 
-    return `On branch main\n${branchStatus}Changes to be committed:\n  (use "git restore --staged <file>..." to unstage)\n\n${fileList}`;
+    let unstagedFileList = '';
+    if (unstagedFiles.length > 0) {
+        unstagedFileList = '\n\nChanges not staged for commit:\n' +
+            '  (use "git add <file>..." to update what will be committed)\n' +
+            '  (use "git restore <file>..." to discard changes in working directory)\n\n' +
+            unstagedFiles.map(file => {
+                const status = file.status === 'modified'
+                    ? `<span style="color: #f87171;">modified:</span>` // Red
+                    : `<span style="color: #f87171;">new file:</span>`; // Red
+
+                const fileName = `<span style="color: #38bdf8;">${file.name}</span>`; // Cyan
+
+                return `\t${status}   ${fileName}`;
+            }).join('\n');
+    }
+
+    return `On branch main\n${branchStatus}Changes to be committed:\n  (use "git restore --staged <file>..." to unstage)\n\n${stagedFileList}${unstagedFileList}`;
 }
-
-
-
