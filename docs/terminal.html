@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Playground - Terminal</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+    font-family: monospace;
+    margin: 0;
+    padding: 20px;
+}
+
+.terminal {
+    width: 80%;
+    margin: 0 auto;
+    min-height: 90vh;
+    background-color: #000000;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-y: auto;
+}
+
+.line {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.prompt {
+    margin-right: 10px;
+    color: #00ff00;
+}
+
+#terminal-input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #f5f5f5;
+    font-family: monospace;
+}
+
+#terminal-input::placeholder {
+    color: #777;
+}
+
+.blinking-cursor {
+    border-right: 2px solid #f5f5f5;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { border-color: transparent; }
+    100% { border-color: #f5f5f5; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="terminal" id="terminal-output">
+        <div class="line">Welcome to Git Playground Terminal</div>
+        <div class="line" id="prompt-line">
+            <span class="prompt">user@playground:~/project$</span>
+            <input type="text" id="terminal-input" autofocus />
+        </div>
+    </div>
+
+    <script src="gitSimulator.js"></script>
+    <script src="terminal.js"></script>
+</body>
+</html>

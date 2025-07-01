@@ -213,3 +213,15 @@ footer p {
     box-shadow: 6px 6px rgba(249, 115, 22, 0.6);
 }
 
+/* ================= Workspace Styles ================= */
+
+.workspace {
+    background-color: var(--gps-color-bg-light);
+    color: var(--gps-color-text);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* No transform/zoom on hover */
