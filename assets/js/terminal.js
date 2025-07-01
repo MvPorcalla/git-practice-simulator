@@ -8,8 +8,14 @@ export function submitCommand(commandElement, command) {
     // Handle terminal input
     const input = commandElement.querySelector('input');
     if (input) {
+        // 🔥 Split the command to highlight the first word
+        const commandParts = input.value.trim().split(' ');
+        const firstWord = commandParts.shift(); // remove and store the first word
+        const remainingCommand = commandParts.join(' '); // join the rest
+
         const staticText = document.createElement('span');
-        staticText.textContent = input.value;
+        staticText.innerHTML = `<span style="color: #4ade80; font-weight: bold;">${firstWord}</span> ${remainingCommand}`;
+
         commandElement.replaceChild(staticText, input);
     }
 
@@ -21,6 +27,7 @@ export function submitCommand(commandElement, command) {
         addTerminalInput();
     }
 }
+
 
 export function initTerminal() {
     let commandHistory = [];

@@ -27,7 +27,10 @@
         }
     </script>
     <style>
-        
+        .git-color {
+            color: #f97316; /* Orange color or any you like */
+            font-weight: bold; /* Optional */
+        }
 
     </style>
 
@@ -67,18 +70,18 @@
                             </ul>
                         </div>
 
+                        <!-- Current Branch -->
+                        <div class="mb-2">
+                            <h6 class="text-info mb-2">🌿 Current Branch</h6>
+                            <p id="currentBranch" class="mb-0 fw-bold text-center">main</p>
+                        </div>
+
                         <!-- Staging Area -->
                         <div class="mb-4">
                             <h6 class="text-success mb-2">📥 Staging Area</h6>
                             <ul class="list-group" id="stagingArea">
                                 <li class="list-group-item p-2 text-muted">Empty</li>
                             </ul>
-                        </div>
-
-                        <!-- Current Branch -->
-                        <div class="mb-2">
-                            <h6 class="text-info mb-2">🌿 Current Branch</h6>
-                            <p id="currentBranch" class="mb-0 fw-bold text-center">main</p>
                         </div>
 
                         <!-- 🚀 Remote Repository (Add Here) -->
