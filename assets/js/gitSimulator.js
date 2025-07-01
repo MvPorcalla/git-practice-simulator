@@ -1,5 +1,6 @@
 // gitSimulator.js
 import * as state from './state.js';
+import * as messages from './gitMessages.js';
 import { displayOutput, updateStagingAreaUI, updateRemoteUI } from './ui.js';
 
 export function processGitCommand(command) {
@@ -10,10 +11,11 @@ export function processGitCommand(command) {
             displayOutput('Reinitialized existing Git repository.');
         } else {
             state.setGitInitialized(true);
-            displayOutput('Initialized empty Git repository.');
+            displayOutput(messages.gitInitMessage()); // ✅ Realistic message
         }
         return;
     }
+
 
     if (!state.isGitInitialized()) {
         displayOutput('fatal: not a git repository (or any of the parent directories): .git');
@@ -50,11 +52,12 @@ export function processGitCommand(command) {
 // ✅ Git Status
 function displayGitStatus() {
     if (state.stagingArea.length === 0) {
-        displayOutput('On branch main\nNo changes added to commit.');
+        displayOutput(messages.gitStatusClean()); // ✅ Realistic message
     } else {
-        displayOutput('Changes to be committed:\n' + state.stagingArea.map(file => `\t${file}`).join('\n'));
+        displayOutput(messages.gitStatusWithFiles(state.stagingArea)); // ✅ Realistic message
     }
 }
+
 
 // ✅ Git Add
 function handleGitAdd(files) {
@@ -83,7 +86,7 @@ function handleGitCommit(command) {
         const commitMessage = messageMatch[1];
 
         if (state.stagingArea.length > 0) {
-            displayOutput(`[main (root-commit)] ${commitMessage}\n${state.stagingArea.map(file => `\t${file}`).join('\n')}`);
+            displayOutput(messages.gitCommitMessage(commitMessage, state.stagingArea)); // ✅ Realistic message
             state.setLastCommitMessage(commitMessage);
             state.addLocalCommit(commitMessage);
             state.resetStagingArea();
@@ -94,16 +97,17 @@ function handleGitCommit(command) {
     } else {
         displayOutput('Please provide a commit message with -m "message".');
     }
-    
 }
+
 
 // ✅ Git Push
 function handleGitPush() {
     if (state.localCommits.length > 0) {
-        displayOutput('Pushed to origin main.');
+        displayOutput(messages.gitPushMessage()); // ✅ Realistic message
         state.pushCommits();
         updateRemoteUI(state.remoteCommits);
     } else {
         displayOutput('Nothing to push.');
     }
 }
+
