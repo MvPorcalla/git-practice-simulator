@@ -8,12 +8,35 @@ export function gitInitMessage() {
 // git commit message with random hash
 export function gitCommitMessage(commitMessage, files) {
     const randomHash = Math.random().toString(36).substring(2, 9);
-    return `[main (root-commit) ${randomHash}] ${commitMessage}\n 1 file changed, 0 insertions(+), 0 deletions(+)\n create mode 100644 ${files.join(', ')}`;
+    const filesChanged = files.length;
+    const insertions = Math.floor(Math.random() * 5) + 1; // Minimum 1 insertion
+    const deletions = Math.floor(Math.random() * 4); // 0-3 deletions
+    const fileWord = filesChanged > 1 ? 'files' : 'file';
+
+    const fileList = files.map(file => `create mode 100644 ${file}`).join('\n');
+
+    return `[main (root-commit) ${randomHash}] ${commitMessage}\n` +
+        `${filesChanged} ${fileWord} changed, ${insertions} insertions(+), ${deletions} deletions(+)\n` +
+        `${fileList}`;
 }
 
 // git push message
 export function gitPushMessage() {
-    return `Enumerating objects: 3, done.\nCounting objects: 100% (3/3), done.\nDelta compression using up to 4 threads\nCompressing objects: 100% (2/2), done.\nWriting objects: 100% (3/3), done.\nTotal 3 (delta 0), reused 0 (delta 0), pack-reused 0\nTo origin/main\n * [new branch]      main -> main`;
+    const totalObjects = Math.floor(Math.random() * 5) + 3; // Minimum 3 objects
+    const compressedObjects = Math.floor(totalObjects / 2) + 1; // Minimum 1
+    const delta = Math.floor(Math.random() * 3); // 0-2 delta
+    const localHash = Math.random().toString(36).substring(2, 9);
+    const remoteHash = Math.random().toString(36).substring(2, 9);
+
+    return `Enumerating objects: ${totalObjects}, done.\n` +
+        `Counting objects: 100% (${totalObjects}/${totalObjects}), done.\n` +
+        `Delta compression using up to 4 threads\n` +
+        `Compressing objects: 100% (${compressedObjects}/${compressedObjects}), done.\n` +
+        `Writing objects: 100% (${totalObjects}/${totalObjects}), done.\n` +
+        `Total ${totalObjects} (delta ${delta}), reused 0 (delta 0), pack-reused 0\n` +
+        `remote: Resolving deltas: 100% (${delta}/${delta}), completed with ${totalObjects} local objects.\n` +
+        `To https://github.com/yourusername/GitSimulator.git\n` +
+        `   ${localHash}..${remoteHash}  main -> main`;
 }
 
 // git status when clean
@@ -23,5 +46,6 @@ export function gitStatusClean() {
 
 // git status when files are staged
 export function gitStatusWithFiles(stagedFiles) {
-    return `On branch main\n\nNo commits yet\n\nChanges to be committed:\n  (use "git rm --cached <file>..." to unstage)\n\t${stagedFiles.map(file => `new file:   ${file}`).join('\n\t')}`;
+    return `On branch main\n\nNo commits yet\n\nChanges to be committed:\n  (use "git rm --cached <file>..." to unstage)\n\t` +
+        stagedFiles.map(file => `new file:   ${file}`).join('\n\t');
 }
