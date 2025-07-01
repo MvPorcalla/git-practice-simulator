@@ -1,7 +1,7 @@
 // gitMessages.js
 import * as state from './state.js';
 import * as messages from './gitMessages.js';
-import { updateStagingAreaUI, updateRemoteUI, logMessage } from './ui.js';
+import { updateStagingAreaUI, updateWorkingDirectoryUI, updateRemoteUI, logMessage } from './ui.js';
 
 export function processGitCommand(command) {
     const args = command.split(' ');
@@ -14,6 +14,7 @@ export function processGitCommand(command) {
             return 'Reinitialized existing Git repository.';
         } else {
             state.setGitInitialized(true);
+            updateWorkingDirectoryUI(state.workingDirectory, true);
             logMessage('Repository initialized.');
             return messages.gitInitMessage();
         }
@@ -130,6 +131,7 @@ function handleGitPush() {
         const pushOutput = messages.gitPushMessage();
         state.pushCommits();
         updateRemoteUI(state.remoteCommits);
+        updateWorkingDirectoryUI(state.workingDirectory, false);
         logMessage('Pushed local commits to remote.');
         return pushOutput;
     } else {

@@ -6,16 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Practice Git commands in a safe, interactive environment.">
 
-    <title>Git Playground</title>
+    <title>Git Practice Simulator</title>
+    <!-- Standard favicon -->
     <link rel="shortcut icon" href="./assets/images/favicon_io/favicon.ico" />
+    <!-- PNG favicons for various sizes -->
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon_io/favicon-16x16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon_io/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./assets/images/favicon_io/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="./assets/images/favicon_io/android-chrome-512x512.png" />
+    <!-- Apple touch icon for iOS -->
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/favicon_io/apple-touch-icon.png" />
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="./assets/images/favicon_io/site.webmanifest" />
+    <!-- Set browser UI theme color on supported devices -->
     <meta name="theme-color" content="#f97316" />
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous"/>
     <!-- Boxicons CSS -->
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- Preload your main CSS -->
+    <link rel="preload" href="./assets/css/utilities.css" as="style">
+    <link rel="preload" href="./assets/css/main.css" as="style">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./assets/css/utilities.css">
     <link rel="stylesheet" href="./assets/css/main.css">
@@ -45,6 +58,12 @@
             from, to { background-color: transparent; }
             50% { background-color: white; }
         }
+
+        .git-tracked {
+            color: #22c55e; /* Tailwind's green-500 color */
+            font-weight: bold;
+        }
+
 
     </style>
 

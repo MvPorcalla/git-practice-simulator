@@ -28,15 +28,14 @@ PS C:\xampp\htdocs\MyProject\Websites\git-practice-simulator>
 
 
 -------------------------------------------------------------------------
+remove git from project folder
+
+rm -rf .git  # Deletes Git history and tracking
+git init     # Creates a fresh repo
+git status   # All files will now be untracked (green)
 
 
-
-🚀 Remote Repository
-nice
-done
-wow
-
-
+-----------------------------------------------------------------------
 
 Simulate file modification.
 

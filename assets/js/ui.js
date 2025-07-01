@@ -60,7 +60,7 @@ export function addTerminalInput() {
 }
 
 // ✅ Update working directory UI
-export function updateWorkingDirectoryUI(workingDirectory) {
+export function updateWorkingDirectoryUI(workingDirectory, applyTrackedStyle = false) {
     workingDirList.innerHTML = '';
 
     if (workingDirectory.length === 0) {
@@ -70,10 +70,17 @@ export function updateWorkingDirectoryUI(workingDirectory) {
             const li = document.createElement('li');
             li.className = 'list-group-item p-2';
             li.textContent = file.name;
+
+            // ✅ Add green text if applyTrackedStyle is true
+            if (applyTrackedStyle) {
+                li.classList.add('git-tracked');
+            }
+
             workingDirList.appendChild(li);
         });
     }
 }
+
 
 // ✅ Update staging area UI
 export function updateStagingAreaUI(stagingArea) {
