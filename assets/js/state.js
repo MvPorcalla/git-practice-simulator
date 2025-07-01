@@ -1,6 +1,19 @@
 // state.js
 
-// Git initialization state
+let historyIndex = -1;
+
+export function getHistoryIndex() {
+    return historyIndex;
+}
+
+export function setHistoryIndex(index) {
+    historyIndex = index;
+}
+
+// ✅ Command history
+export let commandHistory = [];
+
+// ✅ Git initialization state
 let gitInitialized = false;
 
 export function isGitInitialized() {
@@ -11,7 +24,7 @@ export function setGitInitialized(value) {
     gitInitialized = value;
 }
 
-// Working directory and staging area
+// ✅ Working directory and staging area
 export let workingDirectory = [
     { name: 'index.html', status: 'new' },
     { name: 'style.css', status: 'new' },
@@ -20,10 +33,6 @@ export let workingDirectory = [
 ];
 
 export let stagingArea = [];
-
-// Command history (for terminal navigation)
-export let commandHistory = [];
-export let historyIndex = -1;
 
 export function updateFileStatus(fileName, status) {
     const file = workingDirectory.find(f => f.name === fileName);
@@ -35,7 +44,6 @@ export function getFileStatus(fileName) {
     return file ? file.status : null;
 }
 
-// Git file management
 export function resetStagingArea() {
     stagingArea = [];
 }
@@ -52,22 +60,22 @@ export function isFileInStaging(fileName) {
     return stagingArea.some(f => f.name === fileName);
 }
 
-// ✅ Commit Tracking State
-let localCommits = [];     // Commits staged locally
-let remoteCommits = [];    // Commits pushed to remote
+// ✅ Commit tracking state
+let localCommits = [];
+let remoteCommits = [];
 
 export function addLocalCommit(commitMessage) {
     localCommits.push(commitMessage);
 }
 
 export function pushCommits() {
-    remoteCommits.push(...localCommits);  // Move all local commits to remote
-    localCommits = [];                    // Clear local commits after push
+    remoteCommits.push(...localCommits);
+    localCommits = [];
 }
 
 export { localCommits, remoteCommits };
 
-// ✅ Last Commit Message State (Fix)
+// ✅ Last commit message
 let lastCommitMessage = '';
 
 export function setLastCommitMessage(message) {

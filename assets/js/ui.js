@@ -1,29 +1,34 @@
 // ui.js
-import { submitCommand } from './terminal.js';
+import { submitCommand, handleArrowKeys } from './terminal.js';
 
 const terminalOutput = document.getElementById('terminalOutput');
 const stagingList = document.getElementById('stagingArea');
+const terminalLog = document.getElementById('terminalLog');
+const workingDirList = document.getElementById('workingDir');
 
 terminalOutput.addEventListener('click', () => {
     const terminalInput = document.getElementById('terminalInput');
     if (terminalInput) terminalInput.focus();
 });
 
+// ✅ Display terminal output with line-by-line rendering
 export function displayOutput(message) {
     const lines = message.split('\n');
 
     lines.forEach(line => {
         if (line.trim() === '') return;
+
         const output = document.createElement('p');
-        output.innerHTML = line; // ✅ This will render HTML and apply the color
+        output.innerHTML = line; // ✅ This renders colored HTML
         terminalOutput.appendChild(output);
+
         logMessage(line, 'output');
     });
 
     addTerminalInput();
 }
 
-
+// ✅ Create terminal input with arrow key history navigation
 export function addTerminalInput() {
     const existingInput = document.getElementById('terminalInput');
     if (existingInput) return;
@@ -41,6 +46,9 @@ export function addTerminalInput() {
     terminalInput.style.outline = 'none';
     terminalInput.style.fontFamily = 'monospace';
 
+    console.log('Adding arrow key handler to terminal input');
+    handleArrowKeys(terminalInput);
+
     terminalInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -56,8 +64,7 @@ export function addTerminalInput() {
     terminalInput.focus();
 }
 
-const workingDirList = document.getElementById('workingDir');
-
+// ✅ Update working directory UI
 export function updateWorkingDirectoryUI(workingDirectory) {
     workingDirList.innerHTML = '';
 
@@ -73,7 +80,7 @@ export function updateWorkingDirectoryUI(workingDirectory) {
     }
 }
 
-
+// ✅ Update staging area UI
 export function updateStagingAreaUI(stagingArea) {
     stagingList.innerHTML = '';
     console.log('Updating staging area with:', stagingArea);
@@ -84,12 +91,13 @@ export function updateStagingAreaUI(stagingArea) {
         stagingArea.forEach(file => {
             const li = document.createElement('li');
             li.className = 'list-group-item p-2';
-            li.textContent = file.name; // 🔥 Show the file name, not the whole object
+            li.textContent = file.name;
             stagingList.appendChild(li);
         });
     }
 }
 
+// ✅ Update remote repository UI
 export function updateRemoteUI(remoteCommits) {
     const remoteList = document.getElementById('remoteRepo');
     remoteList.innerHTML = '';
@@ -106,8 +114,7 @@ export function updateRemoteUI(remoteCommits) {
     }
 }
 
-const terminalLog = document.getElementById('terminalLog');
-
+// ✅ Terminal log system
 export function logMessage(message, type = 'info') {
     const log = document.createElement('p');
     const timestamp = new Date().toLocaleTimeString();
