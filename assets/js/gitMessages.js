@@ -13,12 +13,13 @@ export function gitCommitMessage(commitMessage, files) {
     const deletions = Math.floor(Math.random() * 4); // 0-3 deletions
     const fileWord = filesChanged > 1 ? 'files' : 'file';
 
-    const fileList = files.map(file => `  create mode 100644 ${file}`).join('\n');
+    const fileList = files.map(file => `  create mode 100644 ${file.name}`).join('\n');
 
-    return `[main (root-commit) ${randomHash}] ${commitMessage}\n` +
-        `${filesChanged} ${fileWord} changed, ${insertions} insertions(+), ${deletions} deletions(+)\n` +
+    return `[main (root-commit) ${randomHash}] ${commitMessage}\n\n` +
+        `${filesChanged} ${fileWord} changed, ${insertions} insertions(+), ${deletions} deletions(+)\n\n` +
         `${fileList}`;
 }
+
 
 // git push message
 export function gitPushMessage() {
