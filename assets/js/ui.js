@@ -9,20 +9,20 @@ terminalOutput.addEventListener('click', () => {
     if (terminalInput) terminalInput.focus();
 });
 
-
 export function displayOutput(message) {
     const lines = message.split('\n');
 
     lines.forEach(line => {
         if (line.trim() === '') return;
         const output = document.createElement('p');
-        output.textContent = line;
+        output.innerHTML = line; // ✅ This will render HTML and apply the color
         terminalOutput.appendChild(output);
         logMessage(line, 'output');
     });
 
     addTerminalInput();
 }
+
 
 export function addTerminalInput() {
     const existingInput = document.getElementById('terminalInput');

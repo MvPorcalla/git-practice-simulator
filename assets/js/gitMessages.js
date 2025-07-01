@@ -49,15 +49,27 @@ export function gitStatusClean() {
 
 // git status when files are staged
 export function gitStatusWithFiles(stagedFiles, localCommitsCount) {
-    const branchStatus = localCommitsCount > 0 
-        ? `Your branch is ahead of 'origin/main' by ${localCommitsCount} commit${localCommitsCount > 1 ? 's' : ''}.\n  (use "git push" to publish your local commits)\n\n`
-        : '';
+    let branchStatus = '';
+
+    if (localCommitsCount > 0) {
+        branchStatus = `Your branch is ahead of 'origin/main' by ${localCommitsCount} commit${localCommitsCount > 1 ? 's' : ''}.\n  (use "git push" to publish your local commits)\n\n`;
+    } else {
+        branchStatus = `Your branch is up to date with 'origin/main'.\n\n`;
+    }
 
     const fileList = stagedFiles.map(file => {
-        const status = file.status === 'modified' ? 'modified:' : 'new file:';
-        return `\t${status}   ${file.name}`;
+        const status = file.status === 'modified' ? 
+            `<span style="color: #facc15;">modified:</span>` : // Yellow
+            `<span style="color: #22c55e;">new file:</span>`;   // Green
+
+        const fileName = `<span style="color: #38bdf8;">${file.name}</span>`; // 🔵 Cyan file name
+
+        return `\t${status}   ${fileName}`;
     }).join('\n');
 
-    return `On branch main\n${branchStatus}Changes to be committed:\n  (use "git restore --staged <file>..." to unstage)\n${fileList}`;
+
+    return `On branch main\n${branchStatus}Changes to be committed:\n  (use "git restore --staged <file>..." to unstage)\n\n${fileList}`;
 }
+
+
 

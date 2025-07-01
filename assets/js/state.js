@@ -15,6 +15,7 @@ export function setGitInitialized(value) {
 export let workingDirectory = [
     { name: 'index.html', status: 'new' },
     { name: 'style.css', status: 'new' },
+    { name: 'script.js', status: 'new' },
     { name: 'README.md', status: 'new' }
 ];
 
