@@ -130,6 +130,7 @@ function handleGitPush() {
     if (state.localCommits.length > 0) {
         const pushOutput = messages.gitPushMessage();
         state.pushCommits();
+        state.setRemoteLinked(true); // ✅ Mark the remote as linked now
         updateRemoteUI(state.remoteCommits);
         updateWorkingDirectoryUI(state.workingDirectory, false);
         logMessage('Pushed local commits to remote.');

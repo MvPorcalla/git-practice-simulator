@@ -53,12 +53,14 @@ export function gitStatusClean() {
 export function gitStatusWithFiles(stagedFiles, untrackedFiles, localCommitsCount) {
     let statusOutput = 'On branch main\n';
 
-    if (localCommitsCount > 0) {
-        statusOutput += `Your branch is ahead of 'origin/main' by ${localCommitsCount} commit${localCommitsCount > 1 ? 's' : ''}.\n  (use "git push" to publish your local commits)\n\n`;
-    } else {
-        statusOutput += `Your branch is up to date with 'origin/main'.\n\n`;
+    // ✅ Only show remote tracking if remote is linked
+    if (state.isRemoteLinked()) {
+        if (localCommitsCount > 0) {
+            statusOutput += `Your branch is ahead of 'origin/main' by ${localCommitsCount} commit${localCommitsCount > 1 ? 's' : ''}.\n  (use "git push" to publish your local commits)\n\n`;
+        } else {
+            statusOutput += `Your branch is up to date with 'origin/main'.\n\n`;
+        }
     }
-
 
     // ✅ Only show this if there are staged files
     if (stagedFiles.length > 0) {
@@ -100,4 +102,3 @@ export function gitStatusWithFiles(stagedFiles, untrackedFiles, localCommitsCoun
 
     return statusOutput.trim();
 }
-

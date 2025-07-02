@@ -2,6 +2,17 @@
 
 let historyIndex = -1;
 
+let remoteLinked = false;
+
+export function isRemoteLinked() {
+    return remoteLinked;
+}
+
+export function setRemoteLinked(value) {
+    remoteLinked = value;
+}
+
+
 export function getHistoryIndex() {
     return historyIndex;
 }
