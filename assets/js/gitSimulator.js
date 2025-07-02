@@ -146,10 +146,9 @@ function handleGitRestore(files) {
 
     files.forEach(file => {
         if (state.isFileInStaging(file)) {
-            // Find index of the file to remove
             const index = state.stagingArea.findIndex(f => f.name === file);
             if (index !== -1) {
-                state.stagingArea.splice(index, 1); // ✅ Mutate the array directly
+                state.stagingArea.splice(index, 1);
                 removedFiles.push(file);
             }
         }
@@ -157,11 +156,11 @@ function handleGitRestore(files) {
 
     if (removedFiles.length > 0) {
         updateStagingAreaUI(state.stagingArea);
-        logMessage(`Unstaged files: ${removedFiles.join(', ')}`);
-        return `Unstaged files: ${removedFiles.join(', ')}`;
+        // ✅ Log to system log (for your UI)
+        logMessage(`Unstaged files: ${removedFiles.join(', ')}`, 'command'); // or 'info' if you want it to look normal log
+        return ''; // ✅ Silent in terminal
     } else {
-        logMessage('No matching files found in staging area.');
-        return 'No matching files found in staging area.';
+        logMessage('No matching files found in staging area.', 'command'); // Log error
+        return 'No matching files found in staging area.'; // Show this in terminal
     }
 }
-

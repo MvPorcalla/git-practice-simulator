@@ -37,6 +37,15 @@ This project is created to:
 
 ---
 
+## Technologies Used
+- HTML5
+- CSS3
+- JavaScript (ES6+)
+- Bootstrap 5
+
+
+---
+
 ## 🛠️ Project Structure
 
 ```text
