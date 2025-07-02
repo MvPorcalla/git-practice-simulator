@@ -61,12 +61,9 @@ function getGitStatus() {
     const stagedFiles = state.stagingArea;
     const untrackedFiles = state.workingDirectory.filter(file => !state.isFileInStaging(file.name));
 
-    if (stagedFiles.length === 0 && untrackedFiles.length === 0) {
-        return messages.gitStatusClean();
-    }
-
     return messages.gitStatusWithFiles(stagedFiles, untrackedFiles, state.localCommits.length);
 }
+
 
 // ✅ Git Add
 function handleGitAdd(files) {

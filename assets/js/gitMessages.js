@@ -50,46 +50,54 @@ export function gitStatusClean() {
 }
 
 // git status when files are staged
-export function gitStatusWithFiles(stagedFiles, localCommitsCount) {
-    let branchStatus = '';
+export function gitStatusWithFiles(stagedFiles, untrackedFiles, localCommitsCount) {
+    let statusOutput = 'On branch main\n';
 
     if (localCommitsCount > 0) {
-        branchStatus = `Your branch is ahead of 'origin/main' by ${localCommitsCount} commit${localCommitsCount > 1 ? 's' : ''}.\n  (use "git push" to publish your local commits)\n\n`;
+        statusOutput += `Your branch is ahead of 'origin/main' by ${localCommitsCount} commit${localCommitsCount > 1 ? 's' : ''}.\n  (use "git push" to publish your local commits)\n\n`;
     } else {
-        branchStatus = `Your branch is up to date with 'origin/main'.\n\n`;
+        statusOutput += `Your branch is up to date with 'origin/main'.\n\n`;
     }
 
-    // ✅ Staged files (to be committed)
-    const stagedFileList = stagedFiles.map(file => {
-        const status = file.status === 'modified'
-            ? `<span style="color: #facc15;">modified:</span>` // Yellow
-            : `<span style="color: #22c55e;">new file:</span>`; // Green
 
-        const fileName = `<span style="color: #38bdf8;">${file.name}</span>`; // Cyan
+    // ✅ Only show this if there are staged files
+    if (stagedFiles.length > 0) {
+        statusOutput += 'Changes to be committed:\n';
+        statusOutput += '  (use "git restore --staged <file>..." to unstage)\n\n';
 
-        return `\t${status}   ${fileName}`;
-    }).join('\n');
+        statusOutput += stagedFiles.map(file => {
+            const status = file.status === 'modified'
+                ? `<span style="color: #facc15;">modified:</span>`
+                : `<span style="color: #22c55e;">new file:</span>`;
 
-    // ✅ Unstaged files (changes not staged for commit)
-    const unstagedFiles = state.workingDirectory.filter(file => {
-        return !state.isFileInStaging(file.name);
-    });
+            const fileName = `<span style="color: #38bdf8;">${file.name}</span>`;
 
-    let unstagedFileList = '';
-    if (unstagedFiles.length > 0) {
-        unstagedFileList = '\n\nChanges not staged for commit:\n' +
-            '  (use "git add <file>..." to update what will be committed)\n' +
-            '  (use "git restore <file>..." to discard changes in working directory)\n\n' +
-            unstagedFiles.map(file => {
-                const status = file.status === 'modified'
-                    ? `<span style="color: #f87171;">modified:</span>` // Red
-                    : `<span style="color: #f87171;">new file:</span>`; // Red
-
-                const fileName = `<span style="color: #38bdf8;">${file.name}</span>`; // Cyan
-
-                return `\t${status}   ${fileName}`;
-            }).join('\n');
+            return `\t${status}   ${fileName}`;
+        }).join('\n') + '\n\n';
     }
 
-    return `On branch main\n${branchStatus}Changes to be committed:\n  (use "git restore --staged <file>..." to unstage)\n\n${stagedFileList}${unstagedFileList}`;
+    // ✅ Always show untracked files if they exist
+    if (untrackedFiles.length > 0) {
+        statusOutput += 'Changes not staged for commit:\n';
+        statusOutput += '  (use "git add <file>..." to update what will be committed)\n';
+        statusOutput += '  (use "git restore <file>..." to discard changes in working directory)\n\n';
+
+        statusOutput += untrackedFiles.map(file => {
+            const status = file.status === 'modified'
+                ? `<span style="color: #f87171;">modified:</span>`
+                : `<span style="color: #f87171;">new file:</span>`;
+
+            const fileName = `<span style="color: #38bdf8;">${file.name}</span>`;
+
+            return `\t${status}   ${fileName}`;
+        }).join('\n') + '\n\n';
+    }
+
+    // ✅ Show clean message if nothing staged and no untracked files
+    if (stagedFiles.length === 0 && untrackedFiles.length === 0) {
+        statusOutput += 'nothing to commit, working tree clean';
+    }
+
+    return statusOutput.trim();
 }
+
