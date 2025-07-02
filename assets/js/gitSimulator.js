@@ -58,11 +58,14 @@ export function processGitCommand(command) {
 
 // ✅ Git Status
 function getGitStatus() {
-    if (state.stagingArea.length === 0) {
+    const stagedFiles = state.stagingArea;
+    const untrackedFiles = state.workingDirectory.filter(file => !state.isFileInStaging(file.name));
+
+    if (stagedFiles.length === 0 && untrackedFiles.length === 0) {
         return messages.gitStatusClean();
-    } else {
-        return messages.gitStatusWithFiles(state.stagingArea, state.localCommits.length);
     }
+
+    return messages.gitStatusWithFiles(stagedFiles, untrackedFiles, state.localCommits.length);
 }
 
 // ✅ Git Add
