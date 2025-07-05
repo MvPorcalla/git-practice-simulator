@@ -53,11 +53,22 @@ This project is created to:
 │
 ├── /assets
 │   ├── css
+│   │   ├── main.css
+│   │   └── utilities.css
 │   ├── images
 │   │   └── favicon_io
 │   └── js
+│       ├── app.js
+│       ├── gitMessage.js
+│       ├── gitSimulator.js
+│       ├── state.js
+│       ├── terminal.js
+│       ├── ui.js
+│       └── utils.js
 │ 
+├── 404.html
 ├── aboutme.html
+├── concepts.html
 ├── index.html
 ├── LICENSE
 ├── playground.html
