@@ -1,0 +1,198 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Practice Git commands in a safe, interactive environment.">
+
+    <title>Git Practice Simulator</title>
+    <!-- Standard favicon -->
+    <link rel="shortcut icon" href="./assets/images/favicon_io/favicon.ico" />
+    <!-- PNG favicons for various sizes -->
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon_io/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon_io/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./assets/images/favicon_io/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="./assets/images/favicon_io/android-chrome-512x512.png" />
+    <!-- Apple touch icon for iOS -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/favicon_io/apple-touch-icon.png" />
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="./assets/images/favicon_io/site.webmanifest" />
+    <!-- Set browser UI theme color on supported devices -->
+    <meta name="theme-color" content="#f97316" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous"/>
+    <!-- Boxicons CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- Preload your main CSS -->
+    <link rel="preload" href="./assets/css/utilities.css" as="style">
+    <link rel="preload" href="./assets/css/main.css" as="style">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./assets/css/utilities.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
+
+    <!-- Prevent Flicker -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+</head>
+
+<body class="gps-font-primary gps-weight-normal">
+
+    <div id="preloader" class="preloader d-flex justify-content-center align-items-center min-vh-100 gps-bg-base position-fixed top-0 start-0 w-100 z-3">
+        <div class="spinner-border gps-text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg shadow-sm nav-theme">
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+
+            <!-- Logo (Left) -->
+            <a class="navbar-brand d-flex align-items-center gps-font-secondary gps-weight-bold nav-text gap-2" href="index.html">
+                <img src="./assets/images/favicon_io/favicon.ico" alt="Git Icon" width="30" height="30">
+                Git Practice Simulator
+            </a>
+
+            <!-- Navigation Links (Center) -->
+            <div class="nav-links position-absolute top-50 start-50 translate-middle d-flex">
+                <a href="index.html" class="me-4 nav-text">Home</a>
+                <a href="concepts.html" class="me-4 nav-text">Learn</a>
+                <a href="tutorial.html" class="me-4 nav-text">Tutorial</a>
+                <a href="playground.html" class="me-4 nav-text">Playground</a>
+                <a href="aboutme.html" class="me-4 nav-text">About Me</a>
+            </div>
+
+            <!-- Theme Toggle Button (Right) -->
+            <button id="themeToggle" class="btn btn-sm btn-outline-light" aria-label="Toggle theme" aria-pressed="false">
+                <i class='bx bx-moon'></i>
+            </button>
+
+        </div>
+    </nav>
+
+    <main class="content py-5 gps-bg-base">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+
+                <!-- Left Content Area -->
+                <div class="col-lg-8 px-4">
+
+                    <!-- Hero Section -->
+                    <section class="text-center mb-5">
+                        <h1 class="mb-3 gps-text-5xl gps-weight-extrabold gps-text-primary">Git Practice Simulator</h1>
+                        <p class="mb-4 gps-text-lg gps-text-muted">
+                            Practice essential Git commands in a safe, interactive environment.<br class="d-none d-md-block">
+                            No installations. No risks. Just pure learning.
+                        </p>
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <a href="./concepts.html" class="gps-btn gps-btn-primary gps-btn-md">Learn Git Commands</a>
+                            <a href="./playground.html" class="gps-btn gps-btn-outline gps-btn-md">Go to Playground</a>
+                        </div>
+                    </section>
+
+                    <!-- Grid Sections -->
+                    <div class="row g-4">
+
+                        <div class="col-12 col-md-6">
+                            <div class="p-4 gps-bg-light border rounded-3 shadow-sm h-100">
+                                <h4 class="gps-text-xl gps-weight-semibold mb-3">Why Learn Git?</h4>
+                                <p class="gps-text-base gps-text-muted mb-0">
+                                    Git is a critical skill for managing code, collaborating in teams, and keeping track of project history with confidence.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="p-4 gps-bg-light border rounded-3 shadow-sm h-100">
+                                <h4 class="gps-text-xl gps-weight-semibold mb-3">Supported Git Commands</h4>
+                                <ul class="gps-text-base gps-text-muted mb-0">
+                                    <li>git init</li>
+                                    <li>git status</li>
+                                    <li>git add</li>
+                                    <li>git commit</li>
+                                    <li>git push</li>
+                                    <li>git pull</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="p-4 gps-bg-light border rounded-3 shadow-sm h-100">
+                                <h4 class="gps-text-xl gps-weight-semibold mb-3">How It Works</h4>
+                                <ol class="gps-text-base gps-text-muted mb-0">
+                                    <li>Choose a Git command</li>
+                                    <li>Practice in the terminal</li>
+                                    <li>Learn from the output</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="p-4 gps-bg-light border rounded-3 shadow-sm h-100">
+                                <h4 class="gps-text-xl gps-weight-semibold mb-3">Features</h4>
+                                <ul class="gps-text-base gps-text-muted mb-0">
+                                    <li>Interactive Terminal</li>
+                                    <li>Real-Time Feedback</li>
+                                    <li>Safe Learning Space</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="p-4 gps-bg-light border rounded-3 shadow-sm h-100">
+                                <h4 class="gps-text-xl gps-weight-semibold mb-3">More Coming Soon</h4>
+                                <p class="gps-text-base gps-text-muted mb-0">
+                                    Future updates will include advanced tutorials, challenges, and community feedback.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Right Sidebar (Donation Box) -->
+                <div class="col-lg-4 px-4 mt-5 mt-lg-0 d-flex justify-content-center">
+                    <div class="sticky-top" style="top: 100px; max-width: 450px;">
+                        <div class="text-center gps-bg-light border rounded-3 p-4 shadow-sm">
+                            <h2 class="gps-text-3xl gps-weight-bold gps-text-primary mb-3">Hi, I'm the Developer!</h2>
+                            <p class="gps-text-base gps-text-muted mb-4">
+                                I created this Git Practice Simulator to help learners like you explore and practice Git commands easily and safely. ❤️
+                            </p>
+                            <p class="gps-text-base gps-weight-semibold mb-4">
+                                <strong>Enjoying the project?</strong><br>
+                                If this tool helped you, please consider supporting me. Your kindness helps me build more free learning tools for everyone.
+                            </p>
+                            <img src="./assets/images/coffe_potato.svg" alt="Support Potato" class="img-fluid mb-3" style="max-width: 250px;">
+                            <!-- <a href="https://www.buymeacoffee.com/yourprofile" target="_blank" class="btn btn-warning w-100 mb-3">Buy Me a Coffee ☕</a> -->
+                            <a href="#" class="btn btn-warning w-100 mb-3 disabled" tabindex="-1" aria-disabled="true" title="This feature is coming soon!">Buy Me a Coffee ☕</a>
+                            <small class="gps-text-sm gps-text-muted d-block">Thank you so much for your support! 😊</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-3">
+        <div class="container">
+            <p class="m-0">&copy; 2025 Git Practice Simulator. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" defer></script>
+    <!-- Script -->
+    <script src="./assets/js/theme.js" defer></script>
+    
+</body>
+
+</html>

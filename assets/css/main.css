@@ -169,7 +169,7 @@ footer p {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(18, 18, 18, 0.6);
+    background: rgba(18, 18, 18, 0.8);
     z-index: -1;
 }
 
@@ -204,13 +204,6 @@ footer p {
     background-color: var(--gps-color-bg-light);
     color: var(--gps-color-text);
     box-shadow: 5px 5px rgba(249, 115, 22, 1);
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-}
-
-.card-section .card:hover {
-    transform: scale(1.05);
-    box-shadow: 6px 6px rgba(249, 115, 22, 0.6);
 }
 
 /* ================= Workspace Styles ================= */

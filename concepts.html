@@ -78,84 +78,104 @@
 
 <body class="gps-font-primary gps-weight-normal">
 
+    <div id="preloader" class="preloader d-flex justify-content-center align-items-center min-vh-100 gps-bg-base position-fixed top-0 start-0 w-100 z-3">
+        <div class="spinner-border gps-text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
     <!-- Header -->
-    <nav class="navbar navbar-expand-lg shadow-sm nav-theme">
-        <div class="container d-flex justify-content-between">
-            <a class="d-flex align-items-center gps-font-secondary gps-weight-bold nav-text gap-2" href="./index.html">
+     <nav class="navbar navbar-expand-lg shadow-sm nav-theme">
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+
+            <!-- Logo (Left) -->
+            <a class="navbar-brand d-flex align-items-center gps-font-secondary gps-weight-bold nav-text gap-2" href="index.html">
                 <img src="./assets/images/favicon_io/favicon.ico" alt="Git Icon" width="30" height="30">
-                Git Playground
+                Git Practice Simulator
             </a>
+
+            <!-- Navigation Links (Center) -->
+          <div class="nav-links position-absolute top-50 start-50 translate-middle d-flex">
+                <a href="index.html" class="me-4 nav-text">Home</a>
+                <a href="concepts.html" class="me-4 nav-text">Learn</a>
+                <a href="tutorial.html" class="me-4 nav-text">Tutorial</a>
+                <a href="playground.html" class="me-4 nav-text">Playground</a>
+                <a href="aboutme.html" class="me-4 nav-text">About Me</a>
+            </div>
+
+            <!-- Theme Toggle Button (Right) -->
             <button id="themeToggle" class="btn btn-sm btn-outline-light" aria-label="Toggle theme" aria-pressed="false">
                 <i class='bx bx-moon'></i>
             </button>
+
         </div>
     </nav>
 
     <!-- Main Content -->
-<main class="content-fluid py-2">
-    <div class="container-fluid">
-        <div class="row gy-2">
+        <main class="content py-2">
+            <div class="container-fluid">
+                <div class="row gy-2">
 
-                <!-- Sidebar -->
-                <div class="col-lg-2 sidebar">
-                    <h2 class="commands-title">Git Commands</h2>
-                    <a href="#" class="active" onclick="showCommand('init', event)">git init</a>
-                    <a href="#" onclick="showCommand('status', event)">git status</a>
-                    <a href="#" onclick="showCommand('add', event)">git add</a>
-                    <a href="#" onclick="showCommand('commit', event)">git commit</a>
-                    <a href="#" onclick="showCommand('push', event)">git push</a>
-                    <a href="#" onclick="showCommand('restore', event)">git restore</a>
-                    <a href="#" onclick="showCommand('remote', event)">git remote</a>
-                    <a href="#" onclick="showCommand('pull', event)">git pull</a>
-                    <a href="#" onclick="showCommand('fetch', event)">git fetch</a>
-                    <a href="#" onclick="showCommand('branch', event)">git branch</a>
-                    <a href="#" onclick="showCommand('checkout', event)">git checkout</a>
-                    <a href="#" onclick="showCommand('merge', event)">git merge</a>
-                    <a href="#" onclick="showCommand('clone', event)">git clone</a>
-                    <a href="#" onclick="showCommand('help', event)">git --help</a>
-                </div>
-
-
-                <!-- Command Content -->
-                <div class="col-lg-7">
-                    <div class="m-3 command-content" id="commandContent">
-                        
+                    <!-- Sidebar -->
+                    <div class="col-lg-2 sidebar">
+                        <h2 class="commands-title">Git Commands</h2>
+                        <a href="#" class="active" onclick="showCommand('init', event)">git init</a>
+                        <a href="#" onclick="showCommand('status', event)">git status</a>
+                        <a href="#" onclick="showCommand('add', event)">git add</a>
+                        <a href="#" onclick="showCommand('commit', event)">git commit</a>
+                        <a href="#" onclick="showCommand('push', event)">git push</a>
+                        <a href="#" onclick="showCommand('restore', event)">git restore</a>
+                        <a href="#" onclick="showCommand('remote', event)">git remote</a>
+                        <a href="#" onclick="showCommand('pull', event)">git pull</a>
+                        <a href="#" onclick="showCommand('fetch', event)">git fetch</a>
+                        <a href="#" onclick="showCommand('branch', event)">git branch</a>
+                        <a href="#" onclick="showCommand('checkout', event)">git checkout</a>
+                        <a href="#" onclick="showCommand('merge', event)">git merge</a>
+                        <a href="#" onclick="showCommand('clone', event)">git clone</a>
+                        <a href="#" onclick="showCommand('help', event)">git --help</a>
                     </div>
-                </div>
 
 
-                <!-- Concept Cards -->
-                <div class="col-lg-3">
-                    <div class="row g-4">
-
-                        <h1 class="simiulation-title text-center">Try it Now!</h1>
-
-                        <!-- Git Playground Card -->
-                        <div class="col-md-12">
-                            <div class="card h-100 shadow-sm hover-effect">
-                                <a href="./playground.html" class="text-decoration-none">
-                                    <img src="./assets/images/git-playground.png" class="card-img-top" alt="Git Playground">
-                                    <div class="card-body text-center">
-                                        <h5 class="card-title gps-font-secondary gps-weight-bold">Git Playground</h5>
-                                        <p class="card-text gps-font-primary">Practice essential Git commands in a safe simulation.</p>
-                                    </div>
-                                </a>
-                            </div>
+                    <!-- Command Content -->
+                    <div class="col-lg-7">
+                        <div class="m-3 command-content" id="commandContent">
+                            
                         </div>
+                    </div>
 
-                        <!-- Coming Soon Card -->
-                        <div class="col-md-12">
-                            <div class="card h-100 shadow-sm hover-effect placeholder-card d-flex justify-content-center align-items-center" style="min-height: 200px;">
-                                <div class="text-center">
-                                    <i class='bx bx-loader-circle bx-spin display-4 gps-text-primary'></i>
-                                    <h6 class="mt-3 gps-font-secondary">Coming Soon</h6>
+
+                    <!-- Concept Cards -->
+                    <div class="col-lg-3">
+                        <div class="row g-4">
+
+                            <h1 class="simiulation-title text-center">Try it Now!</h1>
+
+                            <!-- Git Playground Card -->
+                            <div class="col-md-12">
+                                <div class="card h-100 shadow-sm hover-effect">
+                                    <a href="./playground.html" class="text-decoration-none">
+                                        <img src="./assets/images/git-playground.png" class="card-img-top" alt="Git Playground">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title gps-font-secondary gps-weight-bold">Git Playground</h5>
+                                            <p class="card-text gps-font-primary">Practice essential Git commands in a safe simulation.</p>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
-                        </div>
 
+                            <!-- Coming Soon Card -->
+                            <div class="col-md-12">
+                                <div class="card h-100 shadow-sm hover-effect placeholder-card d-flex justify-content-center align-items-center" style="min-height: 200px;">
+                                    <div class="text-center">
+                                        <i class='bx bx-loader-circle bx-spin display-4 gps-text-primary'></i>
+                                        <h6 class="mt-3 gps-font-secondary">Coming Soon</h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
-    </div>
+            </div>
 
         </div>
     </main>

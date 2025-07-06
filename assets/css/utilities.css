@@ -58,7 +58,7 @@
     --gps-color-text-inverse: #222222; /* Black text for light backgrounds in dark mode */
 
     /* Background Colors */
-    --gps-color-bg: #121212;  /* Dark background */
+    --gps-color-bg: #0A0A0A;  /* Dark background */
     --gps-color-bg-light: #1e1e1e;
     --gps-color-bg-dark: #343a40; /* Can remain the same */
 
