@@ -21,6 +21,30 @@ export function setHistoryIndex(index) {
     historyIndex = index;
 }
 
+export let remotes = {}; // key: remote name, value: url
+
+export function addRemote(name, url) {
+    remotes[name] = url;
+}
+
+export function getRemote(name) {
+    return remotes[name] || null;
+}
+
+export function hasRemote(name) {
+    return remotes.hasOwnProperty(name);
+}
+
+export function getRemoteUrl(name) {
+  return remotes[name] || null;
+}
+
+export function getRemotes() {
+  return remotes;
+}
+
+
+
 // ✅ Command history
 export let commandHistory = [];
 

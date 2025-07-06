@@ -39,11 +39,11 @@ export const SYSTEM_MESSAGES = {
 };
 
 export const GIT_MESSAGES = {
-    INIT: repoPath => `Initialized empty Git repository in ${escapeHTML(repoPath)}`,
-    COMMIT_HEADER: (branch, hash, message) => `[${escapeHTML(branch)} (root-commit) ${escapeHTML(hash)}] ${escapeHTML(message)}`,
+    INIT: repoPath => `Initialized empty Git repository in ${repoPath}`,
+    COMMIT_HEADER: (branch, hash, message) => `[${branch} (root-commit) ${hash}] ${message}`,
     FILE_CHANGE_SUMMARY: (filesChanged, insertions, deletions) => 
         `${filesChanged} ${filesChanged > 1 ? 'files' : 'file'} changed, ${insertions} insertions(+), ${deletions} deletions(+)`,
-    FILE_LIST_ITEM: fileName => `  create mode 100644 ${escapeHTML(fileName)}`,
+    FILE_LIST_ITEM: fileName => `  create mode 100644 ${fileName}`,
 
     PUSH_MESSAGE: (totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, githubUrl) => 
         `Enumerating objects: ${totalObjects}, done.\n` +
@@ -53,8 +53,8 @@ export const GIT_MESSAGES = {
         `Writing objects: 100% (${totalObjects}/${totalObjects}), ${bytes} bytes | ${speed} KiB/s, done.\n` +
         `Total ${totalObjects} (delta ${delta}), reused 0 (delta 0), pack-reused 0\n` +
         `remote: Resolving deltas: 100% (${delta}/${delta}), completed with ${totalObjects} local objects.\n` +
-        `To ${escapeHTML(githubUrl)}\n` +
-        `   ${escapeHTML(localHash)}..${escapeHTML(remoteHash)}  main -> main`,
+        `To ${(githubUrl)}\n` +
+        `   ${(localHash)}..${(remoteHash)}  main -> main`,
 
     STATUS_CLEAN: 'On branch main\nnothing to commit, working tree clean',
     STATUS_UP_TO_DATE: "Your branch is up to date with 'origin/main'.",

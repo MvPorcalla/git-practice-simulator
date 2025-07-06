@@ -19,9 +19,10 @@ export function gitCommitMessage(commitMessage, files) {
 
     const fileList = files.map(file => GIT_MESSAGES.FILE_LIST_ITEM(escapeHTML(file.name))).join('\n');
 
-    return `${GIT_MESSAGES.COMMIT_HEADER('main', randomHash, escapeHTML(commitMessage))}\n\n` +
+    return `${GIT_MESSAGES.COMMIT_HEADER('main', randomHash, commitMessage)}\n\n` +
         `${GIT_MESSAGES.FILE_CHANGE_SUMMARY(filesChanged, insertions, deletions)}\n\n` +
         `${fileList}`;
+
 }
 
 // git push message
@@ -97,7 +98,7 @@ export function gitStatusWithFiles(stagedFiles, untrackedFiles, localCommitsCoun
                 ? `<span style="color: #facc15;">modified:</span>`
                 : `<span style="color: #22c55e;">new file:</span>`;
 
-            const fileName = `<span style="color: #38bdf8;">${escapeHTML(file.name)}</span>`;
+            const fileName = `<span style="color: #38bdf8;">${file.name}</span>`;
 
             return `\t${status}   ${fileName}`;
         }).join('\n') + '\n\n';
@@ -111,7 +112,7 @@ export function gitStatusWithFiles(stagedFiles, untrackedFiles, localCommitsCoun
                 ? `<span style="color: #f87171;">modified:</span>`
                 : `<span style="color: #f87171;">new file:</span>`;
 
-            const fileName = `<span style="color: #38bdf8;">${escapeHTML(file.name)}</span>`;
+            const fileName = `<span style="color: #38bdf8;">${file.name}</span>`;
 
             return `\t${status}   ${fileName}`;
         }).join('\n') + '\n\n';

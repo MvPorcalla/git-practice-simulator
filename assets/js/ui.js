@@ -21,7 +21,7 @@ export function displayOutput(message) {
         if (line.trim() === '') return;
 
         const output = document.createElement('p');
-        output.innerHTML = escapeHTML(line); // ✅ Fully sanitized
+        output.innerHTML = line;
         terminalOutput.appendChild(output);
     });
 }
@@ -94,6 +94,29 @@ export function updateStagingAreaUI(stagingArea) {
         });
     }
 }
+
+const remotePathsList = document.getElementById('remotePaths');
+// ✅ Update remote paths UI (shows remote names and URLs)
+export function updateRemotePathsUI(remotes) {
+    remotePathsList.innerHTML = '';
+
+    const remoteNames = Object.keys(remotes);
+
+    if (remoteNames.length === 0) {
+        remotePathsList.innerHTML = '<li class="list-group-item p-2 text-muted">No remotes</li>';
+    } else {
+        remoteNames.forEach(name => {
+            const url = remotes[name];
+
+            const li = document.createElement('li');
+            li.className = 'list-group-item p-2';
+            li.textContent = `${name} → ${url}`;
+
+            remotePathsList.appendChild(li);
+        });
+    }
+}
+
 
 // ✅ Update remote repository UI
 export function updateRemoteUI(remoteCommits) {

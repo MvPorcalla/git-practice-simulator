@@ -1,7 +1,7 @@
 // gitSimulator.js
 import * as state from './state.js';
 import * as messages from './gitMessages.js';
-import { updateStagingAreaUI, updateWorkingDirectoryUI, updateRemoteUI, logMessage } from './ui.js';
+import { updateStagingAreaUI, updateWorkingDirectoryUI, updateRemoteUI, updateRemotePathsUI, logMessage } from './ui.js';
 import { ERROR_MESSAGES, LOG_TYPES, SYSTEM_MESSAGES, GITHUB_URL } from './gitConstants.js';
 import { gitPushMessage } from './gitMessages.js';
 import { escapeHTML } from './utils.js';
@@ -13,7 +13,8 @@ const gitCommands = {
     add: handleGitAddWrapper,
     commit: handleGitCommitWrapper,
     push: handleGitPush,
-    restore: handleGitRestoreWrapper
+    restore: handleGitRestoreWrapper,
+    remote: handleGitRemoteWrapper
 };
 
 // ✅ Error logging helper
@@ -93,6 +94,21 @@ function handleGitAddWrapper(args) {
     }
 }
 
+function handleGitRemoteWrapper(args) {
+    if (!args[2]) {
+        return 'git remote: missing subcommand. Try "git remote add <name> <url>"';
+    }
+
+    if (args[2] === 'add') {
+        if (!args[3] || !args[4]) {
+            return 'git remote add: missing name or URL.';
+        }
+        return handleGitRemoteAdd(args[3], args[4]);
+    }
+
+    return `git remote: unknown subcommand ${args[2]}`;
+}
+
 function handleGitCommitWrapper(args) {
     return handleGitCommit(args.join(' '));
 }
@@ -105,11 +121,31 @@ function handleGitRestoreWrapper(args) {
     }
 }
 
+
 function getGitStatus() {
     const stagedFiles = state.stagingArea;
     const untrackedFiles = state.workingDirectory.filter(file => !state.isFileInStaging(file.name));
-    return messages.gitStatusWithFiles(stagedFiles, untrackedFiles, state.localCommits.length);
+    let status = '';
+
+    if (state.isRemoteLinked()) {
+        const remoteName = 'origin'; // or you can loop over state.getRemotes() to show all
+        const remoteUrl = state.getRemoteUrl(remoteName);
+
+        if (state.localCommits.length > 0) {
+            status += `Your branch is ahead of '${remoteName}/main' by ${state.localCommits.length} commit${state.localCommits.length > 1 ? 's' : ''}.\n  (use "git push" to publish your local commits)\n\n`;
+        } else {
+            status += `Your branch is up to date with '${remoteName}/main'.\n\n`;
+        }
+
+        status += `Remote ${remoteName}: ${remoteUrl}\n\n`;
+    }
+
+    status += messages.gitStatusWithFiles(stagedFiles, untrackedFiles, state.localCommits.length);
+
+    return status.trim();
 }
+
+
 
 function handleGitAdd(files) {
     let addedFiles = [];
@@ -140,6 +176,21 @@ function handleGitAdd(files) {
     }
 }
 
+function handleGitRemoteAdd(name, url) {
+    if (state.hasRemote(name)) {
+        return `fatal: remote ${name} already exists.`;
+    }
+
+    state.addRemote(name, url);
+
+    // ✅ Update the UI to reflect the new remote paths
+    updateRemotePathsUI(state.getRemotes());
+
+    logSystem(`Remote '${name}' added with URL ${url}`);
+    return `Remote '${name}' added with URL ${url}`;
+}
+
+
 function handleGitCommit(command) {
     const messageMatch = command.match(/-m\s+["'](.+?)["']/);
 
@@ -163,6 +214,10 @@ function handleGitCommit(command) {
 }
 
 async function handleGitPush() {
+    if (!state.hasRemote('origin')) {
+        return returnError('fatal: No configured push destination.');
+    }
+
     if (state.localCommits.length > 0) {
         const totalObjects = Math.floor(Math.random() * 5) + 3;
         const compressedObjects = Math.floor(totalObjects / 2) + 1;
@@ -172,7 +227,9 @@ async function handleGitPush() {
         const bytes = Math.floor(Math.random() * 500) + 200;
         const speed = (Math.random() * 500 + 100).toFixed(2);
 
-        await gitPushMessage(totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, GITHUB_URL);
+        const remoteUrl = state.getRemoteUrl('origin');
+
+        await gitPushMessage(totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, remoteUrl);
 
         state.pushCommits();
         state.setRemoteLinked(true);

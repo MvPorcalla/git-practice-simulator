@@ -29,6 +29,7 @@ This project is created to:
 * `git commit`         ✅
 * `git push`           ✅
 * `git restore`        ✅
+* `git remote add`        
 * `git pull`
 * `git fetch`
 * `git branch`
