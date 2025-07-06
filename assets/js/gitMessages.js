@@ -1,3 +1,4 @@
+// gitMessages.js
 import * as state from './state.js';
 import { GIT_MESSAGES, GIT_REPO_PATH, GITHUB_URL } from './gitConstants.js';
 import { displayOutput, addTerminalInput } from './ui.js';

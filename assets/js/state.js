@@ -12,7 +12,6 @@ export function setRemoteLinked(value) {
     remoteLinked = value;
 }
 
-
 export function getHistoryIndex() {
     return historyIndex;
 }
@@ -42,8 +41,6 @@ export function getRemoteUrl(name) {
 export function getRemotes() {
   return remotes;
 }
-
-
 
 // ✅ Command history
 export let commandHistory = [];
