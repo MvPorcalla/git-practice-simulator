@@ -2,6 +2,8 @@ import * as state from './state.js';
 import { GIT_MESSAGES, GIT_REPO_PATH, GITHUB_URL } from './gitConstants.js';
 import { displayOutput, addTerminalInput } from './ui.js';
 
+const DEFAULT_SUFFIX = ' done.';
+
 // git init message
 export function gitInitMessage() {
     return GIT_MESSAGES.INIT(GIT_REPO_PATH);
@@ -24,19 +26,26 @@ export function gitCommitMessage(commitMessage, files) {
 // git push message
 export async function gitPushMessage(totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, githubUrl) {
     displayOutput(`Enumerating objects: ${totalObjects}, done.`);
-    await simulateLoading('Counting objects: ', totalObjects);
+    
+    await simulateLoading('Counting objects: ', totalObjects, DEFAULT_SUFFIX);
+    
     displayOutput('Delta compression using up to 4 threads');
-    await simulateLoading('Compressing objects: ', compressedObjects);
+    
+    await simulateLoading('Compressing objects: ', compressedObjects, DEFAULT_SUFFIX);
+    
     await simulateLoading(`Writing objects: `, totalObjects, `, ${bytes} bytes | ${speed} KiB/s, done.`);
+    
     displayOutput(`Total ${totalObjects} (delta ${delta}), reused 0 (delta 0), pack-reused 0`);
+    
     await simulateLoading(`remote: Resolving deltas: `, delta, `, completed with ${totalObjects} local objects.`);
+    
     displayOutput(`To ${githubUrl}\n\n   ${localHash}..${remoteHash}  main -> main`);
     
     addTerminalInput();
 }
 
 // Reusable inline loader
-async function simulateLoading(prefix, total, suffix = ' done.') {
+async function simulateLoading(prefix, total, suffix) {
     return new Promise(async resolve => {
         const container = document.createElement('p');
         container.innerHTML = `${prefix}0% (${total}/${total})`;
@@ -46,13 +55,19 @@ async function simulateLoading(prefix, total, suffix = ' done.') {
 
         for (let percent = 0; percent <= 100; percent += 10) {
             await new Promise(r => setTimeout(r, 50)); // Simulate delay
+
             container.innerHTML = `${prefix}${percent}% (${total}/${total})${percent === 100 ? suffix : ''}`;
+
+            // Add a very small delay to make the scroll animation smoother
+            await new Promise(r => setTimeout(r, 20));
+
             terminalOutput.scrollTop = terminalOutput.scrollHeight;
         }
 
         resolve();
     });
 }
+
 
 // git status when clean
 export function gitStatusClean() {
