@@ -148,83 +148,98 @@
     <!-- Main Content Wrapper -->
     <main class="content">
 
-        <!-- Main Content -->
-        <div class="container-fluid mt-4">
+        <!-- Container -->
+        <div class="container-fluid mt-2">
             <div class="row gy-4">
-                <h1 class="text-center">Git Playground</h1>
-                <!-- Sidebar -->
-                <aside class="col-lg-3">
-                    <div class="card p-3 workspace">
-                        <h5 class="mb-3 text-center">Workspace</h5>
 
-                        <!-- Working Directory -->
-                        <div class="mb-4">
-                            <h6 class="text-primary mb-2">📂 Working Directory</h6>
-                            <div class="aside-scroll-box">
-                                <ul class="list-group" id="workingDir">
-                                    <li class="list-group-item p-2 text-muted">Empty</li>
-                                    <!-- Files will be rendered here -->
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Current Branch -->
-                        <div class="mb-2">
-                            <h6 class="text-info mb-2">🌿 Current Branch</h6>
-                            <p id="currentBranch" class="mb-0 fw-bold text-center">main</p>
-                        </div>
-
-                        <!-- Staging Area -->
-                        <div class="mb-4">
-                            <h6 class="text-success mb-2">📥 Staging Area</h6>
-                            <div class="aside-scroll-box">
-                                <ul class="list-group" id="stagingArea">
-                                    <li class="list-group-item p-2 text-muted">Empty</li>
-                                    <!-- Staged files will be rendered here -->
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Remote Paths -->
-                        <div class="mb-4">
-                            <h6 class="text-warning mb-2">🌐 Git Remote URL</h6>
-                            <div class="aside-scroll-box">
-                                <ul class="list-group" id="remotePaths">
-                                    <li class="list-group-item p-2 text-muted">No remotes</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- 🚀 Remote Repository (Add Here) -->
-                        <div class="mb-4">
-                            <h6 class="text-warning mb-2">🚀 Remote Repository</h6>
-                            <ul class="list-group" id="remoteRepo">
-                                <li class="list-group-item p-2 text-muted">No commits pushed yet</li>
-                            </ul>
-                        </div>
-                    </div>
-                </aside>
-            
-                <!-- Terminal Playground -->
-                <div class="col-lg-9">
-                    <section>
-                        <div class="border rounded p-3 mb-3 bg-dark text-white terminal-output" id="terminalOutput" aria-live="polite">
-                            <!-- Terminal Output -->
-                        </div>
-                    </section>
-
-                    <section>
-                        <div class="border rounded p-2 mb-3 terminal-log" id="terminalLog">
-                            <!-- Terminal Log -->
-                            <strong>System Log:</strong>
-                        </div>
-                    </section>
-                    
+                <!-- Page Title -->
+                <div class="col-12">
+                    <h1 class="text-center">Git Playground</h1>
                 </div>
+
+                <!-- Main Content Row -->
+                <div class="row my-2">
+
+                    <!-- Sidebar -->
+                    <aside class="col-lg-3">
+                        <div class="card p-3 workspace">
+                            <h5 class="mb-2 text-center">Workspace</h5>
+
+                            <!-- Working Directory -->
+                            <div class="mb-4">
+                                <h6 class="text-primary mb-2">📂 Working Directory</h6>
+                                <div class="aside-scroll-box">
+                                    <ul class="list-group" id="workingDir">
+                                        <li class="list-group-item p-2 text-muted">Empty</li>
+                                        <!-- Files will be rendered here -->
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Current Branch -->
+                            <div class="mb-2">
+                                <h6 class="text-info mb-2">🌿 Current Branch</h6>
+                                <p id="currentBranch" class="mb-0 fw-bold text-center">main</p>
+                            </div>
+
+                            <!-- Staging Area -->
+                            <div class="mb-4">
+                                <h6 class="text-success mb-2">📥 Staging Area</h6>
+                                <div class="aside-scroll-box">
+                                    <ul class="list-group" id="stagingArea">
+                                        <li class="list-group-item p-2 text-muted">Empty</li>
+                                        <!-- Staged files will be rendered here -->
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Remote Paths -->
+                            <div class="mb-4">
+                                <h6 class="text-warning mb-2">🌐 Git Remote URL</h6>
+                                <div class="aside-scroll-box">
+                                    <ul class="list-group" id="remotePaths">
+                                        <li class="list-group-item p-2 text-muted">No remotes</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Remote Repository -->
+                            <div class="mb-4">
+                                <h6 class="text-warning mb-2">🚀 Remote Repository</h6>
+                                <ul class="list-group" id="remoteRepo">
+                                    <li class="list-group-item p-2 text-muted">No commits pushed yet</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Terminal Playground -->
+                    <div class="col-lg-9">
+
+                        <!-- Terminal Output Section -->
+                        <section class="mb-3">
+                            <div class="border rounded p-3 bg-dark text-white terminal-output" id="terminalOutput" aria-live="polite">
+                                <!-- Terminal Output -->
+                            </div>
+                        </section>
+
+                        <!-- Terminal Log Section -->
+                        <section>
+                            <div class="border rounded p-2 terminal-log" id="terminalLog">
+                                <!-- Terminal Log -->
+                                <strong>System Log:</strong>
+                            </div>
+                        </section>
+
+                    </div>
+
+                </div>
+
             </div>
         </div>
 
     </main>
+
 
     <!-- Footer -->
     <footer class="text-center py-3">
@@ -234,7 +249,7 @@
     </footer>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" defer></script>
     <!-- Non-module script -->
     <script src="./assets/js/theme.js" defer></script>
     <!-- Module script -->
