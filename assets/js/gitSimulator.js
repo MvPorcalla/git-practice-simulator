@@ -17,6 +17,25 @@ const gitCommands = {
     remote: handleGitRemoteWrapper
 };
 
+function listRemotes() {
+    const remotes = state.getRemotes();
+    const remoteNames = Object.keys(remotes);
+
+    if (remoteNames.length === 0) {
+        return 'No remotes configured.';
+    }
+
+    let output = '';
+
+    remoteNames.forEach(name => {
+        output += `${name}\t${remotes[name]} (fetch)\n`;
+        output += `${name}\t${remotes[name]} (push)\n`;
+    });
+
+    return output.trim();
+}
+
+
 // ✅ Error logging helper
 function returnError(message) {
     logMessage(`[Error] ${message}`, LOG_TYPES.ERROR);
@@ -106,8 +125,14 @@ function handleGitRemoteWrapper(args) {
         return handleGitRemoteAdd(args[3], args[4]);
     }
 
+    // ✅ New: handle git remote -v
+    if (args[2] === '-v') {
+        return listRemotes();
+    }
+
     return `git remote: unknown subcommand ${args[2]}`;
 }
+
 
 function handleGitCommitWrapper(args) {
     return handleGitCommit(args.join(' '));
@@ -128,24 +153,28 @@ function getGitStatus() {
     let status = '';
 
     if (state.isRemoteLinked()) {
-        const remoteName = 'origin'; // or you can loop over state.getRemotes() to show all
-        const remoteUrl = state.getRemoteUrl(remoteName);
+        const remotes = state.getRemotes();
+        const remoteNames = Object.keys(remotes);
 
         if (state.localCommits.length > 0) {
-            status += `Your branch is ahead of '${remoteName}/main' by ${state.localCommits.length} commit${state.localCommits.length > 1 ? 's' : ''}.\n  (use "git push" to publish your local commits)\n\n`;
+            status += `Your branch is ahead of 'origin/main' by ${state.localCommits.length} commit${state.localCommits.length > 1 ? 's' : ''}.\n  (use "git push" to publish your local commits)\n\n`;
         } else {
-            status += `Your branch is up to date with '${remoteName}/main'.\n\n`;
+            status += `Your branch is up to date with 'origin/main'.\n\n`;
         }
 
-        status += `Remote ${remoteName}: ${remoteUrl}\n\n`;
+        // ✅ Show all active remotes
+        remoteNames.forEach(name => {
+            const url = remotes[name];
+            status += `Remote ${name}: ${url}\n`;
+        });
+
+        status += '\n';
     }
 
     status += messages.gitStatusWithFiles(stagedFiles, untrackedFiles, state.localCommits.length);
 
     return status.trim();
 }
-
-
 
 function handleGitAdd(files) {
     let addedFiles = [];
