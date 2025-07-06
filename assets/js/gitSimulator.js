@@ -294,41 +294,88 @@ function handleGitCommit(command) {
 }
 
 async function handleGitPush(args) {
-    let remoteName = 'origin'; // Default remote
+    const currentBranch = state.getCurrentBranch();
+    const upstream = state.getUpstreamForBranch(currentBranch);
 
-    if (args && args[2]) {
-        remoteName = args[2];
+    const hasSetUpstreamFlag = args.includes('--set-upstream') || args.includes('-u');
+
+    let remoteName = null;
+    let remoteBranch = null;
+
+    // Argument parsing
+    if (args.length >= 3) {
+        if (args[2] === '--set-upstream' || args[2] === '-u') {
+            if (args[3]) {
+                remoteName = args[3];
+                remoteBranch = args[4] || currentBranch; // Defaults to current branch if not specified
+            } else {
+                return returnError('fatal: No remote specified after -u.');
+            }
+        } else {
+            remoteName = args[2];
+            remoteBranch = args[3] || currentBranch;
+        }
     }
 
+    // If no remote specified, default to 'origin' or upstream
+    if (!remoteName) {
+        if (upstream) {
+            remoteName = upstream.remote;
+            remoteBranch = upstream.remoteBranch;
+        } else {
+            remoteName = 'origin';
+            remoteBranch = currentBranch;
+        }
+    }
+
+    // ✅ Validate remote exists
     if (!state.hasRemote(remoteName)) {
-        return returnError(`fatal: No configured push destination for '${remoteName}'.`);
+        return returnError(`fatal: No configured remote named '${remoteName}'.`);
     }
 
-    if (state.localCommits.length > 0) {
-        const totalObjects = Math.floor(Math.random() * 5) + 3;
-        const compressedObjects = Math.floor(totalObjects / 2) + 1;
-        const delta = Math.floor(Math.random() * 3);
-        const localHash = Math.random().toString(36).substring(2, 9);
-        const remoteHash = Math.random().toString(36).substring(2, 9);
-        const bytes = Math.floor(Math.random() * 500) + 200;
-        const speed = (Math.random() * 500 + 100).toFixed(2);
-
-        const remoteUrl = state.getRemoteUrl(remoteName);
-
-        await gitPushMessage(totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, remoteUrl);
-
-        state.pushCommits();
-        state.setRemoteLinked(true);
-        updateRemoteUI(state.remoteCommits);
-        updateWorkingDirectoryUI(state.workingDirectory, false);
-        logSystem(SYSTEM_MESSAGES.PUSHED_TO_REMOTE);
-
-        return '';
-    } else {
-        return returnError(ERROR_MESSAGES.NOTHING_TO_PUSH);
+    // ✅ Validate remote URL exists
+    const remoteUrl = state.getRemoteUrl(remoteName);
+    if (!remoteUrl) {
+        return returnError(`fatal: The remote '${remoteName}' does not have a valid URL configured.`);
     }
+
+    // ✅ Check for first time push (no upstream set yet)
+    if (!upstream) {
+        if (!hasSetUpstreamFlag) {
+            return returnError(
+                `fatal: The current branch ${currentBranch} has no upstream branch.\n` +
+                `To push the current branch and set the remote as upstream, use\n\n` +
+                `    git push --set-upstream ${remoteName} ${remoteBranch}\n`
+            );
+        }
+        // Set upstream tracking
+        state.setUpstreamForBranch(currentBranch, remoteName, remoteBranch);
+    }
+
+    // ✅ Check if there are commits to push
+    if (state.localCommits.length === 0) {
+        return returnError('Everything up-to-date');
+    }
+
+    // ✅ Simulate push
+    const totalObjects = Math.floor(Math.random() * 5) + 3;
+    const compressedObjects = Math.floor(totalObjects / 2) + 1;
+    const delta = Math.floor(Math.random() * 3);
+    const localHash = Math.random().toString(36).substring(2, 9);
+    const remoteHash = Math.random().toString(36).substring(2, 9);
+    const bytes = Math.floor(Math.random() * 500) + 200;
+    const speed = (Math.random() * 500 + 100).toFixed(2);
+
+    await gitPushMessage(totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, remoteUrl);
+
+    state.pushCommits();
+    state.setRemoteLinked(true);
+    updateRemoteUI(state.remoteCommits);
+    updateWorkingDirectoryUI(state.workingDirectory, false);
+    logSystem(SYSTEM_MESSAGES.PUSHED_TO_REMOTE);
+
+    return '';
 }
-
 
 function handleGitRestore(files) {
     let removedFiles = [];

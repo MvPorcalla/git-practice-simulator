@@ -20,6 +20,33 @@ export function setHistoryIndex(index) {
     historyIndex = index;
 }
 
+let currentBranch = 'main';  // default local branch
+
+// Track upstream for each local branch as an object: { [branchName]: { remote: string, remoteBranch: string } }
+const branchUpstreams = {
+  main: null, // e.g. { remote: 'origin', remoteBranch: 'main' }
+};
+
+export function getCurrentBranch() {
+  return currentBranch;
+}
+
+export function setCurrentBranch(branchName) {
+  currentBranch = branchName;
+
+  if (!(branchName in branchUpstreams)) {
+    branchUpstreams[branchName] = null;
+  }
+}
+
+export function getUpstreamForBranch(branchName) {
+  return branchUpstreams[branchName] || null;
+}
+
+export function setUpstreamForBranch(branchName, remoteName, remoteBranch) {
+  branchUpstreams[branchName] = { remote: remoteName, remoteBranch };
+}
+
 export let remotes = {}; // key: remote name, value: url
 
 export function addRemote(name, url) {
