@@ -4,6 +4,7 @@ import * as messages from './gitMessages.js';
 import { updateStagingAreaUI, updateWorkingDirectoryUI, updateRemoteUI, logMessage } from './ui.js';
 import { ERROR_MESSAGES, LOG_TYPES, SYSTEM_MESSAGES, GITHUB_URL } from './gitConstants.js';
 import { gitPushMessage } from './gitMessages.js';
+import { escapeHTML } from './utils.js';
 
 // Dispatcher map (command -> function)
 const gitCommands = {
@@ -24,10 +25,9 @@ function logSystem(message) {
     logMessage(`[System] ${message}`, LOG_TYPES.INFO);
 }
 
-
 function validateCommand(args) {
     if (args[0] !== 'git') {
-        return returnError(ERROR_MESSAGES.INVALID_COMMAND(args[0]));
+        return returnError(ERROR_MESSAGES.INVALID_COMMAND(escapeHTML(args[0])));
     }
 
     if (!args[1]) {
@@ -35,7 +35,7 @@ function validateCommand(args) {
     }
 
     if (!gitCommands[args[1]]) {
-        return returnError(ERROR_MESSAGES.INVALID_GIT_COMMAND(args[1]));
+        return returnError(ERROR_MESSAGES.INVALID_GIT_COMMAND(escapeHTML(args[1])));
     }
 
     return null; // Means valid
@@ -44,7 +44,7 @@ function validateCommand(args) {
 export async function processGitCommand(command) {
     const args = command.trim().split(/\s+/);
 
-    logMessage(`[Command] ${command}`, LOG_TYPES.COMMAND);
+    logMessage(`[Command] ${escapeHTML(command)}`, LOG_TYPES.COMMAND);
 
     if (command.trim() === '') {
         return returnError(ERROR_MESSAGES.NO_COMMAND);
@@ -60,12 +60,10 @@ export async function processGitCommand(command) {
     if (!state.isGitInitialized()) {
         return returnError(ERROR_MESSAGES.NOT_A_REPO);
     }
-    
-    // ✅ Add this to handle async push
-    if (args[1] === 'push') {
-        return await handleGitPush(); // 🚩 await this to make the input wait
-    }
 
+    if (args[1] === 'push') {
+        return await handleGitPush();
+    }
 
     return gitCommands[args[1]](args);
 }
@@ -103,7 +101,7 @@ function handleGitRestoreWrapper(args) {
     if (args[2] === '--staged') {
         return handleGitRestore(args.slice(3));
     } else {
-        return returnError(ERROR_MESSAGES.UNKNOWN_RESTORE_OPTION(args.slice(2).join(' ')));
+        return returnError(ERROR_MESSAGES.UNKNOWN_RESTORE_OPTION(escapeHTML(args.slice(2).join(' '))));
     }
 }
 
@@ -129,17 +127,16 @@ function handleGitAdd(files) {
     });
 
     if (notFoundFiles.length > 0) {
-        return returnError(ERROR_MESSAGES.PATHSPEC_ERROR(notFoundFiles.join(', ')));
+        return returnError(ERROR_MESSAGES.PATHSPEC_ERROR(escapeHTML(notFoundFiles.join(', '))));
     }
 
     if (addedFiles.length > 0) {
         updateStagingAreaUI(state.stagingArea);
-        logSystem(SYSTEM_MESSAGES.ADDED_TO_STAGING(addedFiles.join(', ')));
+        logSystem(SYSTEM_MESSAGES.ADDED_TO_STAGING(escapeHTML(addedFiles.join(', '))));
         return '';
     } else {
         logSystem(SYSTEM_MESSAGES.NOTHING_ADDED_TO_STAGING);
         return SYSTEM_MESSAGES.NOTHING_ADDED_TO_STAGING;
-
     }
 }
 
@@ -147,7 +144,7 @@ function handleGitCommit(command) {
     const messageMatch = command.match(/-m\s+["'](.+?)["']/);
 
     if (messageMatch) {
-        const commitMessage = messageMatch[1];
+        const commitMessage = escapeHTML(messageMatch[1]);
 
         if (state.stagingArea.length > 0) {
             const commitOutput = messages.gitCommitMessage(commitMessage, state.stagingArea);
@@ -175,7 +172,6 @@ async function handleGitPush() {
         const bytes = Math.floor(Math.random() * 500) + 200;
         const speed = (Math.random() * 500 + 100).toFixed(2);
 
-        // Simulate push with loading
         await gitPushMessage(totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, GITHUB_URL);
 
         state.pushCommits();
@@ -184,7 +180,7 @@ async function handleGitPush() {
         updateWorkingDirectoryUI(state.workingDirectory, false);
         logSystem(SYSTEM_MESSAGES.PUSHED_TO_REMOTE);
 
-        return ''; // Return empty since the push output is fully handled in the async function
+        return '';
     } else {
         return returnError(ERROR_MESSAGES.NOTHING_TO_PUSH);
     }
@@ -205,7 +201,7 @@ function handleGitRestore(files) {
 
     if (removedFiles.length > 0) {
         updateStagingAreaUI(state.stagingArea);
-        logSystem(SYSTEM_MESSAGES.UNSTAGED_FILES(removedFiles.join(', ')));
+        logSystem(SYSTEM_MESSAGES.UNSTAGED_FILES(escapeHTML(removedFiles.join(', '))));
         return '';
     } else {
         return returnError(ERROR_MESSAGES.NO_MATCHING_FILES);

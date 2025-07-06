@@ -1,6 +1,8 @@
+// terminal.js
 import * as state from './state.js';
 import { processGitCommand } from './gitSimulator.js';
 import { addTerminalInput, displayOutput, updateWorkingDirectoryUI } from './ui.js';
+import { escapeHTML } from './utils.js';
 
 let inputString = '';
 let cursorPosition = 0;
@@ -10,7 +12,6 @@ export function handleTerminalInput(terminalInput) {
         e.preventDefault();
 
         if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
-            // Insert character at cursor
             inputString = inputString.slice(0, cursorPosition) + e.key + inputString.slice(cursorPosition);
             cursorPosition++;
         } else if (e.key === 'Backspace') {
@@ -50,8 +51,8 @@ export function handleTerminalInput(terminalInput) {
 }
 
 function updateTerminalInputDisplay(terminalInput) {
-    const beforeCursor = inputString.slice(0, cursorPosition);
-    const afterCursor = inputString.slice(cursorPosition);
+    const beforeCursor = escapeHTML(inputString.slice(0, cursorPosition));
+    const afterCursor = escapeHTML(inputString.slice(cursorPosition));
 
     terminalInput.innerHTML = `<span id="inputContent">${beforeCursor}</span><span class="cursor">|</span><span>${afterCursor}</span>`;
     placeCursor(terminalInput);
@@ -70,30 +71,26 @@ export async function submitCommand(commandElement, command) {
 
     const staticText = document.createElement('span');
     const commandParts = command.trim().split(' ');
-    const firstWord = commandParts.shift();
-    const remainingCommand = commandParts.join(' ');
+    const firstWord = escapeHTML(commandParts.shift());
+    const remainingCommand = escapeHTML(commandParts.join(' '));
 
     staticText.innerHTML = `<span style="color: #4ade80; font-weight: bold;">${firstWord}</span> ${remainingCommand}`;
     commandElement.replaceChild(staticText, commandElement.querySelector('#terminalInput'));
 
     const output = await processGitCommand(command);
 
-    // 🚩 Don't add terminal input yet. Let processGitCommand decide.
-
     if (output && output.trim() !== '') {
         displayOutput(output);
-        addTerminalInput(); // ✅ Only add terminal input if there is output
+        addTerminalInput();
     } else if (command.trim().split(' ')[1] !== 'push') {
-        // ✅ If it's not 'git push', add terminal input immediately
         addTerminalInput();
     }
 }
-
 
 export function initTerminal() {
     updateWorkingDirectoryUI(state.workingDirectory);
     addTerminalInput();
 }
 
-// No longer needed
+// Deprecated, safe to remove
 export function syncInputs() {}

@@ -1,6 +1,7 @@
 // ui.js
-import { submitCommand, handleTerminalInput  } from './terminal.js';
+import { submitCommand, handleTerminalInput } from './terminal.js';
 import { LOG_TYPES, TERMINAL_PATH } from './gitConstants.js';
+import { escapeHTML } from './utils.js';
 
 const terminalOutput = document.getElementById('terminalOutput');
 const stagingList = document.getElementById('stagingArea');
@@ -12,8 +13,7 @@ terminalOutput.addEventListener('click', () => {
     if (terminalInput) terminalInput.focus();
 });
 
-// ✅ Display terminal output with line-by-line rendering
-
+// ✅ Display terminal output with sanitization
 export function displayOutput(message) {
     const lines = message.split('\n');
 
@@ -21,10 +21,9 @@ export function displayOutput(message) {
         if (line.trim() === '') return;
 
         const output = document.createElement('p');
-        output.innerHTML = line; // ✅ This renders colored HTML
+        output.innerHTML = escapeHTML(line); // ✅ Fully sanitized
         terminalOutput.appendChild(output);
     });
-
 }
 
 // ✅ Create terminal input with arrow key history navigation
@@ -38,14 +37,13 @@ export function addTerminalInput() {
     const prompt = document.createElement('span');
     prompt.innerHTML = TERMINAL_PATH;
 
-
     const terminalInput = document.createElement('div');
     terminalInput.id = 'terminalInput';
     terminalInput.className = 'bg-dark text-white border-0 flex-grow-1';
     terminalInput.style.outline = 'none';
     terminalInput.style.fontFamily = 'monospace';
     terminalInput.style.cursor = 'default';
-    terminalInput.tabIndex = 0; // Makes div focusable
+    terminalInput.tabIndex = 0;
 
     terminalInput.innerHTML = `<span id="inputContent"></span><span class="cursor">|</span>`;
     console.log('Adding custom terminal input handler');
@@ -71,7 +69,6 @@ export function updateWorkingDirectoryUI(workingDirectory, applyTrackedStyle = f
             li.className = 'list-group-item p-2';
             li.textContent = file.name;
 
-            // ✅ Add green text if applyTrackedStyle is true
             if (applyTrackedStyle) {
                 li.classList.add('git-tracked');
             }
@@ -80,7 +77,6 @@ export function updateWorkingDirectoryUI(workingDirectory, applyTrackedStyle = f
         });
     }
 }
-
 
 // ✅ Update staging area UI
 export function updateStagingAreaUI(stagingArea) {
@@ -118,10 +114,10 @@ export function updateRemoteUI(remoteCommits) {
 
 // ✅ Terminal log system color
 const typeToColorMap = {
-    [LOG_TYPES.COMMAND]: 'text-primary', // Blue
-    [LOG_TYPES.OUTPUT]: 'text-info',     // Light Blue
-    [LOG_TYPES.ERROR]: 'text-danger',    // Red
-    [LOG_TYPES.INFO]: 'text-success'     // Green
+    [LOG_TYPES.COMMAND]: 'text-primary',
+    [LOG_TYPES.OUTPUT]: 'text-info',
+    [LOG_TYPES.ERROR]: 'text-danger',
+    [LOG_TYPES.INFO]: 'text-success'
 };
 
 // ✅ Terminal log system
@@ -129,10 +125,9 @@ export function logMessage(message, type = 'info') {
     const log = document.createElement('p');
     const timestamp = new Date().toLocaleTimeString();
 
-    // ✅ Get the color class based on type or fallback to gray
     const color = typeToColorMap[type] || 'text-secondary';
 
-    log.innerHTML = `<span class="${color}">[${timestamp}]</span> ${message}`;
+    log.innerHTML = `<span class="${color}">[${timestamp}]</span> ${escapeHTML(message)}`;
 
     terminalLog.appendChild(log);
     terminalLog.scrollTop = terminalLog.scrollHeight;
