@@ -1,5 +1,6 @@
 // ui.js
 import { submitCommand, handleTerminalInput  } from './terminal.js';
+import { LOG_TYPES, TERMINAL_PATH } from './gitConstants.js';
 
 const terminalOutput = document.getElementById('terminalOutput');
 const stagingList = document.getElementById('stagingArea');
@@ -12,6 +13,7 @@ terminalOutput.addEventListener('click', () => {
 });
 
 // ✅ Display terminal output with line-by-line rendering
+
 export function displayOutput(message) {
     const lines = message.split('\n');
 
@@ -21,8 +23,6 @@ export function displayOutput(message) {
         const output = document.createElement('p');
         output.innerHTML = line; // ✅ This renders colored HTML
         terminalOutput.appendChild(output);
-
-        logMessage(line, 'output');
     });
 
     addTerminalInput();
@@ -37,7 +37,8 @@ export function addTerminalInput() {
     terminalInputContainer.classList.add('d-flex', 'align-items-center');
 
     const prompt = document.createElement('span');
-    prompt.innerHTML = `PS C:\\xampp\\htdocs\\GitSimulator&gt;&nbsp;`;
+    prompt.innerHTML = TERMINAL_PATH;
+
 
     const terminalInput = document.createElement('div');
     terminalInput.id = 'terminalInput';
@@ -116,18 +117,23 @@ export function updateRemoteUI(remoteCommits) {
     }
 }
 
+// ✅ Terminal log system color
+const typeToColorMap = {
+    [LOG_TYPES.COMMAND]: 'text-primary', // Blue
+    [LOG_TYPES.OUTPUT]: 'text-info',     // Light Blue
+    [LOG_TYPES.ERROR]: 'text-danger',    // Red
+    [LOG_TYPES.INFO]: 'text-success'     // Green
+};
+
 // ✅ Terminal log system
 export function logMessage(message, type = 'info') {
     const log = document.createElement('p');
     const timestamp = new Date().toLocaleTimeString();
 
-    if (type === 'command') {
-        log.innerHTML = `<span class="text-primary">[${timestamp}]</span> <strong>${message}</strong>`;
-    } else if (type === 'output') {
-        log.innerHTML = `<span class="text-info">[${timestamp}]</span> ${message}`;
-    } else {
-        log.innerHTML = `<span class="text-secondary">[${timestamp}]</span> ${message}`;
-    }
+    // ✅ Get the color class based on type or fallback to gray
+    const color = typeToColorMap[type] || 'text-secondary';
+
+    log.innerHTML = `<span class="${color}">[${timestamp}]</span> ${message}`;
 
     terminalLog.appendChild(log);
     terminalLog.scrollTop = terminalLog.scrollHeight;

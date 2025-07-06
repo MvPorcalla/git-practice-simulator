@@ -1,108 +1,143 @@
-// gitMessages.js
+// gitSimulator.js
 import * as state from './state.js';
 import * as messages from './gitMessages.js';
 import { updateStagingAreaUI, updateWorkingDirectoryUI, updateRemoteUI, logMessage } from './ui.js';
+import { ERROR_MESSAGES, LOG_TYPES, SYSTEM_MESSAGES } from './gitConstants.js';
+
+// Dispatcher map (command -> function)
+const gitCommands = {
+    init: handleGitInit,
+    status: getGitStatus,
+    add: handleGitAddWrapper,
+    commit: handleGitCommitWrapper,
+    push: handleGitPush,
+    restore: handleGitRestoreWrapper
+};
+
+// ✅ Error logging helper
+function returnError(message) {
+    logMessage(`[Error] ${message}`, LOG_TYPES.ERROR);
+    return message;
+}
+function logSystem(message) {
+    logMessage(`[System] ${message}`, LOG_TYPES.INFO);
+}
+
+
+function validateCommand(args) {
+    if (args[0] !== 'git') {
+        return returnError(ERROR_MESSAGES.INVALID_COMMAND(args[0]));
+    }
+
+    if (!args[1]) {
+        return returnError(ERROR_MESSAGES.NO_SUBCOMMAND);
+    }
+
+    if (!gitCommands[args[1]]) {
+        return returnError(ERROR_MESSAGES.INVALID_GIT_COMMAND(args[1]));
+    }
+
+    return null; // Means valid
+}
 
 export function processGitCommand(command) {
-    const args = command.split(' ');
+    const args = command.trim().split(/\s+/);
 
-    logMessage(`Command executed: ${command}`);
+    logMessage(`[Command] ${command}`, LOG_TYPES.COMMAND);
 
-    if (args[0] === 'git' && args[1] === 'init') {
-        if (state.isGitInitialized()) {
-            logMessage('Repository reinitialized.');
-            return 'Reinitialized existing Git repository.';
-        } else {
-            state.setGitInitialized(true);
-            updateWorkingDirectoryUI(state.workingDirectory, true);
-            logMessage('Repository initialized.');
-            return messages.gitInitMessage();
-        }
+    if (command.trim() === '') {
+        return returnError(ERROR_MESSAGES.NO_COMMAND);
+    }
+
+    const validationError = validateCommand(args);
+    if (validationError) return validationError;
+
+    if (args[1] === 'init') {
+        return handleGitInit();
     }
 
     if (!state.isGitInitialized()) {
-        logMessage('Error: Tried to execute Git command outside of a repository.');
-        return 'fatal: not a git repository (or any of the parent directories): .git';
+        return returnError(ERROR_MESSAGES.NOT_A_REPO);
     }
 
-    if (args[0] === 'git' && args[1] === 'status') {
-        logMessage('Displayed status.');
-        return getGitStatus();
-    }
-
-    if (args[0] === 'git' && args[1] === 'add') {
-        if (args[2] === '.') {
-            // Extract file names from working directory
-            const allFileNames = state.workingDirectory.map(file => file.name);
-            return handleGitAdd(allFileNames);
-        } else {
-            return handleGitAdd(args.slice(2));
-        }
-    }
-
-    if (args[0] === 'git' && args[1] === 'commit') {
-        return handleGitCommit(command);
-    }
-
-    if (args[0] === 'git' && args[1] === 'push') {
-        return handleGitPush();
-    }
-
-    if (args[0] === 'git' && args[1] === 'restore' && args[2] === '--staged') {
-        return handleGitRestore(args.slice(3));
-    }
-
-    logMessage(`Error: Command not recognized: ${command}`);
-    return `Command not recognized: ${command}`;
+    return gitCommands[args[1]](args);
 }
 
-// ✅ Git Status
+function handleGitInit() {
+    if (state.isGitInitialized()) {
+        logSystem(SYSTEM_MESSAGES.REPO_REINITIALIZED);
+        return 'Reinitialized existing Git repository.';
+    } else {
+        state.setGitInitialized(true);
+        updateWorkingDirectoryUI(state.workingDirectory, true);
+        logSystem(SYSTEM_MESSAGES.REPO_INITIALIZED);
+        return messages.gitInitMessage();
+    }
+}
+
+function handleGitAddWrapper(args) {
+    if (!args[2]) {
+        return returnError(ERROR_MESSAGES.NOTHING_SPECIFIED);
+    }
+
+    if (args[2] === '.') {
+        const allFileNames = state.workingDirectory.map(file => file.name);
+        return handleGitAdd(allFileNames);
+    } else {
+        return handleGitAdd(args.slice(2));
+    }
+}
+
+function handleGitCommitWrapper(args) {
+    return handleGitCommit(args.join(' '));
+}
+
+function handleGitRestoreWrapper(args) {
+    if (args[2] === '--staged') {
+        return handleGitRestore(args.slice(3));
+    } else {
+        return returnError(ERROR_MESSAGES.UNKNOWN_RESTORE_OPTION(args.slice(2).join(' ')));
+    }
+}
+
 function getGitStatus() {
     const stagedFiles = state.stagingArea;
     const untrackedFiles = state.workingDirectory.filter(file => !state.isFileInStaging(file.name));
-
     return messages.gitStatusWithFiles(stagedFiles, untrackedFiles, state.localCommits.length);
 }
 
-
-// ✅ Git Add
 function handleGitAdd(files) {
     let addedFiles = [];
+    let notFoundFiles = [];
 
-    if (files.length === 1 && files[0] === '.') {
-        // git add . => Add all unstaged files
-        state.workingDirectory.forEach(fileObject => {
-            if (!state.isFileInStaging(fileObject.name)) {
-                state.addToStaging(fileObject);
-                addedFiles.push(fileObject.name);
-            }
-        });
-    } else {
-        // git add filename(s)
-        files.forEach(file => {
-            const fileObject = state.workingDirectory.find(f => f.name === file);
+    files.forEach(file => {
+        const fileObject = state.workingDirectory.find(f => f.name === file);
 
-            if (fileObject && !state.isFileInStaging(fileObject.name)) {
-                state.addToStaging(fileObject);
-                addedFiles.push(fileObject.name);
-            }
-        });
+        if (fileObject && !state.isFileInStaging(fileObject.name)) {
+            state.addToStaging(fileObject);
+            addedFiles.push(fileObject.name);
+        } else if (!fileObject) {
+            notFoundFiles.push(file);
+        }
+    });
+
+    if (notFoundFiles.length > 0) {
+        return returnError(ERROR_MESSAGES.PATHSPEC_ERROR(notFoundFiles.join(', ')));
     }
 
     if (addedFiles.length > 0) {
         updateStagingAreaUI(state.stagingArea);
-        logMessage(`Added files to staging area: ${addedFiles.join(', ')}`);
-        // return `📥 Added to staging area: ${addedFiles.join(', ')}`;
+        logSystem(SYSTEM_MESSAGES.ADDED_TO_STAGING(addedFiles.join(', ')));
         return '';
     } else {
-        logMessage('Nothing added to staging area.');
-        return 'Nothing added to staging area.';
+        logSystem(SYSTEM_MESSAGES.NOTHING_ADDED_TO_STAGING);
+        return SYSTEM_MESSAGES.NOTHING_ADDED_TO_STAGING;
+
     }
 }
 
-// ✅ Git Commit
 function handleGitCommit(command) {
-    const messageMatch = command.match(/-m\s+"(.+?)"/);
+    const messageMatch = command.match(/-m\s+["'](.+?)["']/);
 
     if (messageMatch) {
         const commitMessage = messageMatch[1];
@@ -113,31 +148,27 @@ function handleGitCommit(command) {
             state.addLocalCommit(commitMessage);
             state.resetStagingArea();
             updateStagingAreaUI(state.stagingArea);
-            logMessage(`Commit created: "${commitMessage}"`);
+            logSystem(SYSTEM_MESSAGES.COMMIT_CREATED(commitMessage));
             return commitOutput;
         } else {
-            logMessage('Nothing to commit.');
-            return 'Nothing to commit.';
+            return returnError(ERROR_MESSAGES.NOTHING_TO_COMMIT);
         }
     } else {
-        logMessage('Error: Commit message missing.');
-        return 'Please provide a commit message with -m "message".';
+        return returnError(ERROR_MESSAGES.PLEASE_PROVIDE_COMMIT_MESSAGE);
     }
 }
 
-// ✅ Git Push
 function handleGitPush() {
     if (state.localCommits.length > 0) {
         const pushOutput = messages.gitPushMessage();
         state.pushCommits();
-        state.setRemoteLinked(true); // ✅ Mark the remote as linked now
+        state.setRemoteLinked(true);
         updateRemoteUI(state.remoteCommits);
         updateWorkingDirectoryUI(state.workingDirectory, false);
-        logMessage('Pushed local commits to remote.');
+        logSystem(SYSTEM_MESSAGES.PUSHED_TO_REMOTE);
         return pushOutput;
     } else {
-        logMessage('Nothing to push.');
-        return 'Nothing to push.';
+        return returnError(ERROR_MESSAGES.NOTHING_TO_PUSH);
     }
 }
 
@@ -156,11 +187,9 @@ function handleGitRestore(files) {
 
     if (removedFiles.length > 0) {
         updateStagingAreaUI(state.stagingArea);
-        // ✅ Log to system log (for your UI)
-        logMessage(`Unstaged files: ${removedFiles.join(', ')}`, 'command'); // or 'info' if you want it to look normal log
-        return ''; // ✅ Silent in terminal
+        logSystem(SYSTEM_MESSAGES.UNSTAGED_FILES(removedFiles.join(', ')));
+        return '';
     } else {
-        logMessage('No matching files found in staging area.', 'command'); // Log error
-        return 'No matching files found in staging area.'; // Show this in terminal
+        return returnError(ERROR_MESSAGES.NO_MATCHING_FILES);
     }
 }
