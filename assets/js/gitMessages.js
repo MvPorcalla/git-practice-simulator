@@ -12,7 +12,7 @@ export function gitInitMessage() {
 
 // git commit message with random hash
 export function gitCommitMessage(commitMessage, files) {
-    const randomHash = Math.random().toString(36).substring(2, 9);
+    const randomHash = Math.random().toString(36).substring(2, 11);
     const filesChanged = files.length;
     const insertions = Math.floor(Math.random() * 5) + 1;
     const deletions = Math.floor(Math.random() * 4);
@@ -46,7 +46,7 @@ export async function gitPushMessage(totalObjects, compressedObjects, delta, byt
 }
 
 // Reusable inline loader
-async function simulateLoading(prefix, total, suffix) {
+async function simulateLoading(prefix, total, suffix = DEFAULT_SUFFIX) {
     return new Promise(async resolve => {
         const container = document.createElement('p');
         container.innerHTML = `${prefix}0% (${total}/${total})`;
@@ -57,7 +57,8 @@ async function simulateLoading(prefix, total, suffix) {
         for (let percent = 0; percent <= 100; percent += 10) {
             await new Promise(r => setTimeout(r, 50)); // Simulate delay
 
-            container.innerHTML = `${prefix}${percent}% (${total}/${total})${percent === 100 ? suffix : ''}`;
+            const currentCount = Math.floor((percent * total) / 100);
+            container.innerHTML = `${prefix}${percent}% (${currentCount}/${total})${percent === 100 ? suffix : ''}`;
 
             await new Promise(r => setTimeout(r, 20)); // Smooth scroll delay
 
