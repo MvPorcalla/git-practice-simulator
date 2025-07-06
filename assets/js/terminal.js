@@ -62,7 +62,7 @@ function placeCursor(terminalInput) {
     if (cursor) cursor.scrollIntoView({ block: 'nearest' });
 }
 
-export function submitCommand(commandElement, command) {
+export async function submitCommand(commandElement, command) {
     if (command.trim() === '') return;
 
     // Save to history
@@ -79,7 +79,7 @@ export function submitCommand(commandElement, command) {
 
     commandElement.replaceChild(staticText, commandElement.querySelector('#terminalInput'));
 
-    const output = processGitCommand(command);
+    const output = await processGitCommand(command);
 
     if (output && output.trim() !== '') {
         displayOutput(output);

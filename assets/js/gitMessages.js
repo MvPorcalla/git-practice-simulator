@@ -1,5 +1,6 @@
 import * as state from './state.js';
 import { GIT_MESSAGES, GIT_REPO_PATH, GITHUB_URL } from './gitConstants.js';
+import { displayOutput, addTerminalInput } from './ui.js';
 
 // git init message
 export function gitInitMessage() {
@@ -21,25 +22,52 @@ export function gitCommitMessage(commitMessage, files) {
 }
 
 // git push message
-export function gitPushMessage() {
-    const totalObjects = Math.floor(Math.random() * 5) + 3;
-    const compressedObjects = Math.floor(totalObjects / 2) + 1;
-    const delta = Math.floor(Math.random() * 3);
-    const localHash = Math.random().toString(36).substring(2, 9);
-    const remoteHash = Math.random().toString(36).substring(2, 9);
-    const bytes = Math.floor(Math.random() * 500) + 200;
-    const speed = (Math.random() * 500 + 100).toFixed(2);
+export async function gitPushMessageWithLoading(totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, githubUrl) {
+    // Step 1: Enumerating objects
+    displayOutput(`Enumerating objects: ${totalObjects}, done.`);
 
-    return GIT_MESSAGES.PUSH_MESSAGE(
-        totalObjects,
-        compressedObjects,
-        delta,
-        bytes,
-        speed,
-        localHash,
-        remoteHash,
-        GITHUB_URL
-    );
+    // Step 2: Counting objects with loading
+    await simulateLoading('Counting objects: ', totalObjects);
+
+    // Step 3: Delta compression
+    displayOutput('Delta compression using up to 4 threads');
+
+    // Step 4: Compressing objects with loading
+    await simulateLoading('Compressing objects: ', compressedObjects);
+
+    // Step 5: Writing objects with loading
+    await simulateLoading(`Writing objects: `, totalObjects, `, ${bytes} bytes | ${speed} KiB/s, done.`);
+
+    // Step 6: Final stats
+    displayOutput(`Total ${totalObjects} (delta ${delta}), reused 0 (delta 0), pack-reused 0`);
+
+    // Step 7: Resolving deltas
+    await simulateLoading(`remote: Resolving deltas: `, delta, `, completed with ${totalObjects} local objects.`);
+
+    // Step 8: Final push message
+    displayOutput(`To ${githubUrl}\n\n   ${localHash}..${remoteHash}  main -> main`);
+
+    // Final input
+    addTerminalInput();
+}
+
+// Reusable inline loader
+async function simulateLoading(prefix, total, suffix = ' done.') {
+    return new Promise(async resolve => {
+        const container = document.createElement('p');
+        container.innerHTML = `${prefix}0% (${total}/${total})`;
+        const terminalOutput = document.getElementById('terminalOutput');
+        terminalOutput.appendChild(container);
+        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+
+        for (let percent = 0; percent <= 100; percent += 10) {
+            await new Promise(r => setTimeout(r, 200)); // Simulate delay
+            container.innerHTML = `${prefix}${percent}% (${total}/${total})${percent === 100 ? suffix : ''}`;
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        resolve();
+    });
 }
 
 // git status when clean

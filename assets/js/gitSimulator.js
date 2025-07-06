@@ -2,7 +2,8 @@
 import * as state from './state.js';
 import * as messages from './gitMessages.js';
 import { updateStagingAreaUI, updateWorkingDirectoryUI, updateRemoteUI, logMessage } from './ui.js';
-import { ERROR_MESSAGES, LOG_TYPES, SYSTEM_MESSAGES } from './gitConstants.js';
+import { ERROR_MESSAGES, LOG_TYPES, SYSTEM_MESSAGES, GITHUB_URL } from './gitConstants.js';
+import { gitPushMessageWithLoading } from './gitMessages.js';
 
 // Dispatcher map (command -> function)
 const gitCommands = {
@@ -40,7 +41,7 @@ function validateCommand(args) {
     return null; // Means valid
 }
 
-export function processGitCommand(command) {
+export async function processGitCommand(command) {
     const args = command.trim().split(/\s+/);
 
     logMessage(`[Command] ${command}`, LOG_TYPES.COMMAND);
@@ -59,6 +60,12 @@ export function processGitCommand(command) {
     if (!state.isGitInitialized()) {
         return returnError(ERROR_MESSAGES.NOT_A_REPO);
     }
+    
+    // ✅ Add this to handle async push
+    if (args[1] === 'push') {
+        return await handleGitPush(); // 🚩 await this to make the input wait
+    }
+
 
     return gitCommands[args[1]](args);
 }
@@ -158,15 +165,26 @@ function handleGitCommit(command) {
     }
 }
 
-function handleGitPush() {
+async function handleGitPush() {
     if (state.localCommits.length > 0) {
-        const pushOutput = messages.gitPushMessage();
+        const totalObjects = Math.floor(Math.random() * 5) + 3;
+        const compressedObjects = Math.floor(totalObjects / 2) + 1;
+        const delta = Math.floor(Math.random() * 3);
+        const localHash = Math.random().toString(36).substring(2, 9);
+        const remoteHash = Math.random().toString(36).substring(2, 9);
+        const bytes = Math.floor(Math.random() * 500) + 200;
+        const speed = (Math.random() * 500 + 100).toFixed(2);
+
+        // Simulate push with loading
+        await gitPushMessageWithLoading(totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, GITHUB_URL);
+
         state.pushCommits();
         state.setRemoteLinked(true);
         updateRemoteUI(state.remoteCommits);
         updateWorkingDirectoryUI(state.workingDirectory, false);
         logSystem(SYSTEM_MESSAGES.PUSHED_TO_REMOTE);
-        return pushOutput;
+
+        return ''; // Return empty since the push output is fully handled in the async function
     } else {
         return returnError(ERROR_MESSAGES.NOTHING_TO_PUSH);
     }
