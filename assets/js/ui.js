@@ -25,7 +25,6 @@ export function displayOutput(message) {
         terminalOutput.appendChild(output);
     });
 
-    addTerminalInput();
 }
 
 // ✅ Create terminal input with arrow key history navigation

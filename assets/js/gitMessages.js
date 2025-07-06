@@ -22,32 +22,16 @@ export function gitCommitMessage(commitMessage, files) {
 }
 
 // git push message
-export async function gitPushMessageWithLoading(totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, githubUrl) {
-    // Step 1: Enumerating objects
+export async function gitPushMessage(totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, githubUrl) {
     displayOutput(`Enumerating objects: ${totalObjects}, done.`);
-
-    // Step 2: Counting objects with loading
     await simulateLoading('Counting objects: ', totalObjects);
-
-    // Step 3: Delta compression
     displayOutput('Delta compression using up to 4 threads');
-
-    // Step 4: Compressing objects with loading
     await simulateLoading('Compressing objects: ', compressedObjects);
-
-    // Step 5: Writing objects with loading
     await simulateLoading(`Writing objects: `, totalObjects, `, ${bytes} bytes | ${speed} KiB/s, done.`);
-
-    // Step 6: Final stats
     displayOutput(`Total ${totalObjects} (delta ${delta}), reused 0 (delta 0), pack-reused 0`);
-
-    // Step 7: Resolving deltas
     await simulateLoading(`remote: Resolving deltas: `, delta, `, completed with ${totalObjects} local objects.`);
-
-    // Step 8: Final push message
     displayOutput(`To ${githubUrl}\n\n   ${localHash}..${remoteHash}  main -> main`);
-
-    // Final input
+    
     addTerminalInput();
 }
 
@@ -61,7 +45,7 @@ async function simulateLoading(prefix, total, suffix = ' done.') {
         terminalOutput.scrollTop = terminalOutput.scrollHeight;
 
         for (let percent = 0; percent <= 100; percent += 10) {
-            await new Promise(r => setTimeout(r, 200)); // Simulate delay
+            await new Promise(r => setTimeout(r, 50)); // Simulate delay
             container.innerHTML = `${prefix}${percent}% (${total}/${total})${percent === 100 ? suffix : ''}`;
             terminalOutput.scrollTop = terminalOutput.scrollHeight;
         }

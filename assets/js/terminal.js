@@ -65,28 +65,30 @@ function placeCursor(terminalInput) {
 export async function submitCommand(commandElement, command) {
     if (command.trim() === '') return;
 
-    // Save to history
     state.commandHistory.push(command);
     state.setHistoryIndex(state.commandHistory.length);
 
-    // Convert terminal input to static text
     const staticText = document.createElement('span');
     const commandParts = command.trim().split(' ');
     const firstWord = commandParts.shift();
     const remainingCommand = commandParts.join(' ');
 
     staticText.innerHTML = `<span style="color: #4ade80; font-weight: bold;">${firstWord}</span> ${remainingCommand}`;
-
     commandElement.replaceChild(staticText, commandElement.querySelector('#terminalInput'));
 
     const output = await processGitCommand(command);
 
+    // 🚩 Don't add terminal input yet. Let processGitCommand decide.
+
     if (output && output.trim() !== '') {
         displayOutput(output);
-    } else {
+        addTerminalInput(); // ✅ Only add terminal input if there is output
+    } else if (command.trim().split(' ')[1] !== 'push') {
+        // ✅ If it's not 'git push', add terminal input immediately
         addTerminalInput();
     }
 }
+
 
 export function initTerminal() {
     updateWorkingDirectoryUI(state.workingDirectory);

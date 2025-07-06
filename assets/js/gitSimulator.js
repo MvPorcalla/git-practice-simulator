@@ -3,7 +3,7 @@ import * as state from './state.js';
 import * as messages from './gitMessages.js';
 import { updateStagingAreaUI, updateWorkingDirectoryUI, updateRemoteUI, logMessage } from './ui.js';
 import { ERROR_MESSAGES, LOG_TYPES, SYSTEM_MESSAGES, GITHUB_URL } from './gitConstants.js';
-import { gitPushMessageWithLoading } from './gitMessages.js';
+import { gitPushMessage } from './gitMessages.js';
 
 // Dispatcher map (command -> function)
 const gitCommands = {
@@ -176,7 +176,7 @@ async function handleGitPush() {
         const speed = (Math.random() * 500 + 100).toFixed(2);
 
         // Simulate push with loading
-        await gitPushMessageWithLoading(totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, GITHUB_URL);
+        await gitPushMessage(totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, GITHUB_URL);
 
         state.pushCommits();
         state.setRemoteLinked(true);
