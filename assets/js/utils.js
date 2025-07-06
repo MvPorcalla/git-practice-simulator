@@ -10,3 +10,9 @@ export function escapeHTML(str) {
         '"': '&quot;'
     }[tag]));
 }
+
+// ✅ Simple Git URL validator
+export function isValidGitUrl(url) {
+    const gitUrlPattern = /^(https:\/\/|git@)github\.com[\/:](.+)\.git$/;
+    return gitUrlPattern.test(url);
+}

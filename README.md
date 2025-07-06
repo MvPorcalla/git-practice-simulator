@@ -29,15 +29,19 @@ This project is created to:
 * `git commit`         ✅
 * `git push`           ✅
 * `git restore`        ✅
-* `git remote add`        
-* `git pull`
-* `git fetch`
-* `git branch`
-* `git checkout`
-* `git merge`
-* `git clone`
+* `git remote add`     ✅
+* `git remote remove`  ✅
+* `git remote rename`  ✅
+* `git remote -v`      ✅
+* `git pull`           ⬜️
+* `git fetch`          ⬜️
+* `git branch`         ⬜️
+* `git checkout`       ⬜️
+* `git merge`          ⬜️
+* `git clone`          ⬜️
 
-* `git --help`
+* `git --help`         ⬜️
+
 
 ---
 

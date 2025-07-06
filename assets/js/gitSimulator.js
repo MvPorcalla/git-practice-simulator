@@ -4,7 +4,7 @@ import * as messages from './gitMessages.js';
 import { updateStagingAreaUI, updateWorkingDirectoryUI, updateRemoteUI, updateRemotePathsUI, logMessage } from './ui.js';
 import { ERROR_MESSAGES, LOG_TYPES, SYSTEM_MESSAGES, GITHUB_URL } from './gitConstants.js';
 import { gitPushMessage } from './gitMessages.js';
-import { escapeHTML } from './utils.js';
+import { escapeHTML, isValidGitUrl } from './utils.js';
 
 // Dispatcher map (command -> function)
 const gitCommands = {
@@ -82,8 +82,9 @@ export async function processGitCommand(command) {
     }
 
     if (args[1] === 'push') {
-        return await handleGitPush();
+        return await handleGitPush(args);
     }
+
 
     return gitCommands[args[1]](args);
 }
@@ -122,15 +123,80 @@ function handleGitRemoteWrapper(args) {
         if (!args[3] || !args[4]) {
             return 'git remote add: missing name or URL.';
         }
-        return handleGitRemoteAdd(args[3], args[4]);
+
+        const remoteName = args[3];
+        const remoteUrl = args[4];
+
+        if (!isValidGitUrl(remoteUrl)) {
+            return returnError('fatal: remote URL is invalid. Please provide a valid Git repository URL.');
+        }
+
+        return handleGitRemoteAdd(remoteName, remoteUrl);
     }
 
-    // ✅ New: handle git remote -v
+    if (args[2] === 'remove') {
+        if (!args[3]) {
+            return 'git remote remove: missing name.';
+        }
+
+        return handleGitRemoteRemove(args[3]);
+    }
+
+    if (args[2] === 'rename') {
+        if (!args[3] || !args[4]) {
+            return 'git remote rename: missing old or new name.';
+        }
+
+        return handleGitRemoteRename(args[3], args[4]);
+    }
+
     if (args[2] === '-v') {
         return listRemotes();
     }
 
     return `git remote: unknown subcommand ${args[2]}`;
+}
+
+function handleGitRemoteAdd(name, url) {
+    if (state.hasRemote(name)) {
+        return `fatal: remote ${name} already exists.`;
+    }
+
+    state.addRemote(name, url);
+    updateRemotePathsUI(state.getRemotes());
+
+    logSystem(`Remote '${name}' added with URL ${url}`);
+    return `Remote '${name}' added with URL ${url}`;
+}
+
+function handleGitRemoteRemove(name) {
+    if (!state.hasRemote(name)) {
+        return returnError(`fatal: No such remote: '${name}'`);
+    }
+
+    delete state.remotes[name];
+    updateRemotePathsUI(state.getRemotes());
+
+    logSystem(`Remote '${name}' removed.`);
+    return `Remote '${name}' removed.`;
+}
+
+function handleGitRemoteRename(oldName, newName) {
+    if (!state.hasRemote(oldName)) {
+        return returnError(`fatal: No such remote: '${oldName}'`);
+    }
+
+    if (state.hasRemote(newName)) {
+        return returnError(`fatal: Remote '${newName}' already exists.`);
+    }
+
+    state.remotes[newName] = state.remotes[oldName];
+    delete state.remotes[oldName];
+
+    updateRemotePathsUI(state.getRemotes());
+
+    logSystem(`Remote '${oldName}' renamed to '${newName}'.`);
+    return `Remote '${oldName}' renamed to '${newName}'.`;
 }
 
 
@@ -205,21 +271,6 @@ function handleGitAdd(files) {
     }
 }
 
-function handleGitRemoteAdd(name, url) {
-    if (state.hasRemote(name)) {
-        return `fatal: remote ${name} already exists.`;
-    }
-
-    state.addRemote(name, url);
-
-    // ✅ Update the UI to reflect the new remote paths
-    updateRemotePathsUI(state.getRemotes());
-
-    logSystem(`Remote '${name}' added with URL ${url}`);
-    return `Remote '${name}' added with URL ${url}`;
-}
-
-
 function handleGitCommit(command) {
     const messageMatch = command.match(/-m\s+["'](.+?)["']/);
 
@@ -242,9 +293,15 @@ function handleGitCommit(command) {
     }
 }
 
-async function handleGitPush() {
-    if (!state.hasRemote('origin')) {
-        return returnError('fatal: No configured push destination.');
+async function handleGitPush(args) {
+    let remoteName = 'origin'; // Default remote
+
+    if (args && args[2]) {
+        remoteName = args[2];
+    }
+
+    if (!state.hasRemote(remoteName)) {
+        return returnError(`fatal: No configured push destination for '${remoteName}'.`);
     }
 
     if (state.localCommits.length > 0) {
@@ -256,7 +313,7 @@ async function handleGitPush() {
         const bytes = Math.floor(Math.random() * 500) + 200;
         const speed = (Math.random() * 500 + 100).toFixed(2);
 
-        const remoteUrl = state.getRemoteUrl('origin');
+        const remoteUrl = state.getRemoteUrl(remoteName);
 
         await gitPushMessage(totalObjects, compressedObjects, delta, bytes, speed, localHash, remoteHash, remoteUrl);
 
@@ -271,6 +328,7 @@ async function handleGitPush() {
         return returnError(ERROR_MESSAGES.NOTHING_TO_PUSH);
     }
 }
+
 
 function handleGitRestore(files) {
     let removedFiles = [];
