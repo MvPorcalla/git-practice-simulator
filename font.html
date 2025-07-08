@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Terminal Font Tester</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=JetBrains+Mono&family=Source+Code+Pro&family=IBM+Plex+Mono&family=Inconsolata&family=Ubuntu+Mono&display=swap" rel="stylesheet">
+
+    <!-- Cascadia Code (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/cascadia-code/index.css" rel="stylesheet" />
+
+    <style>
+        body {
+        background-color: #1e1e1e;
+        color: #eee;
+        font-family: Arial, sans-serif;
+        padding: 2rem;
+        }
+
+        h1 {
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+        }
+
+        select {
+        font-size: 1rem;
+        padding: 0.5rem;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+        }
+
+        .terminal-box {
+        background-color: #262626;
+        padding: 1rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        min-height: 200px;
+        transition: font-family 0.2s ease-in-out;
+        }
+
+        /* Font Classes */
+        .fira { font-family: 'Fira Code', monospace; }
+        .jetbrains { font-family: 'JetBrains Mono', monospace; }
+        .cascadia { font-family: 'Cascadia Code', monospace; }
+        .ibmplex { font-family: 'IBM Plex Mono', monospace; }
+        .sourcecode { font-family: 'Source Code Pro', monospace; }
+        .courier { font-family: 'Courier New', monospace; }
+        .consolas { font-family: Consolas, monospace; }
+        .inconsolata { font-family: 'Inconsolata', monospace; }
+        .monaco { font-family: Monaco, monospace; }
+        .ubuntu { font-family: 'Ubuntu Mono', monospace; }
+    </style>
+    </head>
+    <body>
+
+    <h1>🖥️ Terminal Font Previewer</h1>
+    <label for="fontPicker">Select a Font:</label>
+    <select id="fontPicker">
+        <option value="fira">Fira Code</option>
+        <option value="jetbrains">JetBrains Mono</option>
+        <option value="cascadia">Cascadia Code</option>
+        <option value="ibmplex">IBM Plex Mono</option>
+        <option value="sourcecode">Source Code Pro</option>
+        <option value="courier">Courier New</option>
+        <option value="consolas">Consolas</option>
+        <option value="inconsolata">Inconsolata</option>
+        <option value="monaco">Monaco</option>
+        <option value="ubuntu">Ubuntu Mono</option>
+    </select>
+
+    <div id="terminal" class="terminal-box fira">
+        $ git init  
+        Initialized empty Git repository in /user/project/.git/
+
+        $ git status  
+        On branch main
+
+        No commits yet
+
+        nothing to commit (create/copy files and use "git add" to track)
+    </div>
+
+    <script>
+        const select = document.getElementById('fontPicker');
+        const terminal = document.getElementById('terminal');
+
+        select.addEventListener('change', () => {
+        terminal.className = 'terminal-box ' + select.value;
+        });
+    </script>
+
+    </body>
+</html>

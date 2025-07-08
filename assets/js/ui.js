@@ -1,7 +1,7 @@
 // ui.js
 import { submitCommand, handleTerminalInput } from './terminal.js';
 import { LOG_TYPES, TERMINAL_PATH } from './gitConstants.js';
-import { workingDirectory } from './state.js';
+import { workingDirectory, isGitInitialized } from './state.js';
 import { escapeHTML } from './utils.js';
 
 const terminalOutput = document.getElementById('terminalOutput');
@@ -40,7 +40,7 @@ export function addTerminalInput() {
 
     const terminalInput = document.createElement('div');
     terminalInput.id = 'terminalInput';
-    terminalInput.className = 'text-white border-0 flex-grow-1';
+    terminalInput.className = 'border-0 flex-grow-1';
     terminalInput.style.outline = 'none';
     terminalInput.style.fontFamily = 'monospace';
     terminalInput.style.cursor = 'default';
@@ -59,26 +59,7 @@ export function addTerminalInput() {
 }
 
 // ✅ Update working directory UI
-// export function updateWorkingDirectoryUI(workingDirectory, applyTrackedStyle = false) {
-//     workingDirList.innerHTML = '';
-
-//     if (workingDirectory.length === 0) {
-//         workingDirList.innerHTML = '<li class="list-group-item p-2 text-muted">Empty</li>';
-//     } else {
-//         workingDirectory.forEach(file => {
-//             const li = document.createElement('li');
-//             li.className = 'list-group-item p-2';
-//             li.textContent = file.name;
-
-//             if (applyTrackedStyle) {
-//                 li.classList.add('git-tracked');
-//             }
-
-//             workingDirList.appendChild(li);
-//         });
-//     }
-// }
-export function updateWorkingDirectoryUI(files = [], initialized = true) {
+export function updateWorkingDirectoryUI(files = [], applyTrackedStyle = true) {
   const ul = document.getElementById('workingDir');
   ul.innerHTML = '';
 
@@ -91,9 +72,17 @@ export function updateWorkingDirectoryUI(files = [], initialized = true) {
     const li = document.createElement('li');
     li.className = 'list-group-item p-1';
     li.textContent = file.name;
+
+    // ✅ Only apply tracked styling if Git is initialized
+    if (applyTrackedStyle && isGitInitialized()) {
+      li.classList.add('git-tracked');
+    }
+
     ul.appendChild(li);
   });
 }
+
+
 
 // ✅ Update staging area UI
 export function updateStagingAreaUI(stagingArea) {

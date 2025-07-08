@@ -6,6 +6,7 @@
 
     --gps-ff-primary: 'Montserrat', sans-serif;                                            /* Use as the main website font for readability */
     --gps-ff-secondary: 'Merriweather', serif;                                             /* Use for special headings, accents, or playful elements */
+    --gps-ff-terminal: 'Fira Code', monospace;                                             /* use for Terminal Text */
 
     /* Font Sizes */
     --gps-fs-xs: 0.75rem;                                                                  /* 12px - Small labels, captions */
@@ -32,38 +33,38 @@
     --gps-color-accent: #c2410c;                                                         /* Accent color: borders, hover effects, icons */
     
     /* Text Colors */
-    --gps-color-text: #222222;                                                           /* Main text color for readability */
-    --gps-color-text-muted: #6c757d;                                                     /* Less important text like subtitles, placeholders, captions */
+    --gps-color-text: #2c2c2c;                                                           /* Main text color for readability */
+    --gps-color-text-muted: #6b7280;                                                     /* Less important text like subtitles, placeholders, captions */
     --gps-color-text-inverse: #ffffff;                                                   /* Text on dark backgrounds: buttons, footers, banners */
 
     /* Background Colors */
-    --gps-color-bg: #ffffff;                                                             /* Default page background */
-    --gps-color-bg-light: #eeeaee;                                                       /* Section backgrounds, cards, or content boxes */
-    --gps-color-bg-dark: #343a40;                                                        /* Dark sections, footers, or navbars */
+    --gps-color-bg: #f6f6f3;                                                             /* Default page background */
+    --gps-color-bg-light: #ecebe6;                                                       /* Section backgrounds, cards, or content boxes */
+    --gps-color-bg-dark: #dddcd6;                                                        /* Dark sections, footers, or navbars */
     
-    --gps-color-nav-bg: var(--gps-color-bg-dark);                                           /* Navigation bar background */
-    --gps-color-nav-text: var(--gps-color-primary);                                         /* Footers, dark sections, headers */
+    --gps-color-nav-bg: #2c2c2c;                                                         /* Navigation bar background */
+    --gps-color-nav-text: #ffffff;                                                       /* Footers, dark sections, headers */
  
 
     /* Special */
---gps-color-gradient: linear-gradient(to right, #ffffff, #fefefe, #fcfcfc);
+    --gps-color-gradient: linear-gradient(to right, #ffffff, #fefefe, #fcfcfc);
 }
 
 /* ================= Dark Mode Variables ================= */
 
 [data-theme="dark"] {
     /* Text Colors */
-    --gps-color-text: #f1f1f1; /* Light text */
+    --gps-color-text: #f1f1f1;
     --gps-color-text-muted: #a1a1a1;
-    --gps-color-text-inverse: #222222; /* Black text for light backgrounds in dark mode */
+    --gps-color-text-inverse: #222222;
 
     /* Background Colors */
-    --gps-color-bg: #0A0A0A;  /* Dark background */
-    --gps-color-bg-light: #1e1e1e;
-    --gps-color-bg-dark: #262626;
+    --gps-color-bg: #0A0A0A;
+    --gps-color-bg-dark: #1e1e1e;
+    --gps-color-bg-light: #262626;
 
-    --gps-color-nav-bg: #1e1e1e; /* You can customize this */
-    --gps-color-nav-text: var(--gps-color-primary); /* Light text */
+    --gps-color-nav-bg: #1e1e1e;
+    --gps-color-nav-text: #ffffff;
 
     --gps-color-gradient: linear-gradient(to right, #0f0f0f, #1a1a1a, #262626);
 

@@ -212,7 +212,7 @@ footer p {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: var(--gps-color-bg-light);
+    background-color: var(--gps-color-bg-dark);
     color: var(--gps-color-text);
     box-shadow: 5px 5px rgba(249, 115, 22, 1);
 }
