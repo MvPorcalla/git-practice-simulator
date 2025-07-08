@@ -41,8 +41,8 @@
     --gps-color-bg-light: #eeeaee;                                                       /* Section backgrounds, cards, or content boxes */
     --gps-color-bg-dark: #343a40;                                                        /* Dark sections, footers, or navbars */
     
-    --gps-color-nav-bg: var(--gps-color-bg-dark);           /* Navigation bar background */
-    --gps-color-nav-text: var(--gps-color-primary);    /* Footers, dark sections, headers */
+    --gps-color-nav-bg: var(--gps-color-bg-dark);                                           /* Navigation bar background */
+    --gps-color-nav-text: var(--gps-color-primary);                                         /* Footers, dark sections, headers */
  
 
     /* Special */
@@ -60,7 +60,7 @@
     /* Background Colors */
     --gps-color-bg: #0A0A0A;  /* Dark background */
     --gps-color-bg-light: #1e1e1e;
-    --gps-color-bg-dark: #343a40; /* Can remain the same */
+    --gps-color-bg-dark: #262626;
 
     --gps-color-nav-bg: #1e1e1e; /* You can customize this */
     --gps-color-nav-text: var(--gps-color-primary); /* Light text */

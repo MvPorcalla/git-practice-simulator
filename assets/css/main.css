@@ -74,22 +74,32 @@ footer p {
 .gps-btn {
     border-radius: 0.375rem;
     font-weight: var(--gps-fw-bold);
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-    display: inline-block;
+    font-family: var(--gps-ff-primary);
+    display: inline-flex;              /* Use flex for better control */
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
     border: none;
     cursor: pointer;
+    line-height: 1.5;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 
-/* Size Modifiers */
+
+/* Size Variants */
 .gps-btn-sm {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;                 /* 4px 8px */
+    font-size: var(--gps-fs-sm);             /* 14px */
 }
 
 .gps-btn-md {
-    padding: 0.75rem 1.5rem;
-    font-size: var(--gps-fs-base);
+    padding: 0.5rem 1rem;                    /* 8px 16px */
+    font-size: var(--gps-fs-base);           /* 16px */
+}
+
+.gps-btn-lg {
+    padding: 0.75rem 1.25rem;                /* 12px 20px */
+    font-size: var(--gps-fs-lg);             /* 18px */
 }
 
 /* Primary Button */
@@ -114,6 +124,7 @@ footer p {
     background-color: var(--gps-color-primary);
     color: #fff;
 }
+
 
 
 /* ==================================================== Custom Loader ======================================================= */

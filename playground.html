@@ -1,274 +1,304 @@
-<!-- playground.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Practice Git commands in a safe, interactive environment.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Practice Git commands in a safe, interactive environment." />
+  <title>Git Practice Simulator</title>
 
-    <title>Git Practice Simulator</title>
-    <!-- Standard favicon -->
-    <link rel="shortcut icon" href="./assets/images/favicon_io/favicon.ico" />
-    <!-- PNG favicons for various sizes -->
-    <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon_io/favicon-16x16.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon_io/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="./assets/images/favicon_io/android-chrome-192x192.png" />
-    <link rel="icon" type="image/png" sizes="512x512" href="./assets/images/favicon_io/android-chrome-512x512.png" />
-    <!-- Apple touch icon for iOS -->
-    <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/favicon_io/apple-touch-icon.png" />
-    <!-- Manifest for PWA -->
-    <link rel="manifest" href="./assets/images/favicon_io/site.webmanifest" />
-    <!-- Set browser UI theme color on supported devices -->
-    <meta name="theme-color" content="#f97316" />
+  <!-- Favicons -->
+  <link rel="shortcut icon" href="./assets/images/favicon_io/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon_io/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon_io/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./assets/images/favicon_io/android-chrome-192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="./assets/images/favicon_io/android-chrome-512x512.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/favicon_io/apple-touch-icon.png" />
+  <link rel="manifest" href="./assets/images/favicon_io/site.webmanifest" />
+  <meta name="theme-color" content="#f97316" />
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous"/>
-    <!-- Boxicons CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <!-- Styles -->
+  <link rel="preload" href="./assets/css/utilities.css" as="style" />
+  <link rel="preload" href="./assets/css/main.css" as="style" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" />
+  <link rel="stylesheet" href="./assets/css/utilities.css" />
+  <link rel="stylesheet" href="./assets/css/main.css" />
 
-    <!-- Preload your main CSS -->
-    <link rel="preload" href="./assets/css/utilities.css" as="style">
-    <link rel="preload" href="./assets/css/main.css" as="style">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="./assets/css/utilities.css">
-    <link rel="stylesheet" href="./assets/css/main.css">
+  <!-- Theme Persistence -->
+  <script>
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
 
-    <!-- Prevent Flicker -->
-    <script>
-        if (localStorage.getItem('theme') === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
-    </script>
-
+    <!-- Custom Styles -->
     <style>
-        /* Scrollable Box Style (Sidebar) */
-        .aside-scroll-box {
-            max-height: 200px;
+
+        /* Panel Layout */
+        .gps-panel {
+            background-color: var(--gps-color-bg-light);
+            border: 1px solid var(--gps-color-bg-dark);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            color: var(--gps-color-text);
+            font-family: var(--gps-ff-primary);
+        }
+
+        .gps-header {
+            font-size: var(--gps-fs-sm);
+            color: var(--gps-color-primary);
+            margin-bottom: 0.5rem;
+            font-weight: var(--gps-fw-bold);
+            border-bottom: 1px solid var(--gps-color-bg-dark);
+            padding-bottom: 0.25rem;
+        }
+
+        .gps-scroll-box {
+            height: 150px;
             overflow-y: auto;
-            border: 1px solid #dee2e6;
+            border: 1px solid var(--gps-color-bg-dark);
             border-radius: 0.375rem;
         }
 
-        /* Workspace Card */
-        .workspace {
-            background-color: var(--gps-color-bg-light);
-            color: var(--gps-color-text);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            transition: background-color 0.3s ease, color 0.3s ease;
+        .gps-list {
+            background-color: transparent;
+            border: none;
         }
 
-        /* Terminal Log */
-        .terminal-log {
+        .gps-list .list-group-item {
             background-color: var(--gps-color-bg-light);
             color: var(--gps-color-text);
-            padding: 0.5rem;
-            border-radius: 0.25rem;
-            overflow-y: auto;
-            height: 150px;
-            font-family: monospace;
-            font-size: 0.85rem;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            border: none;
+            border-bottom: 1px solid var(--gps-color-bg-dark);
+            padding: 0.5rem 0.75rem;
+            font-family: var(--gps-ff-primary);
+            font-size: var(--gps-fs-sm);
         }
 
-        /* Terminal Output */
+        .gps-list .list-group-item.text-muted {
+            color: var(--gps-color-text-muted);
+            font-style: italic;
+        }
+
+        #terminalInput {
+            background-color: var(--gps-color-bg-dark);
+
+        }
+
         .terminal-output {
             height: 550px;
             overflow-y: auto;
-            font-family: monospace;
-            font-size: 0.95rem;
+            font-family: var(--gps-ff-secondary);
+            font-size: var(--gps-fs-base);
             padding: 0.5rem;
             white-space: pre-wrap;
             display: flex;
             flex-direction: column;
-            gap: 0; /* No gap between output lines */
+            background-color: var(--gps-color-bg-light);
+            color: var(--gps-color-text);
+            border-radius: 0.5rem;
         }
 
-        /* Terminal Output Children */
-        .terminal-output p,
-        .terminal-output .d-flex {
-            margin: 0;
-            padding: 0;
-            line-height: 1.4;
-        }
-
-        /* Terminal Input */
-        .terminal-input {
-            outline: none;
-            white-space: nowrap;
+        .terminal-log {
+            height: 150px;
+            overflow-y: auto;
+            font-family: var(--gps-ff-secondary);
+            font-size: var(--gps-fs-sm);
+            padding: 0.5rem;
+            background-color: var(--gps-color-bg-light);
+            color: var(--gps-color-text);
+            border-radius: 0.5rem;
         }
 
         /* Blinking Cursor */
         .cursor {
             display: inline-block;
             width: 7px;
-            background-color: white;
+            background-color: var(--gps-color-text);
             animation: blink 1s step-end infinite;
-            margin-left: 1px;
+            margin-left: 2px;
         }
 
         @keyframes blink {
             from, to { background-color: transparent; }
-            50% { background-color: white; }
+            50% { background-color: var(--gps-color-text); }
         }
 
-        /* Tracked Files */
         .git-tracked {
             color: #22c55e;
-            font-weight: bold;
+            font-weight: var(--gps-fw-bold);
         }
 
+        .is-invalid {
+            border: 1px solid #dc3545 !important;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25%, 75% { transform: translateX(-4px); }
+            50% { transform: translateX(4px); }
+        }
+        
     </style>
 
+    <style>
+    .form-control {
+        background-color: var(--gps-color-bg-light) !important;
+        box-shadow: inset 0 0 0 1px var( --gps-color-bg-dark);
+        color: var(--gps-color-text) !important;
+        border: 1px solid var( --gps-color-bg-dark);
+        font-family: var(--gps-ff-primary);
+        font-size: var(--gps-fs-sm);
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-control::placeholder {
+        color: var(--gps-color-text); 
+        font-style: italic;
+    }
+
+    .form-control:focus {
+        background-color: var(--gps-color-bg-light) !important;
+        border-color: var( --gps-color-bg-dark);
+        box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.3); /* subtle glow */
+        outline: none;
+    }
+
+    </style>
 </head>
 
 <body class="gps-font-primary gps-weight-normal">
 
+    <!-- Preloader -->
     <div id="preloader" class="preloader d-flex justify-content-center align-items-center min-vh-100 gps-bg-base position-fixed top-0 start-0 w-100 z-3">
         <div class="spinner-border gps-text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">Loading...</span>
         </div>
     </div>
 
-    <!-- Header -->
-     <nav class="navbar navbar-expand-lg shadow-sm nav-theme">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg shadow-sm nav-theme">
         <div class="container position-relative d-flex align-items-center justify-content-between">
+        <a class="navbar-brand d-flex align-items-center gps-font-secondary gps-weight-bold nav-text gap-2" href="index.html">
+            <img src="./assets/images/favicon_io/favicon.ico" alt="Git Icon" width="30" height="30">
+            Git Practice Simulator
+        </a>
 
-            <!-- Logo (Left) -->
-            <a class="navbar-brand d-flex align-items-center gps-font-secondary gps-weight-bold nav-text gap-2" href="index.html">
-                <img src="./assets/images/favicon_io/favicon.ico" alt="Git Icon" width="30" height="30">
-                Git Practice Simulator
-            </a>
+        <div class="nav-links position-absolute top-50 start-50 translate-middle d-flex">
+            <a href="index.html" class="me-4 nav-text">Home</a>
+            <a href="concepts.html" class="me-4 nav-text">Learn</a>
+            <a href="tutorial.html" class="me-4 nav-text">Tutorial</a>
+            <a href="playground.html" class="me-4 nav-text">Playground</a>
+            <a href="aboutme.html" class="me-4 nav-text">About Me</a>
+        </div>
 
-            <!-- Navigation Links (Center) -->
-            <div class="nav-links position-absolute top-50 start-50 translate-middle d-flex">
-                <a href="index.html" class="me-4 nav-text">Home</a>
-                <a href="concepts.html" class="me-4 nav-text">Learn</a>
-                <a href="tutorial.html" class="me-4 nav-text">Tutorial</a>
-                <a href="playground.html" class="me-4 nav-text">Playground</a>
-                <a href="aboutme.html" class="me-4 nav-text">About Me</a>
-            </div>
-
-            <!-- Theme Toggle Button (Right) -->
-            <button id="themeToggle" class="btn btn-sm btn-outline-light" aria-label="Toggle theme" aria-pressed="false">
-                <i class='bx bx-moon'></i>
-            </button>
-
+        <button id="themeToggle" class="btn btn-sm btn-outline-light" aria-label="Toggle theme">
+            <i class='bx bx-moon'></i>
+        </button>
         </div>
     </nav>
 
-    <!-- Main Content Wrapper -->
+    <!-- Main Content -->
     <main class="content">
-
-        <!-- Container -->
         <div class="container-fluid mt-2">
-            <div class="row gy-4">
+        <div class="row gy-4">
+            <div class="col-12">
+            <h1 class="text-center fs-3">Git Playground</h1>
+            </div>
 
-                <!-- Page Title -->
-                <div class="col-12">
-                    <h1 class="text-center">Git Playground</h1>
-                </div>
+            <div class="row my-2">
+            <!-- Sidebar -->
+            <aside class="col-lg-3">
+                <div class="gps-panel shadow-sm">
+                <h5 class="gps-header text-center">🛠 Workspace</h5>
 
-                <!-- Main Content Row -->
-                <div class="row my-2">
-
-                    <!-- Sidebar -->
-                    <aside class="col-lg-3">
-                        <div class="card p-3 workspace">
-                            <h5 class="mb-2 text-center">Workspace</h5>
-
-                            <!-- Working Directory -->
-                            <div class="mb-4">
-                                <h6 class="text-primary mb-2">📂 Working Directory</h6>
-                                <div class="aside-scroll-box">
-                                    <ul class="list-group" id="workingDir">
-                                        <li class="list-group-item p-2 text-muted">Empty</li>
-                                        <!-- Files will be rendered here -->
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <!-- Current Branch -->
-                            <div class="mb-2">
-                                <h6 class="text-info mb-2">🌿 Current Branch</h6>
-                                <p id="currentBranch" class="mb-0 fw-bold text-center">main</p>
-                            </div>
-
-                            <!-- Staging Area -->
-                            <div class="mb-4">
-                                <h6 class="text-success mb-2">📥 Staging Area</h6>
-                                <div class="aside-scroll-box">
-                                    <ul class="list-group" id="stagingArea">
-                                        <li class="list-group-item p-2 text-muted">Empty</li>
-                                        <!-- Staged files will be rendered here -->
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <!-- Remote Paths -->
-                            <div class="mb-4">
-                                <h6 class="text-warning mb-2">🌐 Git Remote URL</h6>
-                                <div class="aside-scroll-box">
-                                    <ul class="list-group" id="remotePaths">
-                                        <li class="list-group-item p-2 text-muted">No remotes</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <!-- Remote Repository -->
-                            <div class="mb-4">
-                                <h6 class="text-warning mb-2">🚀 Remote Repository</h6>
-                                <ul class="list-group" id="remoteRepo">
-                                    <li class="list-group-item p-2 text-muted">No commits pushed yet</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </aside>
-
-                    <!-- Terminal Playground -->
-                    <div class="col-lg-9">
-
-                        <!-- Terminal Output Section -->
-                        <section class="mb-3">
-                            <div class="border rounded p-3 bg-dark text-white terminal-output" id="terminalOutput" aria-live="polite">
-                                <!-- Terminal Output -->
-                            </div>
-                        </section>
-
-                        <!-- Terminal Log Section -->
-                        <section>
-                            <div class="border rounded p-2 terminal-log" id="terminalLog">
-                                <!-- Terminal Log -->
-                                <strong>System Log:</strong>
-                            </div>
-                        </section>
-
+                <!-- Working Directory -->
+                <section class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center gps-header">
+                        <span>📂 Working Directory</span>
+                        <button id="addFileBtn" class="gps-btn gps-btn-outline gps-btn-sm">➕ New File</button>
                     </div>
+                    <div class="gps-scroll-box mt-2">
+                        <ul class="list-group gps-list" id="workingDir">
+                        <li class="list-group-item p-2 text-muted">Empty</li>
+                        </ul>
+                    </div>
+                </section>
 
+                <!-- Current Branch -->
+                <section class="mb-3">
+                    <div class="gps-header">🌿 Current Branch</div>
+                    <p id="currentBranch" class="text-center fw-bold text-info mb-0">main</p>
+                </section>
+
+                <!-- Staging Area -->
+                <section class="mb-3">
+                    <div class="gps-header">📥 Staging Area</div>
+                    <div class="gps-scroll-box">
+                    <ul class="list-group gps-list" id="stagingArea">
+                        <li class="list-group-item p-2 text-muted">Empty</li>
+                    </ul>
+                    </div>
+                </section>
+
+                <!-- Remote Paths -->
+                <section class="mb-3">
+                    <div class="gps-header">🌐 Git Remote URL</div>
+                    <div class="">
+                    <ul class="list-group gps-list" id="remotePaths">
+                        <li class="list-group-item p-2 text-muted">No remotes</li>
+                    </ul>
+                    </div>
+                </section>
+
+                <!-- Remote Repository -->
+                <section>
+                    <div class="gps-header">🚀 Remote Repository</div>
+                    <div class="">
+                    <ul class="list-group gps-list" id="remoteRepo">
+                        <li class="list-group-item p-2 text-muted">No commits pushed yet</li>
+                    </ul>
+                    </div>
+                </section>
                 </div>
+            </aside>
 
+            <!-- Terminal -->
+            <div class="col-lg-9">
+                <section class="mb-3">
+                <div class="terminal-output border rounded" id="terminalOutput" aria-live="polite">
+                    <!-- Terminal Output -->
+                </div>
+                </section>
+
+                <section>
+                <div class="terminal-log border rounded" id="terminalLog">
+                        <!-- Terminal Log -->
+                    <strong>System Log:</strong>
+                </div>
+                </section>
+            </div>
             </div>
         </div>
-
+        </div>
     </main>
-
 
     <!-- Footer -->
     <footer class="text-center py-3">
         <div class="container">
-            <p class="m-0">&copy; 2025 Git Practice Simulator. All rights reserved.</p>
+        <p class="m-0">&copy; 2025 Git Practice Simulator. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" defer></script>
-    <!-- Non-module script -->
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" defer></script>
     <script src="./assets/js/theme.js" defer></script>
-    <!-- Module script -->
     <script src="./assets/js/app.js" type="module" defer></script>
-
 </body>
 
 </html>

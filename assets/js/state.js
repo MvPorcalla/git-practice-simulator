@@ -84,12 +84,30 @@ export function setGitInitialized(value) {
 }
 
 // ✅ Working directory and staging area
+// export let workingDirectory = [
+//     { name: 'index.html', status: 'new' },
+//     { name: 'style.css', status: 'new' },
+//     { name: 'script.js', status: 'new' },
+//     { name: 'README.md', status: 'new' }
+// ];
+
 export let workingDirectory = [
     { name: 'index.html', status: 'new' },
-    { name: 'style.css', status: 'new' },
-    { name: 'script.js', status: 'new' },
-    { name: 'README.md', status: 'new' }
+
 ];
+
+export function addFileToWorkingDir(name) {
+  if (!workingDirectory.some(file => file.name === name)) {
+    workingDirectory.push({ name, status: 'new' });
+    return true;
+  }
+  return false; // File already exists
+}
+
+export function fileExists(name) {
+  return workingDirectory.some(f => f.name === name);
+}
+
 
 export let stagingArea = [];
 

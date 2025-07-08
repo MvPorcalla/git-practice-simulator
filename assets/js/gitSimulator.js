@@ -6,6 +6,8 @@ import { ERROR_MESSAGES, LOG_TYPES, SYSTEM_MESSAGES, GITHUB_URL } from './gitCon
 import { gitPushMessage } from './gitMessages.js';
 import { escapeHTML, isValidGitUrl } from './utils.js';
 
+import { workingDirectory, addFileToWorkingDir, fileExists } from './state.js';
+
 // Dispatcher map (command -> function)
 const gitCommands = {
     init: handleGitInit,
@@ -34,7 +36,6 @@ function listRemotes() {
 
     return output.trim();
 }
-
 
 // ✅ Error logging helper
 function returnError(message) {
@@ -398,3 +399,87 @@ function handleGitRestore(files) {
         return returnError(ERROR_MESSAGES.NO_MATCHING_FILES);
     }
 }
+
+
+document.getElementById('addFileBtn').addEventListener('click', () => {
+    const ul = document.getElementById('workingDir');
+    const existingInput = ul.querySelector('.filename-input');
+
+    if (existingInput) return; // Prevent multiple inputs
+
+    // Remove "Empty" placeholder if present
+    const placeholder = ul.querySelector('.text-muted');
+    if (placeholder) placeholder.remove();
+
+    const li = document.createElement('li');
+    li.className = 'list-group-item p-1';
+
+    const input = document.createElement('input');
+
+    input.className = 'form-control filename-input';
+        input.placeholder = 'Enter filename...';
+
+        li.appendChild(input);
+        ul.appendChild(li);
+
+        // Safe autofocus without warning
+        setTimeout(() => input.focus(), 0);
+
+
+    let hasError = false;
+
+    input.addEventListener('input', () => {
+        input.classList.remove('is-invalid');
+        hasError = false;
+    });
+
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') return trySaveFile();
+        if (e.key === 'Escape') return cancelInput();
+    });
+
+    const outsideClickHandler = (e) => {
+        const isClickInside = li.contains(e.target);
+        const fileName = input.value.trim();
+
+        if (isClickInside) return;
+
+        if (!fileName) {
+        cancelInput();
+        } else if (hasError) {
+        input.focus(); // Keep it open
+        } else {
+        trySaveFile();
+        }
+    };
+
+    // Add outside click listener after render
+    setTimeout(() => document.addEventListener('click', outsideClickHandler), 0);
+
+    function trySaveFile() {
+        const fileName = input.value.trim();
+        if (!fileName) return;
+
+        if (fileExists(fileName)) {
+        input.classList.add('is-invalid');
+        hasError = true;
+        return;
+        }
+
+        addFileToWorkingDir(fileName);
+        updateWorkingDirectoryUI(workingDirectory);
+        document.removeEventListener('click', outsideClickHandler);
+    }
+
+    function cancelInput() {
+        li.remove();
+        restoreEmptyMessage();
+        document.removeEventListener('click', outsideClickHandler);
+    }
+
+    function restoreEmptyMessage() {
+        if (workingDirectory.length === 0 && ul.querySelectorAll('li').length === 0) {
+        ul.innerHTML = `<li class="list-group-item p-2 text-muted">Empty</li>`;
+        }
+    }
+});

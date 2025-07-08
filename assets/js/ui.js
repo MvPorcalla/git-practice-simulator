@@ -1,6 +1,7 @@
 // ui.js
 import { submitCommand, handleTerminalInput } from './terminal.js';
 import { LOG_TYPES, TERMINAL_PATH } from './gitConstants.js';
+import { workingDirectory } from './state.js';
 import { escapeHTML } from './utils.js';
 
 const terminalOutput = document.getElementById('terminalOutput');
@@ -39,7 +40,7 @@ export function addTerminalInput() {
 
     const terminalInput = document.createElement('div');
     terminalInput.id = 'terminalInput';
-    terminalInput.className = 'bg-dark text-white border-0 flex-grow-1';
+    terminalInput.className = 'text-white border-0 flex-grow-1';
     terminalInput.style.outline = 'none';
     terminalInput.style.fontFamily = 'monospace';
     terminalInput.style.cursor = 'default';
@@ -58,24 +59,40 @@ export function addTerminalInput() {
 }
 
 // ✅ Update working directory UI
-export function updateWorkingDirectoryUI(workingDirectory, applyTrackedStyle = false) {
-    workingDirList.innerHTML = '';
+// export function updateWorkingDirectoryUI(workingDirectory, applyTrackedStyle = false) {
+//     workingDirList.innerHTML = '';
 
-    if (workingDirectory.length === 0) {
-        workingDirList.innerHTML = '<li class="list-group-item p-2 text-muted">Empty</li>';
-    } else {
-        workingDirectory.forEach(file => {
-            const li = document.createElement('li');
-            li.className = 'list-group-item p-2';
-            li.textContent = file.name;
+//     if (workingDirectory.length === 0) {
+//         workingDirList.innerHTML = '<li class="list-group-item p-2 text-muted">Empty</li>';
+//     } else {
+//         workingDirectory.forEach(file => {
+//             const li = document.createElement('li');
+//             li.className = 'list-group-item p-2';
+//             li.textContent = file.name;
 
-            if (applyTrackedStyle) {
-                li.classList.add('git-tracked');
-            }
+//             if (applyTrackedStyle) {
+//                 li.classList.add('git-tracked');
+//             }
 
-            workingDirList.appendChild(li);
-        });
-    }
+//             workingDirList.appendChild(li);
+//         });
+//     }
+// }
+export function updateWorkingDirectoryUI(files = [], initialized = true) {
+  const ul = document.getElementById('workingDir');
+  ul.innerHTML = '';
+
+  if (!files.length) {
+    ul.innerHTML = `<li class="list-group-item p-2 text-muted">Empty</li>`;
+    return;
+  }
+
+  files.forEach(file => {
+    const li = document.createElement('li');
+    li.className = 'list-group-item p-1';
+    li.textContent = file.name;
+    ul.appendChild(li);
+  });
 }
 
 // ✅ Update staging area UI
