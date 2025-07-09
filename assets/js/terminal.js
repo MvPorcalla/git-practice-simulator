@@ -1,11 +1,19 @@
 // terminal.js
+
 import * as state from './state.js';
 import { processGitCommand } from './gitSimulator.js';
 import { addTerminalInput, displayOutput, updateWorkingDirectoryUI } from './ui.js';
 import { escapeHTML } from './utils.js';
 
+// ==============================
+// ⌨️ TERMINAL INPUT STATE
+// ==============================
 let inputString = '';
 let cursorPosition = 0;
+
+// ==============================
+// 🎯 HANDLE TERMINAL INPUT EVENTS
+// ==============================
 
 export function handleTerminalInput(terminalInput) {
     terminalInput.addEventListener('keydown', (e) => {
@@ -50,6 +58,10 @@ export function handleTerminalInput(terminalInput) {
     });
 }
 
+// ==============================
+// 🧠 TERMINAL INPUT DISPLAY UPDATE
+// ==============================
+
 function updateTerminalInputDisplay(terminalInput) {
     const beforeCursor = escapeHTML(inputString.slice(0, cursorPosition));
     const afterCursor = escapeHTML(inputString.slice(cursorPosition));
@@ -62,6 +74,10 @@ function placeCursor(terminalInput) {
     const cursor = terminalInput.querySelector('.cursor');
     if (cursor) cursor.scrollIntoView({ block: 'nearest' });
 }
+
+// ==============================
+// 🚀 SUBMIT AND PROCESS COMMAND
+// ==============================
 
 export async function submitCommand(commandElement, command) {
     if (command.trim() === '') return;
@@ -87,10 +103,11 @@ export async function submitCommand(commandElement, command) {
     }
 }
 
+// ==============================
+// 🧹 TERMINAL INITIALIZATION
+// ==============================
+
 export function initTerminal() {
     updateWorkingDirectoryUI(state.workingDirectory);
     addTerminalInput();
 }
-
-// Deprecated, safe to remove
-export function syncInputs() {}

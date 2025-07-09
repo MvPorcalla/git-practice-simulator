@@ -1,6 +1,10 @@
 // utils.js
 
-// ✅ Escape special HTML characters to prevent XSS
+// ==============================
+// 🧰 Utility Functions
+// ==============================
+
+// Escape special HTML characters to prevent XSS
 export function escapeHTML(str) {
     return str.replace(/[&<>'"]/g, tag => ({
         '&': '&amp;',
@@ -11,7 +15,7 @@ export function escapeHTML(str) {
     }[tag]));
 }
 
-// ✅ Simple Git URL validator
+// Validate GitHub repository URL format
 export function isValidGitUrl(url) {
     const gitUrlPattern = /^(https:\/\/|git@)github\.com[\/:](.+)\.git$/;
     return gitUrlPattern.test(url);

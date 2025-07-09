@@ -1,13 +1,21 @@
-// utils.js (non-module)
+// theme.js
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Preloader
+
+    // ==============================
+    // ⏳ PRELOADER FUNCTIONALITY
+    // ==============================
     const loader = document.getElementById('preloader');
     if (loader) loader.classList.add('hidden');
 
-    // Theme Toggle
+    // ==============================
+    // 🌙🌞 THEME TOGGLE FUNCTIONALITY
+    // ==============================
+
     const toggleButton = document.getElementById('themeToggle');
     const isDark = localStorage.getItem('theme') === 'dark';
 
+    // Apply dark or light mode based on state
     const setDarkMode = (isDark) => {
         if (isDark) {
             document.documentElement.setAttribute('data-theme', 'dark');
@@ -22,10 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // 🔄 Set initial theme on load
     setDarkMode(isDark);
 
+    // 🔘 Toggle theme on button click
     toggleButton.addEventListener('click', () => {
         const currentlyDark = document.documentElement.getAttribute('data-theme') === 'dark';
         setDarkMode(!currentlyDark);
     });
+
 });
