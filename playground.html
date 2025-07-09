@@ -392,18 +392,6 @@
     <script src="./assets/js/theme.js" defer></script>
     <script src="./assets/js/app.js" type="module" defer></script>
 
-    <script>
-        const currentPage = window.location.pathname.split("/").pop(); // e.g. "tutorial.html"
-
-        document.querySelectorAll(".gps-nav-links a, .gps-mobile-links a").forEach(link => {
-            const linkHref = link.getAttribute("href");
-            if (linkHref === currentPage || (linkHref === "index.html" && currentPage === "")) {
-            link.classList.add("active");
-            }
-        });
-    </script>
-
-
 </body>
 
 </html>
