@@ -3,13 +3,13 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==============================
-    // ⏳ PRELOADER FUNCTIONALITY
+    // PRELOADER FUNCTIONALITY
     // ==============================
     const loader = document.getElementById('preloader');
     if (loader) loader.classList.add('hidden');
 
     // ==============================
-    // 🌙🌞 THEME TOGGLE FUNCTIONALITY
+    // THEME TOGGLE FUNCTIONALITY
     // ==============================
 
     const toggleButton = document.getElementById('themeToggle');
@@ -30,13 +30,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // 🔄 Set initial theme on load
+    // Set initial theme on load
     setDarkMode(isDark);
 
-    // 🔘 Toggle theme on button click
+    // Toggle theme on button click
     toggleButton.addEventListener('click', () => {
         const currentlyDark = document.documentElement.getAttribute('data-theme') === 'dark';
         setDarkMode(!currentlyDark);
+    });
+
+    // ==============================
+    // SET ACTIVE NAV LINK
+    // ==============================
+    const currentPage = window.location.pathname.split("/").pop(); // e.g. "tutorial.html"
+
+    document.querySelectorAll(".gps-nav-links a, .gps-mobile-links a").forEach(link => {
+        const linkHref = link.getAttribute("href");
+        if (linkHref === currentPage || (linkHref === "index.html" && currentPage === "")) {
+            link.classList.add("active");
+        }
     });
 
 });

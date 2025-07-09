@@ -84,30 +84,34 @@
         </div>
     </div>
 
-    <!-- Header -->
-     <nav class="navbar navbar-expand-lg shadow-sm nav-theme">
-        <div class="container position-relative d-flex align-items-center justify-content-between">
-
-            <!-- Logo (Left) -->
-            <a class="navbar-brand d-flex align-items-center gps-font-secondary gps-weight-bold nav-text gap-2" href="index.html">
-                <img src="./assets/images/favicon_io/favicon.ico" alt="Git Icon" width="30" height="30">
+    <!-- Navbar -->
+    <nav>
+        <div class="gps-navbar">
+            <div class="gps-brand">
+                <img src="./assets/images/favicon_io/favicon.ico" alt="Git Icon">
                 Git Practice Simulator
-            </a>
-
-            <!-- Navigation Links (Center) -->
-            <div class="nav-links position-absolute top-50 start-50 translate-middle d-flex">
-                <a href="index.html" class="me-4 nav-text">Home</a>
-                <a href="concepts.html" class="me-4 nav-text">Learn</a>
-                <a href="tutorial.html" class="me-4 nav-text">Tutorial</a>
-                <a href="playground.html" class="me-4 nav-text">Playground</a>
-                <a href="aboutme.html" class="me-4 nav-text">About Me</a>
             </div>
 
-            <!-- Theme Toggle Button (Right) -->
-            <button id="themeToggle" class="btn btn-sm btn-outline-light" aria-label="Toggle theme" aria-pressed="false">
-                <i class='bx bx-moon'></i>
-            </button>
+            <div class="gps-nav-links">
+                <a href="index.html">Home</a>
+                <a href="concepts.html">Learn</a>
+                <a href="tutorial.html">Tutorial</a>
+                <a href="playground.html">Playground</a>
+                <a href="aboutme.html">About Me</a>
+            </div>
 
+            <div class="gps-toggle-group">
+                <button id="themeToggle" aria-label="Toggle theme"><i class='bx bx-moon'></i></button>
+                <button class="gps-hamburger" id="menuToggle">&#9776;</button>
+            </div>
+        </div>
+
+        <div class="gps-mobile-links" id="mobileLinks">
+            <a href="index.html">Home</a>
+            <a href="concepts.html">Learn</a>
+            <a href="tutorial.html">Tutorial</a>
+            <a href="playground.html">Playground</a>
+            <a href="aboutme.html">About Me</a>
         </div>
     </nav>
 

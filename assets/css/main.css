@@ -41,19 +41,48 @@ main {
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 nav, footer {
     flex-shrink: 0;
-    padding: 1rem 0; /* Consistent height via padding */
-    background-color: var(--gps-color-nav-bg);
+    padding: 1rem 0;
+    /* background-color: var(--gps-color-nav-bg); */
+    background-color: transparent;
+    backdrop-filter: blur(50px);
     color: var(--gps-color-nav-text);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    border-color: var(--gps-color-bg-light);
+    
+    /* Smooth transitions */
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        backdrop-filter 0.3s ease;
+}
+
+/* Subtle borders for separation */
+nav {
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--gps-color-bg-light);
+}
+
+footer {
+    border-top: 1px solid var(--gps-color-bg-light);
 }
 
 footer p {
     margin: 0;
 }
+
 
 .nav-text {
     color: var(--gps-color-primary) !important;
@@ -151,6 +180,156 @@ footer p {
     visibility: hidden;
     pointer-events: none;
     transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+/* ==================================================== Custom NavBar Styles ======================================================= */
+
+
+/* === Main Navbar Container === */
+.gps-navbar {
+    display: flex;                                  /* Use flexbox for layout */
+    flex-wrap: wrap;                                /* Allow wrapping on smaller screens */
+    align-items: center;                            /* Vertically center items */
+    justify-content: space-between;                 /* Space between brand and toggles */
+    position: relative;                             /* Needed for absolute positioning of center nav links */
+    z-index: 1000;
+
+    padding: 0.5rem 3rem;
+
+}
+
+/* === Brand Section === */
+.gps-brand {
+    display: flex;                                   /* Align brand icon and text */
+    align-items: center;                             /* Vertically center */
+    gap: 4px;                                        /* Small space between icon and text */
+    font-weight: var(--gps-fw-semibold);             /* Slightly bold text */
+    font-size: var(--gps-fs-lg);      
+    color: var(--gps-color-primary);                 /* Compact text size */
+}
+
+.gps-brand img {
+    width: 40px;
+    height: 40px;
+}
+
+/* === Centered Navigation Links (Desktop) === */
+.gps-nav-links {
+    position: absolute;                               /* Position in center of navbar */
+    left: 50%;                                        /* Center horizontally */
+    transform: translateX(-50%);                      /* Perfect centering */
+    display: flex;                                    /* Horizontal list */
+    gap: 14px;                                        /* Space between links */
+}
+
+.gps-nav-links a {
+    font-size: var(--gps-fs-lg);                        /* Maintain readable size */
+    font-weight: var(--gps-fw-bold);                    /* Bold for emphasis */
+    color: var(--gps-color-primary);                    /* Your brand color */
+    text-decoration: none;                              /* Remove underline */
+    padding: 0.25rem 0.5rem;                            /* Add subtle padding */
+    border-radius: 4px;                                 /* Rounded feel */
+}
+
+.gps-nav-links a:hover {
+    color: var(--gps-color-text);      /* Optional accent color */
+}
+
+a,
+button,
+.gps-nav-links a,
+.gps-mobile-links a {
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.gps-nav-links a.active,
+.gps-mobile-links a.active {
+    color: var(--gps-color-text); /* Highlight active page */
+}
+
+/* === Toggle Buttons (Theme + Hamburger) === */
+.gps-toggle-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Light and Dark Mode Icon */
+#themeToggle i {
+    font-size: 18px;
+    color: var(--gps-color-text);
+    transition: color 0.3s ease;
+}
+
+/* Hover Color Change */
+#themeToggle:hover i {
+    color: var(--gps-color-primary);
+}
+
+/* Square Button with Centered Icon */
+#themeToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: 1px solid var(--gps-color-text);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+#themeToggle:hover {
+    border-color: var(--gps-color-primary);
+    background-color: var(--gps-color-bg-light);
+}
+
+/* Hamburger menu button (hidden by default) */
+.gps-hamburger {
+    display: none;                 /* Hidden on large screens */
+    font-size: 20px;               /* Hamburger icon size */
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 5px;
+    color: var(--gps-color-primary);
+}
+
+/* === Mobile Nav Dropdown === */
+.gps-mobile-links {
+    display: none;                 /* Hidden by default */
+    flex-direction: column;       /* Stack links vertically */
+    padding: 6px 0;
+    width: 100%;
+    text-align: center;
+}
+
+.gps-mobile-links a {
+    padding: 6px 0;                /* Space between mobile links */
+    text-decoration: none;
+    color: var(--gps-color-primary);
+    font-size: var(--gps-fs-base);
+}
+
+/* === Responsive Styles for Small Screens === */
+@media (max-width: 768px) {
+
+    .gps-navbar {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    .gps-nav-links {
+        display: none;            /* Hide center links on small screens */
+    }
+
+    .gps-hamburger {
+        display: block;           /* Show hamburger button on mobile */
+    }
+
+    .gps-mobile-links.gps-active {
+        display: flex;            /* Show mobile links when active */
+    }
 }
 
 /* ==================================================== Main Styles ======================================================= */
