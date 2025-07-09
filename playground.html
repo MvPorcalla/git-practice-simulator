@@ -41,6 +41,13 @@
     <!-- Custom Styles -->
     <style>
         /* Panel Layout */
+        .page-title {
+            font-size: var(--gps-fs-2xl);
+            font-weight: var(--gps-fw-bold);
+            color: var(--gps-color-primary);
+            font-family: var(--gps-ff-primary);
+        }
+
         .gps-panel {
             background-color: var(--gps-color-bg-dark);
             border: 1px solid var(--gps-color-bg-light);
@@ -57,6 +64,10 @@
             font-weight: var(--gps-fw-bold);
             border-bottom: 1px solid var(--gps-color-bg-light);
             padding-bottom: 0.25rem;
+        }
+
+        .sidebar-title {
+            font-size: var(--gps-fs-2xl);
         }
 
         .gps-scroll-box {
@@ -95,7 +106,7 @@
             Terminal Log Styles
         ============================= */
         .terminal-log {
-            height: 150px;
+            height: 160px;
             overflow-y: auto;
             font-family: var(--gps-ff-terminal);
             font-size: var(--gps-fs-sm);
@@ -300,14 +311,14 @@
         <div class="container-fluid mt-2">
             <div class="row gy-4">
                 <div class="col-12">
-                    <h1 class="text-center fs-3">Git Playground</h1>
+                    <h1 class="page-title text-center">Experiment with Git Commands</h1>
                 </div>
             </div>
             <div class="row my-2">
                 <!-- Sidebar -->
                 <aside class="col-lg-3">
                     <div class="gps-panel shadow-sm">
-                    <h5 class="gps-header text-center">🛠 Workspace</h5>
+                    <h5 class="gps-header sidebar-title text-center">🛠 Workspace</h5>
 
                     <!-- Working Directory -->
                     <section class="mb-3">
@@ -319,7 +330,7 @@
                         </div>
                         <div class="gps-scroll-box mt-2">
                             <ul class="list-group gps-list" id="workingDir">
-                                <li class="list-group-item p-2">Empty</li>
+                                <li class="list-group-item p-2 gps-text-muted">Empty</li>
                             </ul>
                         </div>
                     </section>
@@ -329,9 +340,18 @@
                         <div class="gps-header">📥 Staging Area</div>
                         <div class="gps-scroll-box">
                             <ul class="list-group gps-list" id="stagingArea">
-                                <li class="list-group-item p-2">Empty</li>
+                                <li class="list-group-item p-2 gps-text-muted">Empty</li>
                             </ul>
                         </div>
+                    </section>
+
+                     <!-- Current Branch -->
+                    <section class="mb-3">
+                        <div class="d-flex align-items-center justify-content-between gps-header mb-2">
+                            <span>🌿 Current Branch</span>
+                            <span class="badge bg-info text-dark fw-semibold px-3 py-1" id="currentBranch">main</span>
+                        </div>
+                        <p class="gps-text-muted small mb-0 text-center">This is the active working branch</p>
                     </section>
 
                     <!-- Remote Paths -->
@@ -339,13 +359,13 @@
                         <div class="gps-header">🌐 Git Remote URL</div>
                         <div class="">
                             <ul class="list-group gps-list" id="remotePaths">
-                                <li class="list-group-item p-2">No remotes</li>
+                                <li class="list-group-item p-2 gps-text-muted">No remotes</li>
                             </ul>
                         </div>
                     </section>
 
                     <!-- Remote Repository -->
-                    <section  class="mb-3">
+                    <section>
                         <div class="gps-header">🚀 Remote Repository</div>
                         <div class="remoteRepo">
                             <ul class="list-group gps-list" id="remoteRepo">
@@ -353,13 +373,6 @@
                             </ul>
                         </div>
                     </section>
-
-                    <!-- Current Branch -->
-                    <section>
-                        <div class="gps-header">🌿 Current Branch</div>
-                        <p id="currentBranch" class="text-center fw-bold text-info mb-0">main</p>
-                    </section>
-
                 </aside>
 
                 <!-- Terminal -->
