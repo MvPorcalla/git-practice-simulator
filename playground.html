@@ -63,7 +63,6 @@
             height: 150px;
             overflow-y: auto;
             border: 1px solid var(--gps-color-bg-light);
-            border-radius: 0.375rem;
         }
 
         .gps-list {
@@ -86,8 +85,10 @@
             font-style: italic;
         }
 
-        #remoteRepo {
-            max-height: 80;
+        .remoteRepo {
+            height: 80px;
+            overflow-y: auto;
+            border: 1px solid var(--gps-color-bg-light);
         }
 
         /* =============================
@@ -132,7 +133,8 @@
             background-color: var(--gps-color-bg-dark);
             color: var(--gps-color-text);
             font-family: var(--gps-ff-terminal);
-            font-size: var(--gps-fs-base);
+            font-size: var(--gps-fs-sm);
+            font-weight: var(--gps-fw-normal);
             padding: 0.5rem;
             white-space: pre-wrap;
             display: flex;
@@ -162,6 +164,17 @@
             outline: none;
             white-space: nowrap;
         }
+
+        .terminal-line {
+            font-family: var(--gps-ff-terminal);
+            font-weight: normal;
+            color: var(--gps-color-text);
+            white-space: pre-wrap;
+        }
+        .terminal-command {
+            color: #4ade80; /* green for git commands */
+        }
+
 
 
         /* ---------------------------------------------- */
@@ -223,6 +236,11 @@
             box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.3); /* subtle glow */
             outline: none;
         }
+
+        body {
+  overflow-x: hidden;
+}
+
     </style>
 
 </head>
@@ -237,111 +255,129 @@
     </div>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg shadow-sm nav-theme">
-        <div class="container position-relative d-flex align-items-center justify-content-between">
-        <a class="navbar-brand d-flex align-items-center gps-font-secondary gps-weight-bold nav-text gap-2" href="index.html">
+    <nav class="navbar navbar-expand-lg shadow-sm nav-theme" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <!-- Brand -->
+            <a class="navbar-brand d-flex align-items-center gps-font-secondary gps-weight-bold nav-text gap-2" href="index.html">
             <img src="./assets/images/favicon_io/favicon.ico" alt="Git Icon" width="30" height="30">
             Git Practice Simulator
-        </a>
+            </a>
+            <!-- Toggler for mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Collapsible Links -->
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav gap-3">
+                    <li class="nav-item">
+                    <a href="index.html" class="nav-link nav-text">Home</a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="concepts.html" class="nav-link nav-text">Learn</a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="tutorial.html" class="nav-link nav-text">Tutorial</a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="playground.html" class="nav-link nav-text">Playground</a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="aboutme.html" class="nav-link nav-text">About Me</a>
+                    </li>
+                </ul>
+            </div>
 
-        <div class="nav-links position-absolute top-50 start-50 translate-middle d-flex">
-            <a href="index.html" class="me-4 nav-text">Home</a>
-            <a href="concepts.html" class="me-4 nav-text">Learn</a>
-            <a href="tutorial.html" class="me-4 nav-text">Tutorial</a>
-            <a href="playground.html" class="me-4 nav-text">Playground</a>
-            <a href="aboutme.html" class="me-4 nav-text">About Me</a>
-        </div>
-
-        <button id="themeToggle" class="btn btn-sm btn-outline-light" aria-label="Toggle theme">
-            <i class='bx bx-moon'></i>
-        </button>
+            <!-- Theme Toggle -->
+            <button id="themeToggle" class="btn btn-sm btn-outline-light ms-auto" aria-label="Toggle theme">
+            <i class="bx bx-moon"></i>
+            </button>
         </div>
     </nav>
 
     <!-- Main Content -->
     <main class="content">
         <div class="container-fluid mt-2">
-        <div class="row gy-4">
-            <div class="col-12">
-            <h1 class="text-center fs-3">Git Playground</h1>
+            <div class="row gy-4">
+                <div class="col-12">
+                    <h1 class="text-center fs-3">Git Playground</h1>
+                </div>
             </div>
-
             <div class="row my-2">
-            <!-- Sidebar -->
-            <aside class="col-lg-3">
-                <div class="gps-panel shadow-sm">
-                <h5 class="gps-header text-center">🛠 Workspace</h5>
+                <!-- Sidebar -->
+                <aside class="col-lg-3">
+                    <div class="gps-panel shadow-sm">
+                    <h5 class="gps-header text-center">🛠 Workspace</h5>
 
-                <!-- Working Directory -->
-                <section class="mb-3">
-                    <div class="d-flex justify-content-between align-items-center gps-header">
-                        <span>📂 Working Directory</span>
-                        <button id="addFileBtn" class="gps-btn gps-btn-outline gps-btn-sm" title="Create a new file">
-                            <i class="bi bi-file-earmark-plus me-1"></i> New File
-                        </button>
-                    </div>
-                    <div class="gps-scroll-box mt-2">
-                        <ul class="list-group gps-list" id="workingDir">
-                        <li class="list-group-item p-2">Empty</li>
-                        </ul>
-                    </div>
-                </section>
+                    <!-- Working Directory -->
+                    <section class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center gps-header">
+                            <span>📂 Working Directory</span>
+                            <button id="addFileBtn" class="gps-btn gps-btn-outline gps-btn-sm" title="Create a new file">
+                                <i class="bi bi-file-earmark-plus me-1"></i> New File
+                            </button>
+                        </div>
+                        <div class="gps-scroll-box mt-2">
+                            <ul class="list-group gps-list" id="workingDir">
+                                <li class="list-group-item p-2">Empty</li>
+                            </ul>
+                        </div>
+                    </section>
 
-                <!-- Current Branch -->
-                <section class="mb-3">
-                    <div class="gps-header">🌿 Current Branch</div>
-                    <p id="currentBranch" class="text-center fw-bold text-info mb-0">main</p>
-                </section>
+                    <!-- Staging Area -->
+                    <section class="mb-3">
+                        <div class="gps-header">📥 Staging Area</div>
+                        <div class="gps-scroll-box">
+                            <ul class="list-group gps-list" id="stagingArea">
+                                <li class="list-group-item p-2">Empty</li>
+                            </ul>
+                        </div>
+                    </section>
 
-                <!-- Staging Area -->
-                <section class="mb-3">
-                    <div class="gps-header">📥 Staging Area</div>
-                    <div class="gps-scroll-box">
-                    <ul class="list-group gps-list" id="stagingArea">
-                        <li class="list-group-item p-2">Empty</li>
-                    </ul>
-                    </div>
-                </section>
+                    <!-- Remote Paths -->
+                    <section class="mb-3">
+                        <div class="gps-header">🌐 Git Remote URL</div>
+                        <div class="">
+                            <ul class="list-group gps-list" id="remotePaths">
+                                <li class="list-group-item p-2">No remotes</li>
+                            </ul>
+                        </div>
+                    </section>
 
-                <!-- Remote Paths -->
-                <section class="mb-3">
-                    <div class="gps-header">🌐 Git Remote URL</div>
-                    <div class="">
-                    <ul class="list-group gps-list" id="remotePaths">
-                        <li class="list-group-item p-2">No remotes</li>
-                    </ul>
-                    </div>
-                </section>
+                    <!-- Remote Repository -->
+                    <section  class="mb-3">
+                        <div class="gps-header">🚀 Remote Repository</div>
+                        <div class="remoteRepo">
+                            <ul class="list-group gps-list" id="remoteRepo">
+                                <li class="list-group-item p-2">No commits pushed yet</li>
+                            </ul>
+                        </div>
+                    </section>
 
-                <!-- Remote Repository -->
-                <section>
-                    <div class="gps-header">🚀 Remote Repository</div>
-                    <div class="">
-                    <ul class="list-group gps-list" id="remoteRepo">
-                        <li class="list-group-item p-2">No commits pushed yet</li>
-                    </ul>
-                    </div>
-                </section>
+                    <!-- Current Branch -->
+                    <section>
+                        <div class="gps-header">🌿 Current Branch</div>
+                        <p id="currentBranch" class="text-center fw-bold text-info mb-0">main</p>
+                    </section>
+
+                </aside>
+
+                <!-- Terminal -->
+                <div class="col-lg-9">
+                    <section class="mb-3">
+                        <div class="terminal-output border rounded" id="terminalOutput" role="region" aria-label="Terminal Output" aria-live="polite">
+                            <!-- Terminal Output -->
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="terminal-log border rounded" id="terminalLog">
+                                <!-- Terminal Log -->
+                            <strong>System Log:</strong>
+                        </div>
+                    </section>
                 </div>
-            </aside>
-
-            <!-- Terminal -->
-            <div class="col-lg-9">
-                <section class="mb-3">
-                <div class="terminal-output border rounded" id="terminalOutput" aria-live="polite">
-                    <!-- Terminal Output -->
-                </div>
-                </section>
-
-                <section>
-                <div class="terminal-log border rounded" id="terminalLog">
-                        <!-- Terminal Log -->
-                    <strong>System Log:</strong>
-                </div>
-                </section>
             </div>
-            </div>
-        </div>
         </div>
     </main>
 

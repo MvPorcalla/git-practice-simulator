@@ -86,11 +86,14 @@ export async function submitCommand(commandElement, command) {
     state.setHistoryIndex(state.commandHistory.length);
 
     const staticText = document.createElement('span');
+    staticText.classList.add('terminal-line');
+
     const commandParts = command.trim().split(' ');
     const firstWord = escapeHTML(commandParts.shift());
     const remainingCommand = escapeHTML(commandParts.join(' '));
 
-    staticText.innerHTML = `<span style="color: #4ade80; font-weight: bold;">${firstWord}</span> ${remainingCommand}`;
+    staticText.innerHTML = `<span class="terminal-command">${firstWord}</span> ${remainingCommand}`;
+
     commandElement.replaceChild(staticText, commandElement.querySelector('#terminalInput'));
 
     const output = await processGitCommand(command);
